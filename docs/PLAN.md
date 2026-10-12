@@ -45,10 +45,11 @@ drug labels, shipped as an evidence explorer with open models and an honest writ
 
 ## Phase 1: Data foundation & baseline  (~1.5 weeks; GPU 2-3 h; owner 8-12 h)
 
-- [ ] Download scripts: UCI Drugs.com (train + test), WebMD (Kaggle), PsyTAR (optional)
+- [x] Download script with pinned checksums: DrugRev, Druglib (auto); UCI Drugs.com local copy, WebMD (manual check). UCI #462 withdrawn (ADR-0011)
+- [ ] Merge UCI + DrugRev (prefer UCI full text; `source`, `possibly_truncated`, duration fields)
 - [ ] Cleaning: HTML-entity decoding, whitespace, junk `condition` values (`</span>` artefacts), empty reviews
 - [ ] **De-duplication** (exact + normalised text) before any split; report how many removed
-- [ ] Splits: official test kept; validation carved from train; drug-held-out split for generalisation
+- [ ] Splits: own train/val/test after cross-source de-duplication (official UCI test unavailable); drug-held-out split
 - [ ] EDA report (`reports/eda/`): rating distribution, lengths, conditions, drugs, duplicates
 - [ ] Sentiment baselines (sanity only): majority, TF-IDF + LR, one encoder; macro-F1, QWK, 3 seeds
 - [ ] **Annotation guidelines** (`docs/annotation_guidelines.md`): ADE span, severity, discontinued, reason taxonomy

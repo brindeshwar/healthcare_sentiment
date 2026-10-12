@@ -12,7 +12,6 @@ requires-python = ">=3.12"
 keywords = ["pharmacovigilance", "adverse drug events", "nlp", "llm", "distillation", "faers"]
 classifiers = [
     "Programming Language :: Python :: 3.12",
-    "License :: OSI Approved :: MIT License",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Scientific/Engineering :: Medical Science Apps.",
 ]

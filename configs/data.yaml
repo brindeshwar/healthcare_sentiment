@@ -6,17 +6,36 @@ paths:
   interim: data/interim
   processed: data/processed
 
+# Sources fetched by `python -m medsignal.data.download`.
+# kind: url    -> downloaded automatically; sha256 verified when set
+# kind: manual -> must be placed by hand (login required / no longer public); presence is checked
+# Licence notes and provenance: docs/DATA.md
 sources:
-  drugscom:
-    url: https://archive.ics.uci.edu/static/public/462/drug+review+dataset+drugs+com.zip  # TODO verify in Phase 1
-    dir: data/raw/drugscom
+  drugrev:
+    kind: url
+    url: https://data.mendeley.com/public-files/datasets/64cc5w5dxy/files/288e24c1-4605-4c4b-9a88-c789f94dbe35/file_downloaded
+    filename: DrugReviews.csv
+    sha256: 2fa6fa5227076d32841857968d9df6eec675698a1acef1803ba8c33c0ccbc41c
+  druglib:
+    kind: url
+    url: https://archive.ics.uci.edu/static/public/461/drug+review+dataset+druglib+com.zip
+    filename: druglib.zip
+    sha256: 3500936fb8473414b731c89d8c4395ab2dd65e2a99e9d79ee998328408a7ddcc
+    extract: true
+  drugscom_uci:
+    kind: manual
+    files: [drugsComTrain_raw.csv]
+    note: "UCI #462 was withdrawn (403 / 'not found', checked 2026-10-13). Use a copy obtained while it was public; not redistributed."
   webmd:
-    dir: data/raw/webmd   # manual Kaggle download (login required)
+    kind: manual
+    files: [webmd.csv]
+    note: "Kaggle login required: https://www.kaggle.com/datasets/rohanharode07/webmd-drug-reviews-dataset"
 
 cleaning:
   min_review_chars: 20
   decode_html: true
 
 splits:
-  val_fraction: 0.1        # carved from official train after de-duplication
+  val_fraction: 0.1
+  test_fraction: 0.1
   drug_holdout_fraction: 0.1
