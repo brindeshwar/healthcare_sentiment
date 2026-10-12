@@ -48,7 +48,13 @@ uv sync
 uv run pytest
 ```
 
-Pipeline commands will be documented here per phase.
+Fetch data (DrugRev + Druglib are downloaded and checksum-verified; see [`docs/DATA.md`](docs/DATA.md) for the manual sources):
+
+```bash
+uv run python -m medsignal.data.download
+```
+
+Further pipeline commands are added here as phases complete.
 
 ## Repository layout
 

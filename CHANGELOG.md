@@ -11,6 +11,10 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - Tooling: uv project (`pyproject.toml`), ruff, mypy, pytest, pre-commit, GitHub Actions CI, Dependabot, issue/PR templates.
 - Package skeleton `src/medsignal` with config loading, seeding and git-SHA helpers.
 
+### Added (Phase 1)
+- `medsignal.data.download`: config-driven dataset download with pinned SHA-256 checksums and manifests (DrugRev, Druglib; manual-source checks for UCI Drugs.com and WebMD).
+- ADR-0011: merged UCI Drugs.com + DrugRev corpus (UCI #462 withdrawn).
+
 ### Removed
 - Legacy DistilBERT sentiment code, report and figures (preserved at tag `v0-minor-project`). The legacy confusion matrix was simulated, not measured, and is withdrawn.
 

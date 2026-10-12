@@ -77,3 +77,10 @@ Template:
 - Date: 2026-10-13 · Status: Accepted
 - Context: Star-rating sentiment on Drugs.com is saturated in the literature.
 - Decision: Majority, TF-IDF+LR and one encoder, reported as a sanity baseline and to show the de-duplication effect; not a headline.
+
+## ADR-0011: Corpus = UCI Drugs.com (full text) + DrugRev (newer reviews), merged
+- Date: 2026-10-13 · Status: Accepted
+- Context: UCI withdrew the Drugs.com dataset (#462); its official test file is unobtainable from the source. DrugRev (Mendeley, CC BY 4.0, 392K rows, 2008-2023, adds duration of use) is available, but truncates ~28% of reviews that also appear in UCI (19% lose over half their text).
+- Decision: Merge both. Where a review exists in both, keep the **UCI full text** and DrugRev's extra fields (duration). Add DrugRev-only reviews (mostly 2018-2023) with a `source` column and a `possibly_truncated` heuristic flag. De-duplicate across sources before splitting; make our own train/val/test (+ drug-held-out) splits. Do not use the Hugging Face mirror of the withdrawn data.
+- Alternatives: UCI only (no post-2017 drugs, no duration); DrugRev only (truncation hurts ADE recall); HF mirror for the official test file (relies on a mirror of withdrawn data).
+- Consequences: No "official" test split, so results are not directly comparable with papers using the UCI test file (state this). Truncation lowers recall for DrugRev-only reviews; report metrics by source and flag in signal analyses.
