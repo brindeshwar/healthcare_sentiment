@@ -9,7 +9,7 @@
 
 ## Now (in progress)
 
-- Phase 0 wrap-up: local checks pass (ruff, mypy, pytest 5/5, pre-commit). Changes staged on `rebuild`, **not committed/pushed** (awaiting owner). CI runs on first push.
+- Phase 0 wrap-up: PR #15 (`rebuild` → `main`) open; waiting for CI, then owner merges (squash). Tracking: issues #1-#14, milestones per phase.
 
 ## Next (ordered)
 
@@ -38,4 +38,6 @@
 - Tagged legacy as `v0-minor-project`; created `rebuild` branch; removed legacy code from branch.
 - Created agent docs, management docs, repo tooling, CI, GitHub templates, package skeleton.
 - Verified locally: `uv sync`, ruff, mypy (strict), pytest, pre-commit all pass; pre-commit hook installed.
-- Next: owner setup tasks, then Phase 1.
+- Committed + pushed `rebuild` and tag `v0-minor-project`; opened PR #15.
+- GitHub: description/topics, squash-only merges, auto-delete branches, labels (task/experiment/bug/phase-N/owner/blocked), 6 milestones, issues #1-#10 (Phase 0-1 tasks) + #11-#14 (Phase 2-5 epics), private vulnerability reporting, `main` protection (PR required, both CI checks required + up to date, linear history, no force-push/deletion, conversations resolved; admins may bypass).
+- Next: CI green → owner merges #15; owner setup (#2); then Phase 1.
