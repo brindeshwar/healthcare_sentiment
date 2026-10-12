@@ -84,3 +84,10 @@ Template:
 - Decision: Merge both. Where a review exists in both, keep the **UCI full text** and DrugRev's extra fields (duration). Add DrugRev-only reviews (mostly 2018-2023) with a `source` column and a `possibly_truncated` heuristic flag. De-duplicate across sources before splitting; make our own train/val/test (+ drug-held-out) splits. Do not use the Hugging Face mirror of the withdrawn data.
 - Alternatives: UCI only (no post-2017 drugs, no duration); DrugRev only (truncation hurts ADE recall); HF mirror for the official test file (relies on a mirror of withdrawn data).
 - Consequences: No "official" test split, so results are not directly comparable with papers using the UCI test file (state this). Truncation lowers recall for DrugRev-only reviews; report metrics by source and flag in signal analyses.
+
+## ADR-0012: Flag every DrugRev-only review as possibly truncated (no row-level heuristic)
+- Date: 2026-10-13 · Status: Accepted
+- Context: DrugRev cuts reviews at sentence boundaries (keeps the first N sentences), so truncated text looks complete. On 93,517 matched pairs the best simple heuristic (no terminal punctuation) had precision 0.46 and recall 0.18.
+- Decision: `possibly_truncated = True` for all DrugRev-only rows; `False` for `uci`/`both` (UCI full text). Gold set and teacher-evaluation samples use only full-text rows. Report extraction metrics by source.
+- Alternatives: punctuation heuristic (misses 82% of truncations, false sense of safety); dropping DrugRev-only rows (loses 2018-2023 data and newer drugs).
+- Consequences: ~152K reviews carry the flag; signal analyses must treat DrugRev-only mention rates as lower bounds.
