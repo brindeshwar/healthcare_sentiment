@@ -3,7 +3,7 @@
 ## Reporting
 
 Please report vulnerabilities or accidental data/secret exposure privately via
-[GitHub private vulnerability reporting](https://github.com/brindeshwar/healthcare_sentiment/security/advisories/new)
+[GitHub private vulnerability reporting](https://github.com/brindeshwar/medsignal/security/advisories/new)
 rather than a public issue.
 
 ## Scope notes

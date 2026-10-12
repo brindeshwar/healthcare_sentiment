@@ -4,7 +4,7 @@
 reasons for stopping medication from ~215K patient reviews, maps them to MedDRA terms, and compares them with FDA
 adverse-event reports (FAERS) and drug labels.
 
-[![CI](https://github.com/brindeshwar/healthcare_sentiment/actions/workflows/ci.yml/badge.svg)](https://github.com/brindeshwar/healthcare_sentiment/actions/workflows/ci.yml)
+[![CI](https://github.com/brindeshwar/medsignal/actions/workflows/ci.yml/badge.svg)](https://github.com/brindeshwar/medsignal/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/python-3.12-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-in%20development-orange)
@@ -42,8 +42,8 @@ TBD. Filled in as phases complete.
 Requires [uv](https://docs.astral.sh/uv/) and Python 3.12. GPU stages need an NVIDIA GPU (developed on an 8 GB RTX 4060 Laptop) and [Ollama](https://ollama.com).
 
 ```bash
-git clone https://github.com/brindeshwar/healthcare_sentiment.git
-cd healthcare_sentiment
+git clone https://github.com/brindeshwar/medsignal.git
+cd medsignal
 uv sync
 uv run pytest
 ```
