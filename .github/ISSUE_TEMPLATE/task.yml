@@ -1,0 +1,25 @@
+name: Task
+description: A unit of planned work from docs/PLAN.md
+labels: ["task"]
+body:
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Phase
+      options: ["0 - Foundation", "1 - Data & baseline", "2 - LLM teacher", "3 - Encoder student", "4 - Normalisation & signals", "5 - Product & write-up"]
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: What exactly will be done?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: "- [ ] …"
+    validations:
+      required: true

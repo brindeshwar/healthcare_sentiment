@@ -1,0 +1,78 @@
+[project]
+name = "medsignal"
+version = "0.1.0"
+description = "Drug-safety signals from patient reviews: LLM-distilled adverse-event and discontinuation extraction, compared with FDA FAERS and drug labels."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+    { name = "Brindeshwar Sharma", email = "brinde.sharma@gmail.com" }
+]
+requires-python = ">=3.12"
+keywords = ["pharmacovigilance", "adverse drug events", "nlp", "llm", "distillation", "faers"]
+classifiers = [
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+# Core deps are added per phase with `uv add` so versions are resolved, not guessed.
+dependencies = [
+    "pyyaml>=6.0.3",
+]
+
+[project.urls]
+Repository = "https://github.com/brindeshwar/healthcare_sentiment"
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
+
+# ---------------------------------------------------------------- tooling
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "N", "RUF", "PTH", "NPY", "PD"]
+ignore = ["E501"]  # formatter handles line length
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["B", "N"]
+"notebooks/**" = ["E402", "T201"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.mypy]
+python_version = "3.12"
+packages = ["medsignal"]
+mypy_path = "src"
+strict = true
+ignore_missing_imports = true
+warn_unreachable = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = [
+    "slow: long-running tests (deselect with -m 'not slow')",
+    "gpu: requires a CUDA GPU",
+    "network: requires internet access",
+]
+
+[tool.coverage.run]
+source = ["medsignal"]
+branch = true
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pre-commit>=4.6.2",
+    "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.0",
+    "types-pyyaml>=6.0.12.20260906",
+]

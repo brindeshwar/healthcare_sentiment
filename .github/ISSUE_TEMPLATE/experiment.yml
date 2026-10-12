@@ -1,0 +1,34 @@
+name: Experiment
+description: A hypothesis to test, with a metric and a decision rule
+labels: ["experiment"]
+body:
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      placeholder: "Self-consistency (k=5) improves teacher ADE span F1 on gold-dev by ≥ 3 points."
+    validations:
+      required: true
+  - type: textarea
+    id: setup
+    attributes:
+      label: Setup
+      description: Data split, model(s), config, seeds.
+    validations:
+      required: true
+  - type: input
+    id: metric
+    attributes:
+      label: Primary metric
+      placeholder: "relaxed span F1 on gold-dev"
+    validations:
+      required: true
+  - type: textarea
+    id: decision
+    attributes:
+      label: Decision rule
+      placeholder: "Adopt if gain ≥ 3 F1 and cost ≤ 3x; otherwise drop and record in DECISIONS.md."
+  - type: textarea
+    id: result
+    attributes:
+      label: Result (fill after running)

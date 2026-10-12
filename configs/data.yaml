@@ -1,0 +1,22 @@
+# Phase 1 data pipeline config. Paths are relative to the project root.
+seed: 42
+
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+
+sources:
+  drugscom:
+    url: https://archive.ics.uci.edu/static/public/462/drug+review+dataset+drugs+com.zip  # TODO verify in Phase 1
+    dir: data/raw/drugscom
+  webmd:
+    dir: data/raw/webmd   # manual Kaggle download (login required)
+
+cleaning:
+  min_review_chars: 20
+  decode_html: true
+
+splits:
+  val_fraction: 0.1        # carved from official train after de-duplication
+  drug_holdout_fraction: 0.1

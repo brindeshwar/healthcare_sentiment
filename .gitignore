@@ -1,0 +1,51 @@
+# --- Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# --- Secrets
+.env
+*.key
+
+# --- Data & models (never commit; see docs/DATA.md)
+data/raw/**
+data/interim/**
+data/processed/**
+!data/**/.gitkeep
+models/**
+!models/.gitkeep
+*.safetensors
+*.bin
+*.pt
+*.ckpt
+*.gguf
+*.parquet
+*.zip
+
+# --- Experiment / tool outputs
+mlruns/
+wandb/
+outputs/
+logs/
+checkpoints/
+results/
+reports/**/*.tmp
+
+# --- Legacy local folders (pre-rebuild, untracked)
+healthcare_sentiment/
+healthcare_bert_final/
+
+# --- OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

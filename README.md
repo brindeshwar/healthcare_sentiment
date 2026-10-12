@@ -1,168 +1,72 @@
-# Healthcare Sentiment Analysis with BERT
+# MedSignal
 
-A professional sentiment analysis system for healthcare drug reviews using DistilBERT with GPU acceleration and modular architecture.
+**Drug-safety signals from patient reviews.** A local-LLM-distilled pipeline that extracts adverse drug events and
+reasons for stopping medication from ~215K patient reviews, maps them to MedDRA terms, and compares them with FDA
+adverse-event reports (FAERS) and drug labels.
 
-## 🎯 Project Overview
+[![CI](https://github.com/brindeshwar/healthcare_sentiment/actions/workflows/ci.yml/badge.svg)](https://github.com/brindeshwar/healthcare_sentiment/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/python-3.12-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-in%20development-orange)
 
-This project performs sentiment analysis on healthcare drug reviews from the UCI ML Drug Review dataset. **DistilBERT achieves 65.4% accuracy** with GPU-optimized training in just 8 minutes using enterprise-grade modular architecture.
+> **Status:** under active development (Phase 1 of 5). No results are reported yet; every number that appears here
+> will be produced by code in this repo. See [`docs/STATUS.md`](docs/STATUS.md) and [`docs/PLAN.md`](docs/PLAN.md).
 
-## 🏆 Model Performance: 65.4% Accuracy
+> **Not medical advice.** Outputs are research hypotheses derived from unverified patient reports.
 
-**Production-Ready BERT Model** with professional modular codebase for healthcare sentiment classification (5 classes: Very Negative → Very Positive)
+## Why
 
-## 🚀 Quick Start - Professional Training
+Drug labels and FDA reports miss part of the patient experience. Patients describe side effects, and why they quit a
+drug, in their own words online. Prior studies compared reviews with FAERS by hand for single drugs. MedSignal
+automates this across 3,000+ drugs and **measures every stage** against human-labelled data.
 
-### Prerequisites
-- Python 3.8+
-- CUDA-capable GPU (recommended: RTX 4060 or better)  
-- 8GB+ RAM
-
-### Installation & Training
-```bash
-# Setup and train with modular architecture
-cd minor_project
-pip install -r requirements.txt
-python train_model.py
-```
-
-**Professional modular training completes in ~8 minutes with GPU acceleration!**
-
-## 📁 Project Structure (Professional Modular Architecture)
+## How it works
 
 ```
-minor_project/
-├── 📚 Documentation
-│   ├── README.md                     # Comprehensive project overview
-│   └── PROJECT_REPORT.md            # Complete technical analysis
-│
-├── 🤖 BERT Training (Modular Architecture)
-│   ├── train_model.py               # 🆕 Professional modular training
-│   └── healthcare_bert_final/       # Trained model (65.4% accuracy)
-│
-├── 🏗️ Professional Module Structure
-│   └── healthcare_bert_modules/     # Enterprise-ready architecture
-│       ├── config.py               # Centralized configuration
-│       ├── data/preprocessing.py    # Dataset handling & cleaning
-│       ├── models/bert_model.py     # BERT model wrapper
-│       ├── training/trainer.py      # Training & evaluation utilities
-│       └── utils/visualization.py   # Comprehensive visualizations
-│
-├── 📊 Data & Visualizations
-│   ├── healthcare_sentiment/        # Dataset folder (160K+ reviews)
-│   ├── requirements.txt            # Dependencies
-│   ├── create_visualizations.py    # Generate comprehensive charts
-│   ├── visualizations/             # Professional analysis charts
-│   │   ├── healthcare_class_distribution.png
-│   │   ├── healthcare_dataset_dashboard.png
-│   │   ├── bert_results_confusion_matrix.png
-│   │   ├── rating_sentiment_mapping.png
-│   │   └── review_length_analysis.png
-│   └── bert_results_confusion_matrix.png # Original result
-│
-└── 📁 Archive
-    └── backup/                      # Original project files
+Reviews (Drugs.com, WebMD)
+  → LLM teacher (local, Ollama) labels ~10K reviews        → validated on a 300-review human gold set
+  → encoder student (BioClinical ModernBERT) labels all    → compared with teacher and GLiNER-BioMed
+  → normalise mentions to MedDRA PTs (retrieve → rerank → verify)
+  → compare with FAERS + drug labels (PRR / ROR)
+  → evidence explorer: per-drug side-effect profile, stop reasons, real review quotes
 ```
 
-## 🚀 Training & Usage
+Design decisions and their reasoning: [`docs/DECISIONS.md`](docs/DECISIONS.md) · Related work: [`docs/RESEARCH.md`](docs/RESEARCH.md) · Data: [`docs/DATA.md`](docs/DATA.md)
 
-### Professional Modular Training 🏗️
-```bash
-# Enterprise-ready modular approach (recommended)
-python train_model.py
-```
+## Results
 
-### Generate Visualizations 📊
-```bash
-# Comprehensive BERT and dataset analysis
-python create_visualizations.py
-```
+TBD. Filled in as phases complete.
 
-**Modular architecture provides 65.4% accuracy with professional code organization!**
+## Quick start
 
-## 🎯 Usage Example
-
-```python
-from transformers import DistilBertTokenizer, DistilBertForSequenceClassification
-
-# Load the trained model
-tokenizer = DistilBertTokenizer.from_pretrained('./healthcare_bert_final')
-model = DistilBertForSequenceClassification.from_pretrained('./healthcare_bert_final')
-
-# Predict sentiment
-text = "This medication helped with my pain but caused some side effects."
-inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
-outputs = model(**inputs)
-prediction = outputs.logits.argmax().item()  # 0-4 sentiment scale
-```
-
-## 💡 Why This Model Works
-
-### ✅ Proven Performance
-- **65.4% accuracy** on healthcare drug reviews
-- **GPU-optimized**: 8-minute training vs 45 minutes CPU-only
-- **Production-ready**: Stable, reliable, and well-tested
-
-### 🎯 Technical Specifications
-- **Model**: DistilBERT-base-uncased (66M parameters)
-- **Dataset**: 160K+ drug reviews, 5 sentiment classes (0-4)
-- **Hardware**: Optimized for NVIDIA GPUs (tested on RTX 4060)
-- **Framework**: PyTorch 2.5.1 with CUDA 12.1
-
-### 🤔 Why BERT Instead of GloVe Embeddings?
-**Short Answer**: BERT achieves 65.4% vs GloVe's expected 50-55% accuracy.
-
-**Key Differences**:
-- **BERT**: Context-aware, pre-trained on massive text, handles medical terms
-- **GloVe**: Static embeddings, same vector per word regardless of context
-- **Result**: BERT understands "This drug helped my depression but caused nausea" while GloVe gets confused by mixed sentiment
-
-### 🗂️ Why Professional Modular Architecture? 
-**Answer**: Enterprise-grade organization with maintainability and scalability!
-
-**Benefits of `healthcare_bert_modules/` Structure**:
-- **Team Development**: Multiple developers can work on different modules simultaneously
-- **Easy Testing**: Each component can be tested independently with unit tests
-- **Flexible Usage**: Mix and match components as needed for different projects
-- **Clear Separation**: Data processing, model handling, training, and visualization are cleanly separated
-- **Scalability**: Easy to add new models, preprocessing methods, or evaluation metrics
-- **Production Ready**: Professional structure suitable for enterprise deployment
-- **Maintainable**: Changes in one module don't affect others
-
-**Enterprise Benefits**:
-- **`train_model.py`**: Production deployment, team development, enterprise use
-- **Modular Components**: Independent development, testing, and deployment
-- **Professional Standards**: Follows software engineering best practices
-
-*See `PROJECT_REPORT.md` for detailed technical comparisons and architecture decisions.*
-
-## 📊 Performance Details
-
-| Metric | Score |
-|--------|-------|
-| **Overall Accuracy** | **65.4%** |
-| Training Time (GPU) | 8 minutes |
-| Training Time (CPU) | 45 minutes |
-| Model Size | 256 MB |
-| Classes | 5 (Very Negative → Very Positive) |
-
-## 📚 Dependencies
+Requires [uv](https://docs.astral.sh/uv/) and Python 3.12. GPU stages need an NVIDIA GPU (developed on an 8 GB RTX 4060 Laptop) and [Ollama](https://ollama.com).
 
 ```bash
-torch>=2.5.1
-transformers>=4.21.0
-sklearn>=1.1.0
-pandas>=1.5.0
-numpy>=1.21.0
-matplotlib>=3.6.0
-seaborn>=0.12.0
+git clone https://github.com/brindeshwar/healthcare_sentiment.git
+cd healthcare_sentiment
+uv sync
+uv run pytest
 ```
 
-## 📞 Support & Next Steps
+Pipeline commands will be documented here per phase.
 
-- **Training Issues?** Check CUDA installation and GPU memory (needs 6GB+ VRAM)
-- **Want to improve?** See `PROJECT_REPORT.md` for research findings
-- **Production deployment?** Model is saved in `healthcare_bert_final/` directory
+## Repository layout
 
----
+```
+src/medsignal/   package: data, labeling, extraction, normalization, signals, evaluation, app
+configs/         YAML configs for every stage
+docs/            plan, status, decisions, data card, related work
+tests/           pytest suite
+```
 
-**🏆 Result: Production-ready healthcare sentiment analysis in 8 minutes with GPU acceleration**
+## Contributing / working with AI agents
+
+See [`CONTRIBUTING.md`](CONTRIBUTING.md). Coding agents follow [`AGENTS.md`](AGENTS.md).
+
+## Licence & data
+
+Code: MIT. Datasets are **not** redistributed; download scripts fetch them from their sources under their own terms (see [`docs/DATA.md`](docs/DATA.md)).
+
+## Acknowledgements
+
+Drug review data: Gräßer, Kallumadi, Malberg & Zaunseder (2018), UCI ML Repository. FDA data via [openFDA](https://open.fda.gov).
