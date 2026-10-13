@@ -1,0 +1,66 @@
+{
+  "rows": 263862,
+  "counts": {
+    "train": 189938,
+    "val": 23743,
+    "test": 23743,
+    "drug_holdout": 26438
+  },
+  "drug_groups": 1592,
+  "drug_groups_held_out": 197,
+  "largest_drug_group_share": 0.041,
+  "sentiment_share_by_split": {
+    "train": {
+      "pos": 0.5803,
+      "neg": 0.3317,
+      "neu": 0.088
+    },
+    "val": {
+      "pos": 0.5803,
+      "neg": 0.3316,
+      "neu": 0.0881
+    },
+    "test": {
+      "pos": 0.5803,
+      "neg": 0.3316,
+      "neu": 0.0881
+    },
+    "drug_holdout": {
+      "pos": 0.5856,
+      "neg": 0.3266,
+      "neu": 0.0879
+    }
+  },
+  "source_share_by_split": {
+    "train": {
+      "drugrev": 0.5722,
+      "both": 0.3575,
+      "uci": 0.0703
+    },
+    "val": {
+      "drugrev": 0.5722,
+      "both": 0.3575,
+      "uci": 0.0703
+    },
+    "test": {
+      "drugrev": 0.5722,
+      "both": 0.3575,
+      "uci": 0.0703
+    },
+    "drug_holdout": {
+      "drugrev": 0.6147,
+      "both": 0.3154,
+      "uci": 0.0699
+    }
+  },
+  "leakage": {
+    "duplicate_review_ids": 0,
+    "drug_groups_in_holdout_and_other_splits": 0
+  },
+  "meta": {
+    "config": "configs/data.yaml",
+    "seed": 42,
+    "git_sha": "aeae533",
+    "built_utc": "2026-10-13T07:02:02+00:00"
+  }
+}

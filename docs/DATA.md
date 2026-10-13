@@ -32,6 +32,12 @@ Built by `uv run python -m medsignal.data.build` (counts in `reports/data/build_
 | `n_listings`, `rating_conflict` | raw rows collapsed into this review; whether their ratings disagreed |
 | `possibly_truncated` | `True` for all DrugRev-only rows (ADR-0012) |
 
+## Splits: `data/processed/splits.parquet`
+
+Built by `uv run python -m medsignal.data.splits` (ADR-0013; counts and leakage checks in `reports/data/splits_report.json`).
+Columns: `review_id`, `drug_group`, `split` ∈ {`train`, `val`, `test`, `drug_holdout`}.
+`test` is never used for model selection, prompt tuning or threshold choice; `val` is.
+
 ## Layout
 
 ```
