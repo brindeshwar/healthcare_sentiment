@@ -43,7 +43,14 @@ Manual steps, for reference:
    ```powershell
    ollama --version
    ```
-   Do **not** pull models yet; we benchmark candidates first (Phase 2 picks which ones).
+   Models are pulled by the agent (Phase 1 pre-annotation: `qwen3.5:9b-q4_K_M`, ~6.6 GB).
+
+**Note (2026-10-13):** the tray app's built-in server timed out at startup (GPU discovery takes ~11 s). The pipeline
+starts its own server with the project's model folder instead:
+```powershell
+$env:OLLAMA_MODELS = "D:\healthcare_sentiment\models\ollama"
+Start-Process .\tools\ollama\ollama.exe -ArgumentList serve -WindowStyle Hidden
+```
 
 ## 2. Hugging Face account + token (needed in Phase 3 to publish models)
 
@@ -66,7 +73,30 @@ Manual steps, for reference:
    ```
    It should log `webmd: manual files present`.
 
-## 5. Optional cleanup of legacy folders
+## 5. Annotating the gold set (issue #10)
+
+The agent prepares everything (gold sample, LLM pre-annotations for dev, task files, interface). You annotate.
+
+1. **Start Label Studio** (data stays in `.cache\label-studio`), in PowerShell from the project folder:
+   ```powershell
+   $env:LABEL_STUDIO_BASE_DATA_DIR = "D:\healthcare_sentiment\.cache\label-studio"
+   .\tools\label-studio\Scripts\label-studio.exe start --port 8080
+   ```
+   It opens <http://localhost:8080>. First time: **Sign up** (a local account stored only on this PC).
+2. **Create project "MedSignal gold - dev"**
+   - *Labeling Setup* → *Code* → paste the contents of `configs\labelstudio.xml` → Save.
+   - *Data Import* → upload `data\interim\labelstudio\tasks_dev.json`.
+   - *Settings → Annotation* → turn on **Use predictions to prefill annotations**.
+3. **Annotate** following `docs/annotation_guidelines.md`: select ADE text with the *ADE* label, click the span to set severity / flags, answer *Discontinued* and *Effectiveness*, then **Submit**. Pre-filled answers are suggestions: check every field.
+4. **Export**: *Export* → **JSON** → save as `data\interim\labelstudio\export_dev.json`. Then tell the agent, or run:
+   ```bash
+   uv run python -m medsignal.labeling.labelstudio import --export data/interim/labelstudio/export_dev.json --split dev
+   ```
+5. Repeat with project **"MedSignal gold - test"** using `tasks_test.json` (no pre-fill: test is annotated blind, ADR-0017) and `--split test`.
+
+Tips: take breaks every ~50 reviews; use *notes* for anything unclear; you can export at any time (re-importing replaces the file).
+
+## 6. Optional cleanup of legacy folders
 
 These are left over from the old project. Both are git-ignored and nothing in the new pipeline reads them:
 

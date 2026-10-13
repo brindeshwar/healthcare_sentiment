@@ -119,3 +119,13 @@ Template:
 - Decision: Per review: ADE spans (verbatim text; attributes severity mild/moderate/severe/not_stated, withdrawal, beneficial), discontinued (yes/planned/no/not_stated), multi-label stop reasons (adverse_event, lack_of_efficacy, cost_access, convenience, course_completed, pregnancy_related, clinician_decision, other, not_stated), effectiveness (effective/partial/not_effective/not_stated). Encoded once as Pydantic models (`labeling/schema.py`); spans are given as text and aligned to offsets (case-insensitive, word-boundary, reading order). Guideline examples are unit tests.
 - Alternatives: PsyTAR's full scheme (ADR/WD/SSI/DI/EF/INF plus symptom categories; too heavy for one annotator); CADEC's five entity types (Drug/Disease/Symptom/Finding need more time and are not needed for our questions); free-text reasons (not countable).
 - Consequences: Withdrawal effects are ADEs with a flag rather than a separate entity; welcome effects (e.g. amenorrhoea on contraceptives) are kept with `beneficial=true` so FAERS-style counts include them. Reason taxonomy is close to the 2026 Estonian EHR study, which supports comparison.
+
+## ADR-0017: Gold-set protocol: sample, tool, and blind test annotation
+- Date: 2026-10-13 · Status: Accepted (owner chose blind test annotation)
+- Context: The gold set evaluates the LLM teacher (Phase 2) and the encoder student (Phase 3). LLM pre-annotation saves time but anchors the annotator toward the LLM's answers, which would inflate the teacher's test score.
+- Decision:
+  - Sample: 100 **dev** reviews from the `val` split and 200 **test** reviews from the `test` split (never from `train`, which the student trains on); full-text only; sentiment buckets oversampled to 40/20/40 neg/neu/pos (ADEs are rarer in positive reviews); at most 2 per drug group; drawn once with a fixed seed and committed as IDs only (`data/annotations/gold_sample.csv`).
+  - Pre-annotation: **dev only**, by a local LLM (`qwen3.5:9b-q4_K_M` via Ollama structured output). **Test is annotated blind.**
+  - Tool: Label Studio 1.23 (Apache-2.0), run locally from an isolated venv in `tools/label-studio`, data in `.cache/label-studio`. Interface generated from the schema enums and validated with the Label Studio SDK.
+- Alternatives: all 300 pre-filled (~2-3 h faster, biased test); pre-filling test with a non-LLM model such as GLiNER-BioMed (less bias, more setup); Argilla (needs a search backend); a custom Streamlit tool (no native span selection).
+- Consequences: Owner time ~8-11 h. Sample metrics reflect the 40/20/40 mix, not the population (stated in reports). Dev may be used freely for prompt design; test is touched once per final model.

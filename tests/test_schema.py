@@ -1,6 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
+from medsignal.labeling.examples import GUIDELINE_EXAMPLES
 from medsignal.labeling.schema import (
     ADEMention,
     AlignmentError,
@@ -73,73 +74,6 @@ def test_align_spans_respects_word_boundaries() -> None:
 def test_align_spans_missing_span_raises() -> None:
     with pytest.raises(AlignmentError):
         align_spans(_ann(ades=[{"text": "headache"}]), TEXT)
-
-
-# Worked examples from docs/annotation_guidelines.md §4: must validate and align (keeps doc and code in sync).
-GUIDELINE_EXAMPLES = [
-    (
-        "Within two weeks on Paxil I had constant migraines, extreme fatigue and constipation. "
-        "My doctor moved me to Zoloft and I feel much better.",
-        {
-            "ades": [
-                {"text": "migraines", "severity": "moderate"},
-                {"text": "fatigue", "severity": "severe"},
-                {"text": "constipation", "severity": "moderate"},
-            ],
-            "discontinued": "yes",
-            "stop_reasons": ["adverse_event"],
-        },
-    ),
-    (
-        "Worked great for four years with no side effects. Had to stop because it got too expensive.",
-        {"discontinued": "yes", "stop_reasons": ["cost_access"], "effectiveness": "effective"},
-    ),
-    (
-        "Ended up in hospital with a severely long QT interval. Get an ECG before starting. "
-        "The withdrawal was horrific too.",
-        {
-            "ades": [
-                {"text": "long QT interval", "severity": "severe"},
-                {"text": "withdrawal", "severity": "severe", "withdrawal": True},
-            ],
-            "discontinued": "yes",
-            "stop_reasons": ["adverse_event"],
-        },
-    ),
-    (
-        "No period at all after month three, which is great because my cramps were awful. But I've "
-        "become very depressed and gained a lot of weight. After this pack I'm going off it.",
-        {
-            "ades": [
-                {"text": "No period", "beneficial": True},
-                {"text": "depressed", "severity": "moderate"},
-                {"text": "gained a lot of weight", "severity": "moderate"},
-            ],
-            "discontinued": "planned",
-            "stop_reasons": ["adverse_event"],
-            "effectiveness": "effective",
-        },
-    ),
-    (
-        "It seemed to make my shoulder spasm worse, and on the second try I also got a rash. Not for me.",
-        {
-            "ades": [{"text": "rash", "severity": "moderate"}],
-            "discontinued": "yes",
-            "stop_reasons": ["lack_of_efficacy", "adverse_event"],
-            "effectiveness": "not_effective",
-        },
-    ),
-    (
-        "Insertion felt like a bad cramp. A few hours later, minor cramping and very little spotting.",
-        {
-            "ades": [
-                {"text": "cramp", "severity": "moderate"},
-                {"text": "cramping", "severity": "mild"},
-                {"text": "spotting", "severity": "mild"},
-            ]
-        },
-    ),
-]
 
 
 @pytest.mark.parametrize(("text", "labels"), GUIDELINE_EXAMPLES)

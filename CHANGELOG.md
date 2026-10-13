@@ -16,6 +16,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - ADR-0011: merged UCI Drugs.com + DrugRev corpus (UCI #462 withdrawn).
 - `medsignal.data.build`: cleaning, within-source de-duplication, UCI↔DrugRev matching (prefers UCI full text), stable `review_id`s → `data/interim/reviews.parquet` (263,862 reviews) + build report.
 - ADR-0012: all DrugRev-only rows flagged `possibly_truncated` (row-level detection measured as unreliable).
+- Gold-set tooling: `labeling.sample_gold` (100 dev from val / 200 test from test, committed IDs), `labeling.llm` (Ollama structured output, retries on invalid spans), `labeling.preannotate` (resumable; optional lenient span fallback for pre-annotation), `labeling.labelstudio` (interface generated from schema + SDK-validated, task export with predictions, export import). ADR-0017.
 - Annotation guidelines and schema v1.0 (`docs/annotation_guidelines.md`, `medsignal.labeling.schema`; span alignment with word boundaries; guideline examples as tests). ADR-0016.
 - Sentiment baselines (`medsignal.baselines`: classical, encoder, report) + `medsignal.evaluation.metrics`; `gpu` extra (torch 2.14.1+cu130). ADR-0015.
 - `medsignal.data.eda`: generated data report (figures + summary.json + README) incl. token lengths with the student tokenizer (99.7% of reviews fit 256 tokens).

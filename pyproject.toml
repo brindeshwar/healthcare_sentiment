@@ -17,6 +17,7 @@ classifiers = [
 ]
 # Core deps are added per phase with `uv add` so versions are resolved, not guessed.
 dependencies = [
+    "httpx>=0.28.1",
     "matplotlib>=3.11.2",
     "pandas>=3.0.6",
     "pyarrow>=26.0.0",

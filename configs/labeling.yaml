@@ -1,0 +1,29 @@
+# Phase 1 gold set + LLM pre-annotation (ADR-0016, ADR-0017).
+data_config: configs/data.yaml
+seed: 7
+
+gold:
+  # dev comes from the `val` split, test from the `test` split, so the student (trained on `train`)
+  # never sees gold reviews. Full-text reviews only (possibly_truncated == False).
+  sizes: {dev: 100, test: 200}
+  source_split: {dev: val, test: test}
+  # Oversample negative/neutral: ADEs and discontinuation are rarer in positive reviews.
+  # Population shares are ~0.33 / 0.09 / 0.58; metrics are reported on this sample as drawn.
+  sentiment_weights: {neg: 0.4, neu: 0.2, pos: 0.4}
+  max_per_drug_group: 2
+  min_chars: 60
+  out: data/annotations/gold_sample.csv
+
+preannotate:
+  splits: [dev]          # test is annotated blind (owner decision, ADR-0017)
+  model: qwen3.5:9b-q4_K_M
+  temperature: 0.0
+  num_ctx: 4096
+  max_retries: 2
+  # Pre-annotation only: keep the rest of an answer whose span is not verbatim (human reviews it).
+  drop_unaligned_on_failure: true
+  out: data/annotations/preannotations_dev.jsonl
+
+labelstudio:
+  tasks_dir: data/interim/labelstudio      # contains review text: never committed
+  config_out: configs/labelstudio.xml
