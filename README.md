@@ -54,7 +54,15 @@ Fetch data (DrugRev + Druglib are downloaded and checksum-verified; see [`docs/D
 uv run python -m medsignal.data.download
 ```
 
-Further pipeline commands are added here as phases complete.
+Build the corpus, splits and data report (outputs under `data/` and `reports/`):
+
+```bash
+uv run python -m medsignal.data.build    # clean, de-duplicate, merge -> data/interim/reviews.parquet
+uv run python -m medsignal.data.splits   # train/val/test + unseen-drug split -> data/processed/splits.parquet
+uv run python -m medsignal.data.eda      # figures + summary -> reports/eda/
+```
+
+Data overview: [`reports/eda/README.md`](reports/eda/README.md). Further commands are added as phases complete.
 
 ## Repository layout
 

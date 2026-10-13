@@ -63,9 +63,11 @@ data/annotations/          gold set exports (IDs + labels, no review text)
 - 25,036 rows have a date in `IntakeTime` (column shift); treat as "Not Specified".
 - `IntakeTime` is specified for ~63% of rows (8 buckets from "<1 month" to "10 years or more").
 - No HTML entities. Conditions are prefixed "For …" (e.g. "For Birth Control"); "Not Mentioned" = missing.
-- Ratings bimodal (10 = 28%, 1 = 21%).
+- Ratings bimodal (10 = 28%, 1 = 21%). DrugRev-only reviews (mostly 2018-2023) are markedly more negative than UCI-era reviews: ~25% one-star vs ~13% (see `reports/eda/`). Splits are stratified by source for this reason.
+- Some `MedicineFor` values are drug names (e.g. "Acnex", "Asthmanefrin"), not conditions.
 
 ### Drugs.com UCI (train file)
+- 67 condition names truncated mid-word ("Bipolar Disorde", "Breast Cance") → repaired at build time (ADR-0014).
 - ~30% duplicate reviews (same text listed under multiple conditions/drug names) → de-duplicate before splitting.
 - HTML entities in ~62% of reviews (`&#039;`, `&quot;`) → `html.unescape`.
 - ~900 `condition` values are scraping artefacts (`"3</span> users found this comment helpful."`); 899 missing.

@@ -64,6 +64,37 @@ def clean_condition(raw: object) -> str | None:
     return cond
 
 
+def truncated_name_map(candidates: set[str], names: set[str]) -> dict[str, str]:
+    """Map mid-word-truncated names to their unique completed form.
+
+    The UCI scrape cut many condition names mid-word ("Bipolar Disorde", "Breast Cance").
+    ``candidates`` are the names that may be truncated (UCI names absent from DrugRev); ``names`` is
+    the full vocabulary. A candidate is mapped only if (a) another name starts with it, (b) the next
+    character is a letter, i.e. it stops mid-word, (c) completing that word gives exactly one
+    candidate, and (d) the completed name exists. "Hypercalcemia" vs "Hypercalcemia of Malignancy"
+    is left alone because it ends on a word boundary; restricting to UCI-only names keeps real
+    conditions like "Acne" from being "completed" into drug names that leak into DrugRev's field.
+    """
+    mapping: dict[str, str] = {}
+    for name in candidates:
+        completions: set[str] = set()
+        for other in names:
+            if other == name or not other.startswith(name):
+                continue
+            rest = other[len(name) :]
+            if not rest[0].isalpha():
+                continue
+            word_end = len(rest)
+            for i, ch in enumerate(rest):
+                if not ch.isalpha():
+                    word_end = i
+                    break
+            completions.add(name + rest[:word_end])
+        if len(completions) == 1 and (done := completions.pop()) in names:
+            mapping[name] = done
+    return mapping
+
+
 def clean_duration(raw: object) -> str | None:
     """Map DrugRev IntakeTime to a known bucket, else None."""
     value = clean_text(raw)

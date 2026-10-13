@@ -18,7 +18,7 @@ from typing import Any
 
 import pandas as pd
 
-from medsignal.data.clean import load_drugrev, load_uci
+from medsignal.data.clean import load_drugrev, load_uci, truncated_name_map
 from medsignal.data.dedup import dedup_within, merge_sources
 from medsignal.utils import PROJECT_ROOT, git_sha, load_config
 
@@ -68,6 +68,14 @@ def build(cfg: dict[str, Any]) -> tuple[pd.DataFrame, dict[str, Any]]:
     uci_raw = load_uci(raw / "drugscom_uci" / "drugsComTrain_raw.csv")
     drugrev_raw = load_drugrev(raw / "drugrev" / "DrugReviews.csv")
     report["rows_raw"] = {"uci": len(uci_raw), "drugrev": len(drugrev_raw)}
+
+    uci_conds = set(uci_raw["condition"].dropna())
+    drugrev_conds = set(drugrev_raw["condition"].dropna())
+    cond_map = truncated_name_map(uci_conds - drugrev_conds, uci_conds | drugrev_conds)
+    for frame in (uci_raw, drugrev_raw):
+        frame["condition"] = frame["condition"].map(lambda c: cond_map.get(c, c) if c else c)
+    report["truncated_condition_names_fixed"] = len(cond_map)
+    report["truncated_condition_examples"] = dict(sorted(cond_map.items())[:10])
 
     uci = dedup_within(uci_raw)
     drugrev = dedup_within(drugrev_raw)

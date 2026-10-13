@@ -12,6 +12,21 @@ import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
+# .env variables holding paths; relative values are resolved against the project root so caches
+# stay inside the project folder regardless of the working directory (AGENTS.md §10).
+_PATH_VARS = ("HF_HOME",)
+
+
+def load_env() -> None:
+    """Load the project's .env (if present) without overriding variables already set."""
+    from dotenv import load_dotenv
+
+    load_dotenv(PROJECT_ROOT / ".env", override=False)
+    for var in _PATH_VARS:
+        value = os.environ.get(var)
+        if value and not Path(value).is_absolute():
+            os.environ[var] = str(PROJECT_ROOT / value)
+
 
 def load_config(path: str | Path) -> dict[str, Any]:
     """Load a YAML config; relative paths are resolved against the project root."""
@@ -45,7 +60,10 @@ def seed_everything(seed: int) -> None:
 
 
 def git_sha() -> str:
-    """Current commit SHA (+ "-dirty" if tracked files have uncommitted changes), or "unknown"."""
+    """Current commit SHA (+ "-dirty" if tracked non-report files changed), or "unknown".
+
+    Generated outputs under reports/ are excluded: they do not change the code that made them.
+    """
     try:
         sha = subprocess.run(
             ["git", "rev-parse", "--short", "HEAD"],
@@ -55,7 +73,7 @@ def git_sha() -> str:
             check=True,
         ).stdout.strip()
         dirty = subprocess.run(
-            ["git", "status", "--porcelain", "--untracked-files=no"],
+            ["git", "status", "--porcelain", "--untracked-files=no", "--", ".", ":!reports"],
             cwd=PROJECT_ROOT,
             capture_output=True,
             text=True,
