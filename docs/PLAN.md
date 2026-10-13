@@ -53,7 +53,7 @@ drug labels, shipped as an evidence explorer with open models and an honest writ
 - [x] EDA report (`reports/eda/`): rating distribution, token lengths, conditions, duration, years, splits
 - [x] Sentiment baselines (sanity only): majority, TF-IDF + LR, one encoder; macro-F1, QWK, 3 seeds (ADR-0015; `reports/baselines/`)
 - [x] **Annotation guidelines** (`docs/annotation_guidelines.md`): ADE span, severity, discontinued, reason taxonomy (schema in code, ADR-0016; owner approved)
-- [ ] Annotation tool set up (Label Studio or Argilla, local); LLM pre-annotation of 300 sampled reviews
+- [ ] Annotation tool set up (Label Studio, local, ADR-0017); gold sample drawn (100 dev / 200 test); LLM pre-annotation of the 100 dev reviews (test annotated blind)
 - [ ] Owner annotates 300 reviews (gold set); 30 double-annotated after 1 week for self-agreement
 
 **Acceptance:** `python -m medsignal.data.build` reproduces processed data; baseline table in `reports/`; gold set committed.

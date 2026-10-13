@@ -4,12 +4,12 @@
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
 **Current phase:** Phase 1 (data & baseline)
-**Branch:** `feat/annotation-guidelines`
+**Branch:** `feat/annotation-tool`
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
 
-- Issue #8 (annotation guidelines): owner approved 2026-10-13; PR #25 merging.
+- Issue #9 (annotation tool + pre-annotation): code done on `feat/annotation-tool`; gold sample drawn; pulling `qwen3.5:9b-q4_K_M` for dev pre-annotation.
 
 ## Next (ordered)
 
@@ -85,3 +85,10 @@
 - `medsignal.labeling.schema` (Pydantic, validators, `align_spans` with case-insensitive, word-boundary, reading-order matching); guideline examples are tests. 55 tests.
 - Next: owner review → #9 annotation tool + LLM pre-annotation.
 - Owner approved the annotation guidelines (all five judgment calls as drafted); ADR-0016 accepted.
+
+### 2026-10-13: Claude Code (Opus 5.5), session 9
+- Merged PR #25 (closes #8). Owner chose: dev pre-filled by LLM, test annotated blind (ADR-0017).
+- Gold sample drawn (`data/annotations/gold_sample.csv`, seed 7): dev 100 from `val`, test 200 from `test`, 40/20/40 neg/neu/pos, <=2 per drug group, full-text only; 248 drugs.
+- Label Studio 1.23.2 installed in isolated venv `tools/label-studio`; interface `configs/labelstudio.xml` generated from schema and validated with the SDK. Owner steps in `docs/SETUP.md` §5.
+- Ollama: tray app's server times out at startup; pipeline runs `ollama serve` itself with `OLLAMA_MODELS=models/ollama` (CUDA 13.4 detected). Tag is `qwen3.5:9b-q4_K_M` (not `9b-q4`).
+- Next: pre-annotate 100 dev reviews, export tasks, hand over to owner (#10).

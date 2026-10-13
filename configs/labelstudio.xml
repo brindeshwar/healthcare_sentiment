@@ -1,0 +1,14 @@
+<View>
+  <Header value="$drug | $condition | $rating stars | #$order"/>
+  <Labels name="ade" toName="review"><Label value="ADE" background="#e34948"/></Labels>
+  <Text name="review" value="$text" granularity="word"/>
+  <Header value="Selected ADE: severity and flags" size="6"/>
+  <Choices name="severity" toName="review" perRegion="true" choice="single-radio"><Choice value="mild"/><Choice value="moderate"/><Choice value="severe"/><Choice value="not_stated"/></Choices>
+  <Choices name="flags" toName="review" perRegion="true" choice="multiple"><Choice value="withdrawal"/><Choice value="beneficial"/></Choices>
+  <Header value="Discontinued?" size="6"/>
+  <Choices name="discontinued" toName="review" choice="single-radio" required="true"><Choice value="yes"/><Choice value="planned"/><Choice value="no"/><Choice value="not_stated"/></Choices>
+  <Choices name="stop_reasons" toName="review" choice="multiple" visibleWhen="choice-selected" whenTagName="discontinued" whenChoiceValue="yes,planned"><Choice value="adverse_event"/><Choice value="lack_of_efficacy"/><Choice value="cost_access"/><Choice value="convenience"/><Choice value="course_completed"/><Choice value="pregnancy_related"/><Choice value="clinician_decision"/><Choice value="other"/><Choice value="not_stated"/></Choices>
+  <Header value="Effectiveness" size="6"/>
+  <Choices name="effectiveness" toName="review" choice="single-radio" required="true"><Choice value="effective"/><Choice value="partial"/><Choice value="not_effective"/><Choice value="not_stated"/></Choices>
+  <TextArea name="notes" toName="review" placeholder="notes (optional)" maxSubmissions="1"/>
+</View>

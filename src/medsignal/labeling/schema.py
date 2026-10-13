@@ -60,6 +60,54 @@ class ADEMention(BaseModel):
     end: int | None = None
 
 
+def _check_reasons(discontinued: Discontinued, reasons: list[StopReason]) -> None:
+    stopping = discontinued in (Discontinued.YES, Discontinued.PLANNED)
+    if stopping and not reasons:
+        raise ValueError(
+            "discontinued yes/planned needs at least one stop reason (or 'not_stated')"
+        )
+    if not stopping and reasons:
+        raise ValueError("stop_reasons only allowed when discontinued is yes/planned")
+    if StopReason.NOT_STATED in reasons and len(reasons) > 1:
+        raise ValueError("'not_stated' cannot be combined with other stop reasons")
+
+
+class ADEOut(BaseModel):
+    """ADE as produced by the LLM: no offsets (added later by ``align_spans``)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    text: str = Field(min_length=1)
+    severity: Severity = Severity.NOT_STATED
+    withdrawal: bool = False
+    beneficial: bool = False
+
+
+class LLMAnnotation(BaseModel):
+    """What the LLM teacher returns for one review; its JSON schema constrains decoding."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    ades: list[ADEOut] = Field(default_factory=list)
+    discontinued: Discontinued = Discontinued.NOT_STATED
+    stop_reasons: list[StopReason] = Field(default_factory=list)
+    effectiveness: Effectiveness = Effectiveness.NOT_STATED
+
+    @model_validator(mode="after")
+    def _reasons_match_discontinuation(self) -> LLMAnnotation:
+        _check_reasons(self.discontinued, self.stop_reasons)
+        return self
+
+    def to_review(self, review_id: str) -> ReviewAnnotation:
+        return ReviewAnnotation(
+            review_id=review_id,
+            ades=[ADEMention(**a.model_dump()) for a in self.ades],
+            discontinued=self.discontinued,
+            stop_reasons=self.stop_reasons,
+            effectiveness=self.effectiveness,
+        )
+
+
 class ReviewAnnotation(BaseModel):
     """All labels for one review."""
 
@@ -74,15 +122,7 @@ class ReviewAnnotation(BaseModel):
 
     @model_validator(mode="after")
     def _reasons_match_discontinuation(self) -> ReviewAnnotation:
-        stopping = self.discontinued in (Discontinued.YES, Discontinued.PLANNED)
-        if stopping and not self.stop_reasons:
-            raise ValueError(
-                "discontinued yes/planned needs at least one stop reason (or 'not_stated')"
-            )
-        if not stopping and self.stop_reasons:
-            raise ValueError("stop_reasons only allowed when discontinued is yes/planned")
-        if StopReason.NOT_STATED in self.stop_reasons and len(self.stop_reasons) > 1:
-            raise ValueError("'not_stated' cannot be combined with other stop reasons")
+        _check_reasons(self.discontinued, self.stop_reasons)
         return self
 
 

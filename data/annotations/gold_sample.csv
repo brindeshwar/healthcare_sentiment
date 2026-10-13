@@ -1,0 +1,301 @@
+order,review_id,gold_split,split,drug,condition,rating,bucket,source
+1,74c8c74de1f241ce,test,test,Provigil,Obstructive Sleep Apnea/Hypopnea Syndrome,10,pos,both
+2,01b91b4482050768,dev,val,Dabigatran,Prevention of Thromboembolism in Atrial Fibrillation,5,neu,uci
+3,b552aca7a5cc9846,test,test,Fenofibrate,Hypertriglyceridemia,1,neg,both
+4,f25c1be7b941e35c,dev,val,Apremilast,Plaque Psoriasis,7,pos,uci
+5,255cfb24b23ed365,test,test,Hydroxyzine,Anxiety,4,neg,uci
+6,724b3957b81bd61c,test,test,Alprazolam,Anxiety,10,pos,both
+7,9d5a327ba502db7d,test,test,Amitiza,"Constipation, Chronic",6,neu,uci
+8,7bda416065833dbc,test,test,Augmentin,Bacterial Infection,8,pos,uci
+9,69e1d955ad51853f,dev,val,Escitalopram,Depression,1,neg,both
+10,103eee9aca0522a2,test,test,Atenolol,High Blood Pressure,4,neg,uci
+11,1eae51f1d8b8fd82,dev,val,Isotretinoin,Acne,9,pos,uci
+12,f8613881ba0790de,test,test,OsmoPrep,Bowel Preparation,9,pos,uci
+13,f8a9240a1dc4fbd0,test,test,Dilaudid,Pain,10,pos,both
+14,5d93a5185668c754,test,test,Etonogestrel,Birth Control,4,neg,uci
+15,cd91034e6f0713e5,test,test,Indocin,Back Pain,10,pos,both
+16,d81f8a69e10d3931,test,test,Aubagio,Multiple Sclerosis,7,pos,both
+17,ae906e636f51b406,dev,val,Belsomra,Insomnia,1,neg,uci
+18,ff46a9602b5f3873,dev,val,NuvaRing,Birth Control,10,pos,uci
+19,9062bed9ac5ddb2d,test,test,Acetaminophen / butalbital / caffeine,Headache,10,pos,both
+20,1dba9afbcf303249,test,test,Lisinopril,High Blood Pressure,1,neg,both
+21,185656c282e0034d,dev,val,Acetazolamide,Pseudotumor Cerebri,9,pos,uci
+22,3400bae304fab567,dev,val,Belviq,Weight Loss,8,pos,both
+23,0ffe3059d819dbab,test,test,Concerta,ADHD,6,neu,uci
+24,3c2c0f8d470be0c3,test,test,Estrace Vaginal Cream,Atrophic Vaginitis,10,pos,both
+25,b05d0133efcc9857,dev,val,Methylphenidate,ADHD,8,pos,both
+26,5fa7f54fe9efaff3,test,test,Clonazepam,Anxiety,9,pos,both
+27,d703afd528d7768b,test,test,Dulera,Asthma,1,neg,both
+28,df5a6eb7238f66e7,test,test,Trazodone,Insomnia,4,neg,both
+29,474517060ac66806,dev,val,Viibryd,Depression,9,pos,both
+30,cf65df0b60589264,test,test,Zoloft,Depression,3,neg,both
+31,6d262cbc97e711d8,dev,val,Lisinopril,Heart Attack,8,pos,both
+32,15b2261ba3fc21c3,dev,val,Depakote,Bipolar Disorder,1,neg,uci
+33,c07cfaf93ed89931,test,test,Citalopram,Depression,1,neg,both
+34,b038fd1e69f60e78,test,test,Sertraline,Social Anxiety Disorder,1,neg,uci
+35,e26babd3cd0ced58,test,test,Drospirenone / ethinyl estradiol,Menstrual Disorders,1,neg,uci
+36,124a125d003e7f7f,test,test,Cariprazine,Bipolar Disorder,8,pos,both
+37,4dc4b00920a969c2,dev,val,Etonogestrel,Birth Control,1,neg,uci
+38,45ff7a716a8ab297,test,test,Apri,Birth Control,2,neg,both
+39,2255a32526aa15a3,dev,val,Sertraline,Post Traumatic Stress Disorder,5,neu,both
+40,858375053f72bba9,test,test,Leflunomide,Rheumatoid Arthritis,1,neg,both
+41,186b71606e76a17e,test,test,Indomethacin,"Gout, Acute",10,pos,both
+42,6216f7fc960c92b5,test,test,Thyroid desiccated,Underactive Thyroid,10,pos,both
+43,5f71da1ee752cc80,test,test,Unisom SleepTabs,Insomnia,9,pos,both
+44,e3f00aba02721b3c,test,test,Miconazole,Vaginal Yeast Infection,1,neg,both
+45,1856b76bbcac2fea,test,test,Minocycline,Acne,4,neg,both
+46,7af0431a1083dd32,test,test,Methocarbamol,Muscle Spasm,6,neu,both
+47,f4d75d0a64ce2ceb,test,test,Provera,Abnormal Uterine Bleeding,1,neg,both
+48,f87451a5d162393e,test,test,Nabumetone,Back Pain,1,neg,both
+49,24fee025b64061f9,dev,val,Naproxen,Pain,7,pos,both
+50,caa1c8fa416de874,test,test,Baclofen,Muscle Spasm,6,neu,both
+51,4c987e9becfadfbd,dev,val,Metformin,"Diabetes, Type 2",1,neg,uci
+52,3c4d700c1a1c9f60,test,test,Nortriptyline,Neuralgia,8,pos,both
+53,362132c9e931830d,dev,val,Clonazepam,Anxiety,10,pos,both
+54,474fbe6555c0ac6c,test,test,Nutraplus,Dry Skin,9,pos,both
+55,8b0a577372f52660,test,test,Phentermine / topiramate,Weight Loss,8,pos,both
+56,06c4d431ffc99fd7,test,test,Varenicline,,1,neg,both
+57,3bff4bd5cc781356,test,test,Phentermine / topiramate,Weight Loss,9,pos,both
+58,69c1daef53babb4d,test,test,Tadalafil,Erectile Dysfunction,10,pos,uci
+59,f5b547dfcd4b253a,test,test,Reclast,Osteoporosis,6,neu,both
+60,e48e49919c2ce154,test,test,Zaleplon,Insomnia,1,neg,both
+61,2945717741d89c4a,dev,val,Desvenlafaxine,Anxiety,3,neg,both
+62,cc0f91c94c45b4a6,test,test,Buprenorphine / naloxone,Opiate Dependence,10,pos,both
+63,d4992b6d6135d811,test,test,Dexamethasone,"Nausea/Vomiting, Chemotherapy Induced",8,pos,both
+64,2888ce7aefa462fc,test,test,Strattera,ADHD,8,pos,both
+65,9f531f2df8549c75,test,test,Junel Fe 1 / 20,Birth Control,1,neg,uci
+66,0f9083e2ee2c1976,test,test,Clarifoam EF,Acne,10,pos,both
+67,fb15afcc1d7dab1e,test,test,Fluoxetine,Anxiety and Stress,5,neu,uci
+68,f4cb8cfea8380b09,dev,val,Ticagrelor,Acute Coronary Syndrome,7,pos,both
+69,06f73c54e0a8248e,test,test,Calcitonin,Osteoporosis,1,neg,both
+70,b6a9459a9681589b,dev,val,Naproxen,Osteoarthritis,8,pos,both
+71,ce6e83e9b5dbf20e,test,test,Vilazodone,Depression,8,pos,both
+72,b81c2f51cc8da563,test,test,Atralin,Acne,7,pos,both
+73,1991531f30d1752a,test,test,Etonogestrel,Birth Control,2,neg,both
+74,8fc1b216f31633f7,test,test,Apri,Birth Control,1,neg,both
+75,54a393e0a52eba9e,dev,val,Extina,Seborrheic Dermatitis,10,pos,both
+76,c4ca67722218fff2,test,test,Mirtazapine,Insomnia,10,pos,both
+77,9670d7e61d9f998e,dev,val,Scopolamine,Motion Sickness,2,neg,both
+78,aafed5dbc960a60b,test,test,Quetiapine,Insomnia,2,neg,both
+79,66dd500c76c46d3a,dev,val,Venlafaxine,Major Depressive Disorder,9,pos,both
+80,e16e9966a8d9f017,test,test,Oseltamivir,Influenza,10,pos,both
+81,fd6a492e5c62b61c,dev,val,Enbrel,Psoriasis,10,pos,both
+82,4bb9f2526b5d8d61,dev,val,Magnesium sulfate / potassium sulfate / sodium sulfate,Bowel Preparation,10,pos,both
+83,fa80a060a6229a0c,dev,val,Acetazolamide,Edema,6,neu,both
+84,579b9e0ef2ce9ac9,test,test,Ethinyl estradiol / norethindrone,Birth Control,2,neg,both
+85,9dd6e27c05e17711,test,test,Trazodone,Insomnia,5,neu,both
+86,28c6982bcb8e1b7d,test,test,Neulasta,Neutropenia Associated with Chemotherapy,10,pos,uci
+87,ddb4957c617973c0,dev,val,Prednisone,Asthma,9,pos,both
+88,ed0b84a6f3e5388a,test,test,Liraglutide,"Diabetes, Type 2",1,neg,uci
+89,385a89f4fd016bcf,test,test,Cymbalta,Depression,6,neu,uci
+90,e196a1fd5cbdb235,dev,val,Amitriptyline,Pain,9,pos,both
+91,0620e9c6d0409eec,dev,val,Miconazole,Vaginal Yeast Infection,4,neg,both
+92,125c8734da25ca4b,dev,val,Metaxalone,ibromyalgia,5,neu,both
+93,2dac4370bd12a5d8,test,test,Atomoxetine,ADHD,1,neg,both
+94,ea29f21b852b99d0,dev,val,Eszopiclone,Insomnia,2,neg,uci
+95,7d4b6978e31711c4,test,test,Valacyclovir,Cold Sores,9,pos,both
+96,c50b968c7b002569,test,test,Telmisartan,High Blood Pressure,7,pos,both
+97,2e93cb20a674a5ad,test,test,Azithromycin,Chlamydia Infection,5,neu,both
+98,41fc1fa688b40123,test,test,Citric acid / magnesium oxide / sodium picosulfate,Bowel Preparation,1,neg,both
+99,d072cc4e20184b3c,test,test,Lithium,Bipolar Disorder,7,pos,both
+100,b6eb18e6ae4c03ae,dev,val,Depo-Provera,Abnormal Uterine Bleeding,10,pos,both
+101,1938b3c2b77b4c07,test,test,Ethinyl estradiol / norgestrel,Birth Control,5,neu,both
+102,01abddabd9d037d9,dev,val,Metformin,"Diabetes, Type 2",5,neu,both
+103,16726904316d0b29,test,test,Dilaudid,Pain,10,pos,both
+104,eb082f8ceec8227a,test,test,Abilify,Major Depressive Disorder,1,neg,uci
+105,26bf3ff2779f150c,test,test,Zolpidem,Insomnia,10,pos,both
+106,c3967df1d0280ab0,test,test,Amlodipine,High Blood Pressure,1,neg,both
+107,b9091fc030c25d6f,test,test,Norethindrone,Birth Control,7,pos,both
+108,ffb49ea2e10275b0,test,test,Diamox,Pseudotumor Cerebri,2,neg,uci
+109,d6fea2e42e94a521,test,test,Tiotropium,"COPD, Maintenance",8,pos,both
+110,c1559940d57d2b99,dev,val,Mebendazole,Ascariasis,1,neg,both
+111,e812ed33478a73e2,dev,val,Bupropion,Smoking Cessation,1,neg,both
+112,f6861a663337b4f0,test,test,Afrezza,"Diabetes, Type 2",10,pos,uci
+113,20331e112af60712,test,test,Afrin,Nasal Congestion,3,neg,both
+114,e56baca0d347d54e,test,test,Escitalopram,Depression,5,neu,uci
+115,e76d36b7ed6f1353,test,test,Levaquin,Urinary Tract Infection,1,neg,both
+116,fcfcdd8a6a4109f1,test,test,Euflexxa,Osteoarthritis,6,neu,both
+117,1b6e9146eeb8beaf,dev,val,Nitrofurantoin,Urinary Tract Infection,7,pos,both
+118,7450c991d4eae09f,test,test,Abreva,Herpes Simplex,10,pos,both
+119,3b3a57beea81f93f,dev,val,Captopril,High Blood Pressure,10,pos,both
+120,b380ff9ec4789f86,dev,val,Pantoprazole,GERD,2,neg,both
+121,15699cac4456a06f,dev,val,Miconazole,Vaginal Yeast Infection,1,neg,both
+122,5f8291d62fb70dca,dev,val,Bupropion,Depression,4,neg,both
+123,05850d1f29d3f79f,test,test,Cipro,Diverticulitis,1,neg,both
+124,69376e17d948cef0,dev,val,Trintellix,Major Depressive Disorder,5,neu,both
+125,7ec507050cac0610,test,test,Pristiq,Depression,8,pos,uci
+126,459ce5863032e712,dev,val,Phentermine,Weight Loss,5,neu,both
+127,25663a67ccff6934,test,test,Cymbalta,Peripheral Neuropathy,9,pos,both
+128,cf30bdee8e513acd,test,test,Venlafaxine,Anxiety and Stress,5,neu,both
+129,8df4ea87a119ab8d,test,test,Dapsone,Acne,10,pos,both
+130,ff291a38c3d06953,test,test,Benzonatate,Cough,6,neu,both
+131,fda1264ab64317a2,dev,val,Medroxyprogesterone,Abnormal Uterine Bleeding,1,neg,both
+132,67e1523aec70b3a5,dev,val,Dabigatran,Prevention of Thromboembolism in Atrial Fibrillation,4,neg,both
+133,d61cc4194a4b0bdf,test,test,Enbrel,Psoriatic Arthritis,2,neg,both
+134,dad2a2fdbea93657,dev,val,Atorvastatin,High Cholesterol,4,neg,uci
+135,5c6c249dde4ad883,dev,val,Albuterol,"Asthma, acute",1,neg,both
+136,7bcd5c0f182e070c,test,test,Promethazine,Sedation,9,pos,both
+137,2c8941c1dfe02143,dev,val,Letairis,Pulmonary Hypertension,8,pos,both
+138,d6e551eb371a1faa,dev,val,MiraLax,Bowel Preparation,1,neg,both
+139,ab5e026ab20f8f89,dev,val,Axiron,"Hypogonadism, Male",9,pos,both
+140,0fd99514f9cc71e3,test,test,Trintellix,Depression,9,pos,uci
+141,82e1625c2dde8ec0,test,test,Aczone,Acne,1,neg,both
+142,3fea316aa144a79c,test,test,Canagliflozin,"Diabetes, Type 2",4,neg,uci
+143,e27a14b4982da70e,test,test,Eluxadoline,Irritable Bowel Syndrome,5,neu,both
+144,1fd44d68c62f38f2,dev,val,Tretinoin,Acne,5,neu,both
+145,93f4585310ce761e,test,test,CombiPatch,Postmenopausal Symptoms,10,pos,both
+146,60f2b3749c3bf0b4,dev,val,Ethinyl estradiol / norethindrone,Birth Control,4,neg,both
+147,9fc8c5692cf4a8e9,dev,val,Bonine,Motion Sickness,9,pos,both
+148,4be1354237d39aa9,test,test,Phendimetrazine,Obesity,6,neu,both
+149,1072ad27d4b60dd1,test,test,Effexor XR,Generalized Anxiety Disorder,1,neg,both
+150,5b5cc20c75102629,test,test,Mirabegron,Overactive Bladder,2,neg,uci
+151,67c9d4e4506ebd71,dev,val,Phentermine,Weight Loss,10,pos,both
+152,3b716e9b308030f4,dev,val,Concerta,ADHD,10,pos,both
+153,e0b2452d36b434b0,test,test,Furosemide,High Blood Pressure,5,neu,both
+154,2dbe0361f5edbfa3,test,test,Adderall XR,ADHD,5,neu,both
+155,68ed908b9af652cb,test,test,Fingolimod,Multiple Sclerosis,5,neu,both
+156,e572a2413ad9bd97,dev,val,Invega Sustenna,Schizophrenia,6,neu,uci
+157,a55c243ffb63e7e4,test,test,Cetirizine,Allergic Rhinitis,1,neg,uci
+158,8fc0850765164d7f,test,test,Buspirone,Anxiety,4,neg,both
+159,0234dc8f0a025ad2,test,test,Amphetamine / dextroamphetamine,ADHD,6,neu,both
+160,5ab169c825ab8fe4,test,test,Nucynta,Pain,5,neu,both
+161,42a9bc038c8ca108,test,test,Digoxin,Heart Failure,3,neg,both
+162,96082d7892e51f0f,dev,val,Lorcaserin,Weight Loss,6,neu,both
+163,c3b9ebf9e71a0c5f,dev,val,Terbinafine,Tinea Corporis,6,neu,both
+164,dd98de91e5bf4e19,test,test,Eletriptan,Migraine,10,pos,both
+165,0a6485dd56389c0f,test,test,Liraglutide,"Diabetes, Type 2",1,neg,both
+166,00d4c7907e7c087c,dev,val,Ethinyl estradiol / norgestimate,Abnormal Uterine Bleeding,8,pos,both
+167,a6cee4d222e95b16,test,test,Amoxicillin / clavulanate,Bacterial Infection,1,neg,both
+168,6ad9b35880767040,test,test,Halcinonide,Dermatitis,10,pos,uci
+169,65639d1b39202cdb,test,test,Benzoyl peroxide / erythromycin,Acne,9,pos,both
+170,4eb0fb9aeb2cdffa,test,test,Acetaminophen / diphenhydramine / phenylephrine,Cold Symptoms,9,pos,both
+171,cae4ac3d81849451,test,test,Minocycline,Acne,5,neu,both
+172,41d447d8b2bf9c35,test,test,Alprazolam,Anxiety,9,pos,both
+173,c4d99dd79a9c2278,dev,val,Armour Thyroid,Underactive Thyroid,7,pos,both
+174,f1a5327049f51ba5,test,test,Doxepin,Insomnia,1,neg,both
+175,99481cd8d21192f9,test,test,Norethindrone,Birth Control,4,neg,both
+176,832efc7cc1d6cf2a,test,test,Viibryd,Depression,9,pos,both
+177,ca6c44d6f4f949fb,dev,val,Levonorgestrel,Birth Control,6,neu,both
+178,aff793488b5b0210,test,test,Acetaminophen / diphenhydramine,Pain,9,pos,both
+179,120c3fee71409072,dev,val,Etonogestrel,Birth Control,2,neg,both
+180,a3c6b4eb409a8c6a,dev,val,Sertraline,Depression,1,neg,both
+181,66a6f7a93eef1b0b,test,test,Mesalamine,Crohn's Disease,8,pos,both
+182,671f66f1f750eab6,test,test,Alli,Obesity,4,neg,uci
+183,f9b80eccc20a3535,test,test,"Multivitamin, prenatal",Vitamin/Mineral Supplementation during Pregnancy/Lactation,10,pos,both
+184,4d859c91bbafc655,test,test,Ethinyl estradiol / etonogestrel,Birth Control,1,neg,both
+185,ba5ecab2315103ca,test,test,Ethinyl estradiol / norgestimate,Birth Control,3,neg,both
+186,180a4d0454a85064,test,test,Azelastine / fluticasone,Allergic Rhinitis,3,neg,uci
+187,da96ca8f5ba4bb4c,test,test,Trandolapril / verapamil,High Blood Pressure,10,pos,uci
+188,f658fca0696683e9,dev,val,Metaxalone,ibromyalgia,9,pos,both
+189,84984fed6161e679,dev,val,Gabapentin,Anxiety,1,neg,both
+190,a0834d2817c7af63,test,test,Clindamycin,Bacterial Vaginitis,6,neu,both
+191,21fa3dcfb25e22c7,test,test,Lidocaine,Pain,1,neg,uci
+192,d04edea260317ea3,test,test,TriNessa,,6,neu,both
+193,051dc899d12eab76,test,test,Ethinyl estradiol / levonorgestrel,Birth Control,4,neg,both
+194,a8e438679eecc23a,test,test,Miconazole,Vaginal Yeast Infection,1,neg,both
+195,3b6daf34796d9d89,test,test,Doxepin,Insomnia,10,pos,both
+196,e2b791c18704a88f,test,test,Prednisone,Ulcerative Colitis,9,pos,both
+197,e8ac36e29c049656,test,test,Nitrofurantoin,Urinary Tract Infection,1,neg,both
+198,1590b7eed5e65702,test,test,Quibron-T,"Asthma, acute",1,neg,uci
+199,a7b9b3335a0e9726,test,test,Fesoterodine,Overactive Bladder,8,pos,both
+200,ce474de8b143f9b9,test,test,Clonidine,High Blood Pressure,1,neg,both
+201,323706ebd0f22039,dev,val,Vortioxetine,Depression,4,neg,uci
+202,7147b99d95f6e591,dev,val,Janumet,"Diabetes, Type 2",10,pos,both
+203,383a3e54542db91a,test,test,Mirena,Birth Control,1,neg,both
+204,d716da54fbf83453,test,test,BuSpar,Anxiety,1,neg,both
+205,3280bcc36b24a478,test,test,Oxcarbazepine,Seizures,1,neg,both
+206,5c336a7fb940d1d4,dev,val,Gabapentin,Pain,1,neg,both
+207,9e0b48c0f6d92f82,test,test,Enbrel,Plaque Psoriasis,9,pos,both
+208,42a4706c369a3ff3,test,test,Tamoxifen,Breast Cancer,5,neu,both
+209,ea071f3f7310cb70,test,test,Ethinyl estradiol / norelgestromin,Birth Control,9,pos,both
+210,dd9ef4cbdbff57a6,dev,val,Fenofibric acid,High Cholesterol,5,neu,both
+211,589b57d64ec14e21,test,test,Glipizide,"Diabetes, Type 2",6,neu,both
+212,57a108201db3b3b7,dev,val,Baclofen,Trigeminal Neuralgia,5,neu,both
+213,ff1a3aa808fb14a8,test,test,Copaxone,Multiple Sclerosis,9,pos,uci
+214,adeaece318f622da,dev,val,Allegra,Allergic Rhinitis,5,neu,both
+215,b080219ae59ddd68,dev,val,Amlodipine,Coronary Artery Disease,1,neg,both
+216,5130c3a8dd71200d,dev,val,Propofol,Anesthesia,5,neu,both
+217,fe84c30e8f77614f,test,test,Topiramate,Migraine Prevention,1,neg,both
+218,8c9871309b61dbdc,dev,val,Ethinyl estradiol / levonorgestrel,Birth Control,5,neu,both
+219,f12d25be6176dcc8,dev,val,Pregabalin,ibromyalgia,2,neg,both
+220,5b1e879323d0c0b1,test,test,Isosorbide mononitrate,Angina,1,neg,both
+221,d1d8c05e4ece8937,test,test,Chantix,Smoking Cessation,3,neg,both
+222,e2394c9702a257bd,test,test,Levonorgestrel,Birth Control,3,neg,both
+223,77b523a24b97beb7,test,test,Belviq,Obesity,9,pos,both
+224,f8a3f8d306a05f72,dev,val,Fluoxetine,Obsessive Compulsive Disorder,10,pos,both
+225,3c1d70e1b1a17784,test,test,Prednisone,Inflammatory Conditions,9,pos,both
+226,fb7c491a61a1f799,test,test,Depo-Provera,Birth Control,1,neg,both
+227,c149e59aad6028cc,dev,val,Lubiprostone,Irritable Bowel Syndrome,10,pos,both
+228,58f4048d97580f79,dev,val,Eletriptan,Migraine,4,neg,both
+229,9a8ebcc5d7cd6e9f,dev,val,Trazodone,Insomnia,2,neg,uci
+230,57c3cb8acff973af,dev,val,Drospirenone / ethinyl estradiol / levomefolate calcium,Birth Control,5,neu,both
+231,86045b876715d870,test,test,Buprenorphine,Chronic Pain,5,neu,both
+232,072c9e459d4317c9,test,test,Topiramate,Migraine Prevention,6,neu,both
+233,8535f24805a9aedc,test,test,Isotretinoin,Rosacea,8,pos,uci
+234,14e0d5ef9f5f1e94,test,test,Apremilast,Plaque Psoriasis,3,neg,uci
+235,1ac15a9f38d928bb,dev,val,Cefdinir,Sinusitis,2,neg,both
+236,02938aa0ffe4bc30,test,test,Levothroid,Underactive Thyroid,2,neg,both
+237,a6a30aa17138529d,test,test,Naproxen,Back Pain,1,neg,both
+238,e7674138ef0ed34f,dev,val,OxyContin,Pain,9,pos,both
+239,99320d0bd5832454,test,test,Oxcarbazepine,,3,neg,both
+240,350d05526f23907a,test,test,Modafinil,Narcolepsy,4,neg,both
+241,e8fdb92733e23f47,test,test,Clonidine,"Insomnia, Stimulant-Associated",3,neg,both
+242,e47706c75eaf2211,test,test,Spiriva,"COPD, Maintenance",5,neu,both
+243,2d742871f2edab9a,test,test,Bupropion / naltrexone,Obesity,9,pos,both
+244,2dd17d354b6c6b58,dev,val,Fluoxetine,Depression,10,pos,both
+245,80f3947397451672,test,test,Nortriptyline,Pain,10,pos,both
+246,0b7b7a5f161c3099,test,test,Amitiza,Irritable Bowel Syndrome,7,pos,both
+247,0ef380a5976c4b36,dev,val,Nitrofurantoin,Urinary Tract Infection,1,neg,both
+248,1c98a4728c38eb0f,test,test,Gabapentin,Migraine,9,pos,both
+249,2a8f99423ac2869e,dev,val,Depakote,Migraine Prevention,1,neg,uci
+250,66827521bd0a81f3,test,test,Diclegis,Nausea/Vomiting of Pregnancy,10,pos,uci
+251,288e9da953d30faf,dev,val,Alyacen 1 / 35,Birth Control,2,neg,both
+252,ad694fa8c17ec27c,test,test,Carbamazepine,Trigeminal Neuralgia,1,neg,both
+253,12513bff66b80a36,dev,val,Dilantin,Epilepsy,1,neg,both
+254,6337518d98b47563,test,test,Tramadol,Chronic Pain,10,pos,both
+255,d5eb301cacc7eaf4,test,test,Amoxicillin / clarithromycin / lansoprazole,Helicobacter Pylori Infection,5,neu,both
+256,dc34343c23692fcd,test,test,Nitrofurantoin,Urinary Tract Infection,3,neg,uci
+257,cab0be4e5732009e,test,test,Tadalafil,Benign Prostatic Hyperplasia,9,pos,both
+258,448b1494dae2bdbc,test,test,Apremilast,Psoriatic Arthritis,4,neg,both
+259,ebd6fabb6b770795,test,test,Lithium,Bipolar Disorder,9,pos,both
+260,63450c3ea8ad7794,test,test,Phentermine,Weight Loss,10,pos,both
+261,1f059ecb7bb344b8,test,test,Naproxen,Tendonitis,10,pos,both
+262,c1ee254b0faaefa3,test,test,Diovan HCT,High Blood Pressure,3,neg,both
+263,635b681c929cad4d,test,test,Isotretinoin,Acne,9,pos,both
+264,6fee0d173fe160c5,dev,val,Clopidogrel,Heart Attack,1,neg,uci
+265,5d0235d820696b59,dev,val,Dilaudid,Pain,10,pos,both
+266,890cffc3523b8bd5,test,test,Magnesium sulfate / potassium sulfate / sodium sulfate,Bowel Preparation,8,pos,both
+267,5e6a47c0b91d5a0c,dev,val,Levothyroxine,"Hypothyroidism, After Thyroid Removal",10,pos,both
+268,08aa370c510aef66,test,test,Amlodipine / valsartan,High Blood Pressure,5,neu,both
+269,47493699357d4bdc,test,test,Frova,Migraine,10,pos,both
+270,81043d419a4932b9,test,test,L-Methylfolate Calcium,Dietary Supplementation,10,pos,uci
+271,455e525d6f09d31d,test,test,Methylphenidate,Narcolepsy,6,neu,uci
+272,96d5cd87dd21fd38,test,test,Celexa,Depression,3,neg,both
+273,38aa8665421d6c8b,test,test,Phentermine,Weight Loss,10,pos,both
+274,01b8c6269dc64b0f,dev,val,Cymbalta,ibromyalgia,3,neg,both
+275,032c0b964fe6cf10,test,test,Clindamycin,Bacterial Infection,5,neu,both
+276,acfa170a3820716b,test,test,Lisdexamfetamine,ADHD,6,neu,both
+277,cab8aeb94345691c,test,test,Amitriptyline,Anxiety and Stress,10,pos,both
+278,1388fc2c600f156a,test,test,Ethinyl estradiol / levonorgestrel,Birth Control,1,neg,both
+279,e47dca49e5d8da70,test,test,Lacosamide,Seizures,6,neu,both
+280,ca60b20c30acc715,test,test,Atenolol,High Blood Pressure,1,neg,both
+281,a776fab88390d4a5,test,test,Trintellix,Depression,5,neu,both
+282,bcba855d30f9dce8,dev,val,Diclofenac,Back Pain,5,neu,both
+283,ae57b21da19ba0f2,test,test,Clobetasol,Atopic Dermatitis,10,pos,both
+284,a638175277340283,dev,val,Ropinirole,Restless Legs Syndrome,1,neg,both
+285,9259064d004f0189,test,test,Ogestrel-28,Birth Control,9,pos,both
+286,140cf5e90744aa4d,dev,val,Clonazepam,Bipolar Disorder,10,pos,both
+287,697ade11176856da,dev,val,Humira,Ulcerative Colitis,1,neg,both
+288,46163cbcd0938626,dev,val,Acetaminophen / phenylephrine,Headache,10,pos,both
+289,ef260bf8a51b961c,test,test,Levaquin,Sinusitis,1,neg,uci
+290,cca0e4b56e9a2660,test,test,Tioconazole,Vaginal Yeast Infection,5,neu,both
+291,9cdb2b88d055a8b7,dev,val,Ethinyl estradiol / levonorgestrel,Birth Control,6,neu,both
+292,1d4408edeaadd6b6,dev,val,Levonorgestrel,Emergency Contraception,10,pos,uci
+293,580c53cbd2f7dacd,dev,val,Lisinopril,High Blood Pressure,1,neg,both
+294,e3a69e346ecd567e,test,test,Amlodipine,High Blood Pressure,5,neu,both
+295,87f4d42fab189315,test,test,Escitalopram,Generalized Anxiety Disorder,3,neg,both
+296,e5590b7e44be19df,test,test,Fluoxetine,Depression,5,neu,both
+297,c6452bbad4aa11af,dev,val,Azithromycin,Chlamydia Infection,10,pos,both
+298,9e171cb280e0b894,dev,val,Minocycline,Acne,1,neg,both
+299,20015e91c2c4b1d9,test,test,Desvenlafaxine,Depression,6,neu,both
+300,8b219c73628ea0e9,test,test,Penicillin VK,Bacterial Infection,4,neg,both
