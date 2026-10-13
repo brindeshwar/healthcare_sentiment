@@ -60,7 +60,10 @@ def seed_everything(seed: int) -> None:
 
 
 def git_sha() -> str:
-    """Current commit SHA (+ "-dirty" if tracked files have uncommitted changes), or "unknown"."""
+    """Current commit SHA (+ "-dirty" if tracked non-report files changed), or "unknown".
+
+    Generated outputs under reports/ are excluded: they do not change the code that made them.
+    """
     try:
         sha = subprocess.run(
             ["git", "rev-parse", "--short", "HEAD"],
@@ -70,7 +73,7 @@ def git_sha() -> str:
             check=True,
         ).stdout.strip()
         dirty = subprocess.run(
-            ["git", "status", "--porcelain", "--untracked-files=no"],
+            ["git", "status", "--porcelain", "--untracked-files=no", "--", ".", ":!reports"],
             cwd=PROJECT_ROOT,
             capture_output=True,
             text=True,
