@@ -105,3 +105,10 @@ Template:
 - Decision: Map a name to its completed form only if it occurs in UCI but not DrugRev, stops mid-word (next character of a longer name is a letter), has exactly one completed-word candidate, and that completed name exists. All 67 mappings were reviewed by hand; the count and examples are in `build_report.json`.
 - Alternatives: no repair (split conditions); generic prefix matching over all names (tried first: wrongly mapped "Acne" → "Acnex" and "Asthma" → "Asthmanefrin", drug names that leak into DrugRev's condition field); a hand-written list (does not generalise to re-scrapes).
 - Consequences: Conditions are comparable across sources. DrugRev's condition field still contains some drug names; to be handled when conditions matter (Phase 4).
+
+## ADR-0015: Sentiment baseline protocol
+- Date: 2026-10-13 · Status: Accepted
+- Context: Phase 1 needs sanity baselines (ADR-0010) that are honest and cheap, and a measured answer to "how much did duplicate leakage inflate the legacy score?".
+- Decision: 3-class ordinal task from stars (neg 1-4 / neu 5-6 / pos 7-10). Metrics: macro-F1 (primary), accuracy, quadratic-weighted kappa. Models: majority class; TF-IDF (1-2 grams) + logistic regression with `class_weight=balanced`, C chosen on `val`; BioClinical ModernBERT fine-tuned for 1 epoch, 3 seeds, best checkpoint by `val` macro-F1. `test` and `drug_holdout` are scored once. Leakage demo: legacy setup (raw UCI, random 80/20) vs the same setup after de-duplication.
+- Alternatives: 10-class or 5-class ratings (noisier, mostly a measure of rating noise); more encoder epochs (2 epochs ≈ 2x GPU time for a baseline that is not the project's headline).
+- Consequences: Numbers are not comparable with papers using the official UCI test split (unavailable, ADR-0011). TF-IDF is deterministic → single run; encoder → mean ± std over seeds.

@@ -4,17 +4,17 @@
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
 **Current phase:** Phase 1 (data & baseline)
-**Branch:** `feat/eda`
+**Branch:** `feat/baselines`
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
 
-- Issue #6 (EDA): done on `feat/eda`; PR pending. Report at `reports/eda/README.md`.
+- Issue #7 (baselines): done on `feat/baselines`; PR pending. Report at `reports/baselines/README.md`.
 
 ## Next (ordered)
 
-1. Phase 1: baselines (#7).
-2. Phase 1: annotation guidelines (#8) + annotation tool + LLM pre-annotation (#9).
+1. Phase 1: annotation guidelines (#8) → annotation tool + LLM pre-annotation (#9) → owner gold set (#10).
+2. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
 3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
 ## Blockers / waiting on owner
@@ -70,3 +70,11 @@
 - EDA surfaced 67 mid-word-truncated UCI condition names → repaired (ADR-0014); first attempt over-matched ("Acne" → "Acnex"), fixed by restricting to UCI-only names. DrugRev-only reviews ~2x more one-star than UCI-era.
 - Pre-existing 6 GB Hugging Face cache on C: (`~/.cache/huggingface`, from before the rebuild) left for the owner to decide.
 - Next: #7 baselines.
+
+### 2026-10-13: Claude Code (Opus 5.5), session 7
+- Merged PR #23 (closes #6). #7 baselines on `feat/baselines` (stacked on the pre-squash EDA branch; rebased before PR).
+- Installed `gpu` extra (torch 2.14.1+cu130; CUDA OK on RTX 4060 Laptop, bf16). transformers v5: `warmup_ratio` → `warmup_steps` float, `group_by_length` → `train_sampling_strategy`.
+- Results (`reports/baselines/`): majority 0.245 macro-F1; TF-IDF+LR 0.634 test / 0.594 drug_holdout; BioClinical ModernBERT 1 epoch, 3 seeds 0.646 ± 0.002 / 0.613 ± 0.002 (accuracy 0.832). Encoder weak on neutral (F1 0.22 vs 0.31) — unweighted loss + noisy 5-6-star labels.
+- Leakage demo with control: legacy setup 0.727 macro-F1 (48% of test texts in train) vs de-duplicated 0.631 → +9.6 points from leakage alone.
+- Seed 2026 trained ~3x slower than the others (73 vs 26-30 min), likely thermal throttling / GPU contention on the laptop; results unaffected.
+- Next: #8 annotation guidelines.

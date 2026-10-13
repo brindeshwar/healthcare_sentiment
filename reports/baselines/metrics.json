@@ -1,0 +1,175 @@
+{
+  "majority": {
+    "val": {
+      "macro_f1": {
+        "mean": 0.2448,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "accuracy": {
+        "mean": 0.5803,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "qwk": {
+        "mean": 0.0,
+        "std": 0.0,
+        "n_runs": 1
+      }
+    },
+    "test": {
+      "macro_f1": {
+        "mean": 0.2448,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "accuracy": {
+        "mean": 0.5803,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "qwk": {
+        "mean": 0.0,
+        "std": 0.0,
+        "n_runs": 1
+      }
+    },
+    "drug_holdout": {
+      "macro_f1": {
+        "mean": 0.2462,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "accuracy": {
+        "mean": 0.5856,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "qwk": {
+        "mean": 0.0,
+        "std": 0.0,
+        "n_runs": 1
+      }
+    }
+  },
+  "tfidf_logreg": {
+    "val": {
+      "macro_f1": {
+        "mean": 0.637,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "accuracy": {
+        "mean": 0.7525,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "qwk": {
+        "mean": 0.6769,
+        "std": 0.0,
+        "n_runs": 1
+      }
+    },
+    "test": {
+      "macro_f1": {
+        "mean": 0.6343,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "accuracy": {
+        "mean": 0.7533,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "qwk": {
+        "mean": 0.6814,
+        "std": 0.0,
+        "n_runs": 1
+      }
+    },
+    "drug_holdout": {
+      "macro_f1": {
+        "mean": 0.5944,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "accuracy": {
+        "mean": 0.7248,
+        "std": 0.0,
+        "n_runs": 1
+      },
+      "qwk": {
+        "mean": 0.6259,
+        "std": 0.0,
+        "n_runs": 1
+      }
+    }
+  },
+  "encoder": {
+    "val": {
+      "macro_f1": {
+        "mean": 0.65,
+        "std": 0.0034,
+        "n_runs": 3
+      },
+      "accuracy": {
+        "mean": 0.8305,
+        "std": 0.0116,
+        "n_runs": 3
+      },
+      "qwk": {
+        "mean": 0.7706,
+        "std": 0.0216,
+        "n_runs": 3
+      }
+    },
+    "test": {
+      "macro_f1": {
+        "mean": 0.6464,
+        "std": 0.0016,
+        "n_runs": 3
+      },
+      "accuracy": {
+        "mean": 0.832,
+        "std": 0.0111,
+        "n_runs": 3
+      },
+      "qwk": {
+        "mean": 0.7757,
+        "std": 0.0214,
+        "n_runs": 3
+      }
+    },
+    "drug_holdout": {
+      "macro_f1": {
+        "mean": 0.6126,
+        "std": 0.0018,
+        "n_runs": 3
+      },
+      "accuracy": {
+        "mean": 0.8112,
+        "std": 0.0108,
+        "n_runs": 3
+      },
+      "qwk": {
+        "mean": 0.7252,
+        "std": 0.025,
+        "n_runs": 3
+      }
+    },
+    "seeds": [
+      13,
+      42,
+      2026
+    ],
+    "reviews_per_second_test": {
+      "mean": 286.2333,
+      "std": 153.5502,
+      "n_runs": 3
+    }
+  },
+  "meta": {
+    "git_sha": "5ea56f8",
+    "encoder_runs": 3
+  }
+}

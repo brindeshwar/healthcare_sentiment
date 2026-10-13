@@ -1,0 +1,99 @@
+{
+  "seed": 13,
+  "train_reviews": 189938,
+  "train_seconds": 1533.2,
+  "val": {
+    "n": 23743,
+    "macro_f1": 0.6493,
+    "accuracy": 0.8357,
+    "qwk": 0.7815,
+    "f1_per_class": {
+      "neg": 0.8291,
+      "neu": 0.2191,
+      "pos": 0.8998
+    },
+    "confusion_matrix": [
+      [
+        6779,
+        182,
+        913
+      ],
+      [
+        878,
+        304,
+        909
+      ],
+      [
+        822,
+        198,
+        12758
+      ]
+    ],
+    "reviews_per_second": 371.5
+  },
+  "test": {
+    "n": 23743,
+    "macro_f1": 0.6449,
+    "accuracy": 0.8381,
+    "qwk": 0.7886,
+    "f1_per_class": {
+      "neg": 0.831,
+      "neu": 0.2001,
+      "pos": 0.9037
+    },
+    "confusion_matrix": [
+      [
+        6817,
+        184,
+        873
+      ],
+      [
+        928,
+        273,
+        890
+      ],
+      [
+        788,
+        180,
+        12810
+      ]
+    ],
+    "reviews_per_second": 370.5
+  },
+  "drug_holdout": {
+    "n": 26438,
+    "macro_f1": 0.6147,
+    "accuracy": 0.8174,
+    "qwk": 0.7413,
+    "f1_per_class": {
+      "neg": 0.8018,
+      "neu": 0.1562,
+      "pos": 0.8862
+    },
+    "confusion_matrix": [
+      [
+        7280,
+        135,
+        1219
+      ],
+      [
+        1068,
+        225,
+        1030
+      ],
+      [
+        1178,
+        197,
+        14106
+      ]
+    ],
+    "reviews_per_second": 390.3
+  },
+  "best_checkpoint": "checkpoint-5936",
+  "meta": {
+    "config": "configs/baselines.yaml",
+    "model": "thomas-sounack/BioClinical-ModernBERT-base",
+    "git_sha": "8cb7fdf",
+    "built_utc": "2026-10-13T07:54:16+00:00"
+  }
+}

@@ -39,7 +39,8 @@ These four files are how agents hand work to each other. Keeping them accurate m
 
 ```
 src/medsignal/        Python package (all importable code lives here)
-  data/               loading, cleaning, de-duplication, splits
+  data/               loading, cleaning, de-duplication, splits, EDA
+  baselines/          Phase 1 sentiment sanity baselines
   labeling/           LLM teacher: prompts, schemas, Ollama client
   extraction/         encoder student: training + inference (span tagging, classifiers)
   normalization/      mention → MedDRA PT (retrieve → rerank → verify)
@@ -61,7 +62,8 @@ Environment is managed with **uv** (Python 3.12). Never `pip install` into the g
 
 ```bash
 uv sync                              # install/update env from uv.lock
-uv sync --extra gpu                  # + CUDA torch & training deps (extra added in Phase 1)
+uv sync --extra gpu                  # + CUDA torch 2.14.1+cu130, transformers (use this locally:
+                                     #   plain `uv sync` is exact and REMOVES the GPU stack; `uv run` does not)
 uv run pytest                        # tests
 uv run ruff check . --fix            # lint
 uv run ruff format .                 # format
