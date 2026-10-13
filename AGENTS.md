@@ -52,7 +52,7 @@ models/               NOT committed. Trained weights go to Hugging Face Hub.
 reports/              generated metrics/figures (committed only when referenced by README/write-up)
 notebooks/            exploration only; never imported by src/
 tests/                pytest
-docs/                 PLAN, STATUS, DECISIONS, DATA, RESEARCH
+docs/                 PLAN, STATUS, DECISIONS, DATA, RESEARCH, SETUP
 ```
 
 ## 5. Commands
@@ -111,7 +111,9 @@ This project exists partly because a previous version reported fabricated result
 - Open a PR using the template; CI (lint, type-check, tests) must pass. Squash-merge.
 - Agents: **do not push, merge, tag, or change GitHub settings unless the user explicitly asks.**
 
-## 10. Hardware notes
+## 10. Hardware & local paths
+
+- **Everything stays inside the project folder** (owner preference): uv cache `.cache/uv`, Hugging Face cache `HF_HOME=.cache/huggingface`, Ollama program `tools/ollama`, Ollama weights `models/ollama` (`OLLAMA_MODELS`). Never write caches or downloads elsewhere. See `docs/SETUP.md`.
 
 - RTX 4060 Laptop, 8 GB VRAM. Use bf16/fp16, gradient accumulation, `max_length` 256 (covers ~99% of reviews).
 - LLM inference: Ollama, ~9B models at Q4 (~6 GB). LLM fine-tuning is limited to ≤2B models (see ADR-0005).

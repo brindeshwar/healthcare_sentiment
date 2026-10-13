@@ -12,6 +12,10 @@ dist/
 htmlcov/
 .ipynb_checkpoints/
 
+# --- Project-local caches and tools (see docs/SETUP.md)
+.cache/
+tools/
+
 # --- Secrets
 .env
 *.key

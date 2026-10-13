@@ -77,3 +77,8 @@ dev = [
     "ruff>=0.17.0",
     "types-pyyaml>=6.0.12.20260906",
 ]
+
+[tool.uv]
+# Keep uv's package cache inside the project (owner preference: everything in this folder;
+# also avoids slow cross-drive copies when the project is not on C:).
+cache-dir = ".cache/uv"
