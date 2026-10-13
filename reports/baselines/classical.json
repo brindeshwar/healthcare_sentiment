@@ -187,41 +187,76 @@
     }
   },
   "leakage_demo": {
-    "description": "raw UCI train file, random 80/20 split, no de-duplication (legacy setup)",
-    "test_reviews_whose_text_is_in_train": 0.4819,
-    "test": {
-      "n": 32260,
-      "macro_f1": 0.7272,
-      "accuracy": 0.8222,
-      "qwk": 0.7512,
-      "f1_per_class": {
-        "neg": 0.7896,
-        "neu": 0.4988,
-        "pos": 0.8932
-      },
-      "confusion_matrix": [
-        [
-          6537,
-          828,
-          650
-        ],
-        [
-          561,
-          1812,
-          498
-        ],
-        [
-          1445,
-          1755,
-          18174
+    "description": "UCI train file only, random 80/20 split, TF-IDF+LR (C=1)",
+    "legacy_with_duplicates": {
+      "rows": 161297,
+      "test_reviews_whose_text_is_in_train": 0.4819,
+      "test": {
+        "n": 32260,
+        "macro_f1": 0.7272,
+        "accuracy": 0.8222,
+        "qwk": 0.7512,
+        "f1_per_class": {
+          "neg": 0.7896,
+          "neu": 0.4988,
+          "pos": 0.8932
+        },
+        "confusion_matrix": [
+          [
+            6537,
+            828,
+            650
+          ],
+          [
+            561,
+            1812,
+            498
+          ],
+          [
+            1445,
+            1755,
+            18174
+          ]
         ]
-      ]
+      }
+    },
+    "control_deduplicated": {
+      "rows": 112560,
+      "test_reviews_whose_text_is_in_train": 0.0031,
+      "test": {
+        "n": 22512,
+        "macro_f1": 0.6313,
+        "accuracy": 0.7668,
+        "qwk": 0.6975,
+        "f1_per_class": {
+          "neg": 0.7339,
+          "neu": 0.2948,
+          "pos": 0.8652
+        },
+        "confusion_matrix": [
+          [
+            4222,
+            790,
+            559
+          ],
+          [
+            629,
+            754,
+            617
+          ],
+          [
+            1083,
+            1571,
+            12287
+          ]
+        ]
+      }
     }
   },
   "meta": {
     "config": "configs/baselines.yaml",
-    "git_sha": "0e6b3cc-dirty",
-    "built_utc": "2026-10-13T07:19:48+00:00",
-    "runtime_s": 192.1
+    "git_sha": "669b562",
+    "built_utc": "2026-10-13T07:29:12+00:00",
+    "runtime_s": 253.3
   }
 }

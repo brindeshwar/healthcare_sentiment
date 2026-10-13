@@ -62,7 +62,15 @@ uv run python -m medsignal.data.splits   # train/val/test + unseen-drug split ->
 uv run python -m medsignal.data.eda      # figures + summary -> reports/eda/
 ```
 
-Data overview: [`reports/eda/README.md`](reports/eda/README.md). Further commands are added as phases complete.
+Sentiment sanity baselines (Phase 1; GPU stack: `uv sync --extra gpu`):
+
+```bash
+uv run python -m medsignal.baselines.classical             # majority, TF-IDF+LR, leakage demo (CPU, ~4 min)
+uv run --extra gpu python -m medsignal.baselines.encoder   # BioClinical ModernBERT, 3 seeds (~30 min/seed)
+uv run python -m medsignal.baselines.report                # -> reports/baselines/README.md
+```
+
+Data overview: [`reports/eda/README.md`](reports/eda/README.md). Baselines: [`reports/baselines/README.md`](reports/baselines/README.md).
 
 ## Repository layout
 

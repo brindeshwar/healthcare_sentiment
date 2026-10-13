@@ -37,3 +37,23 @@ def test_tfidf_baseline_learns_toy_task() -> None:
     out = tfidf_baseline(_toy(), cfg)
     assert out["chosen_C"] in (1.0, 10.0)
     assert out["test"]["macro_f1"] == 1.0
+
+
+def test_aggregate_mean_std_over_seeds() -> None:
+    from medsignal.baselines.report import aggregate
+
+    def m(f1: float) -> dict[str, float]:
+        return {"macro_f1": f1, "accuracy": 0.8, "qwk": 0.7, "reviews_per_second": 100.0}
+
+    classical = {
+        k: {sp: m(0.5) for sp in ("val", "test", "drug_holdout")}
+        for k in ("majority", "tfidf_logreg")
+    }
+    runs = [
+        {"seed": s, **{sp: m(f) for sp in ("val", "test", "drug_holdout")}}
+        for s, f in ((1, 0.6), (2, 0.7))
+    ]
+    agg = aggregate(classical, runs)
+    assert agg["encoder"]["test"]["macro_f1"]["mean"] == 0.65
+    assert agg["encoder"]["seeds"] == [1, 2]
+    assert agg["tfidf_logreg"]["test"]["macro_f1"]["n_runs"] == 1

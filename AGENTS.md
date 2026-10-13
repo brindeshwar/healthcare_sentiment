@@ -39,7 +39,8 @@ These four files are how agents hand work to each other. Keeping them accurate m
 
 ```
 src/medsignal/        Python package (all importable code lives here)
-  data/               loading, cleaning, de-duplication, splits
+  data/               loading, cleaning, de-duplication, splits, EDA
+  baselines/          Phase 1 sentiment sanity baselines
   labeling/           LLM teacher: prompts, schemas, Ollama client
   extraction/         encoder student: training + inference (span tagging, classifiers)
   normalization/      mention → MedDRA PT (retrieve → rerank → verify)
