@@ -20,6 +20,16 @@ All of `.cache/`, `tools/`, `models/`, `data/` (except `data/annotations/`) and 
 
 ## 1. Ollama (needed for Phase 1 pre-annotation and Phase 2)
 
+**Status: installed 2026-10-13** (v0.40.3, `tools\ollama`, ~2.9 GB; `OLLAMA_MODELS` set; added to user PATH by the installer).
+Ollama itself always writes a few small files to `C:` that cannot be relocated: `%USERPROFILE%\.ollama` (identity key, small cache) and `%LOCALAPPDATA%\Ollama` (app log/db, ~150 KB). Model weights go to `models\ollama`.
+
+Silent re-install (what the agent ran; installer is ~1.5 GB, signed by Ollama Inc.):
+```powershell
+.\OllamaSetup.exe /DIR="D:\healthcare_sentiment	ools\ollama" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART
+```
+
+Manual steps, for reference:
+
 1. Download **OllamaSetup.exe** from <https://ollama.com/download/windows>.
 2. Install it into the project folder. Open PowerShell in the folder where the installer was saved and run:
    ```powershell

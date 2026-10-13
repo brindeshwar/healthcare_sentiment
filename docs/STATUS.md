@@ -16,11 +16,10 @@
 
 1. Phase 1: splits (#5) → EDA (#6) → baselines (#7).
 2. Phase 1: annotation guidelines (#8) + annotation tool + LLM pre-annotation (#9).
-3. Owner (#2): follow `docs/SETUP.md` (Ollama into `tools/ollama` + `OLLAMA_MODELS`, HF token, openFDA key, WebMD CSV). `.env` already created from `.env.example`.
+3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
 ## Blockers / waiting on owner
 
-- Ollama not installed (needed from Phase 1 pre-annotation onward).
 - WebMD dataset requires Kaggle login (owner downloads).
 
 ## Known facts about the data (verified 2026-10-13)
@@ -59,3 +58,4 @@
 ### 2026-10-13: Claude Code (Opus 5.5), session 4
 - Owner asked to keep everything inside the project folder: uv `cache-dir = .cache/uv` (pyproject), `HF_HOME=.cache/huggingface` (.env), Ollama install `/DIR` → `tools/ollama`, `OLLAMA_MODELS` → `models/ollama`. Added `docs/SETUP.md` (owner checklist), created local `.env` from `.env.example`.
 - Next: owner works through SETUP.md; agent continues #5 splits after PR #20 merges.
+- Owner's manual install failed (0-byte installer download; no residue). Agent downloaded the signed installer, set user `OLLAMA_MODELS=D:\healthcare_sentiment\models\ollama`, installed Ollama 0.40.3 silently into `tools/ollama`. Only tiny unavoidable files on C: (`~/.ollama`, `%LOCALAPPDATA%/Ollama`).
