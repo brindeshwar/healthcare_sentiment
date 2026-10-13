@@ -16,6 +16,22 @@
 
 Checksums are pinned in `configs/data.yaml`; each `data/raw/<source>/manifest.json` records URL, size, sha256, retrieval time.
 
+## Interim table: `data/interim/reviews.parquet`
+
+Built by `uv run python -m medsignal.data.build` (counts in `reports/data/build_report.json`).
+
+| Column | Meaning |
+|---|---|
+| `review_id` | stable 16-hex ID = sha1(date + normalised text); used by gold set and all later stages |
+| `source` | `uci`, `drugrev`, or `both` (matched: UCI full text kept) |
+| `drug`, `drug_aliases` | first alias alphabetically; all drug names the review was listed under |
+| `condition`, `conditions` | cleaned condition(s); `None` for missing/artefacts |
+| `text` | cleaned review text (HTML decoded, whitespace collapsed, wrapping quotes removed) |
+| `rating`, `date`, `helpful_count` | 1-10; review date; max of usefulCount/likes |
+| `duration` | DrugRev "Taken for …" bucket, else `None` |
+| `n_listings`, `rating_conflict` | raw rows collapsed into this review; whether their ratings disagreed |
+| `possibly_truncated` | `True` for all DrugRev-only rows (ADR-0012) |
+
 ## Layout
 
 ```
@@ -33,7 +49,10 @@ data/annotations/          gold set exports (IDs + labels, no review text)
 ## Known issues
 
 ### DrugRev (verified 2026-10-13)
-- **Truncated reviews.** Of 75,807 reviews also present in the UCI file, only 27.6% are identical after whitespace normalisation; **27.7% are >10% shorter, 18.8% lost more than half their text**, typically the end (where side effects / discontinuation are often mentioned). Truncation removes content but does not add any, so extraction precision is unaffected while recall drops. Mitigation: ADR-0011.
+- **Truncated reviews.** Of 75,807 reviews also present in the UCI file (prefix-only match), only 27.6% are identical after whitespace normalisation; **27.7% are >10% shorter, 18.8% lost more than half their text**. With the stricter build match (93,517 pairs, see `reports/data/build_report.json`) 34.8% are >10% shorter.
+  - Pattern: DrugRev keeps the **first N sentences** (often one) and cuts at a sentence boundary; 62% of truncated texts are an exact prefix of the UCI text. Multi-paragraph reviews are cut far more often (76% vs 26%). DrugRev also strips double quotes inside text.
+  - Because cuts land on sentence boundaries, truncation is **not detectable per row** ("no terminal punctuation": precision 0.46, recall 0.18). All DrugRev-only rows are therefore flagged `possibly_truncated` (ADR-0012).
+  - Truncation removes content but adds none: extraction precision unaffected, recall lower for DrugRev-only reviews.
 - ~37% duplicate texts (144,080 rows).
 - 25,036 rows have a date in `IntakeTime` (column shift); treat as "Not Specified".
 - `IntakeTime` is specified for ~63% of rows (8 buckets from "<1 month" to "10 years or more").
@@ -52,4 +71,4 @@ data/annotations/          gold set exports (IDs + labels, no review text)
 
 ## Sampling for annotation / LLM labelling
 
-Stratified by rating bucket, condition and source; cap reviews per drug; fixed seed in `configs/`. Gold set drawn only from reviews with full text (UCI, or DrugRev rows not flagged as possibly truncated).
+Stratified by rating bucket, condition and source; cap reviews per drug; fixed seed in `configs/`. Gold set drawn only from reviews with full text (`possibly_truncated == False`, i.e. source `uci` or `both`).

@@ -14,6 +14,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 ### Added (Phase 1)
 - `medsignal.data.download`: config-driven dataset download with pinned SHA-256 checksums and manifests (DrugRev, Druglib; manual-source checks for UCI Drugs.com and WebMD).
 - ADR-0011: merged UCI Drugs.com + DrugRev corpus (UCI #462 withdrawn).
+- `medsignal.data.build`: cleaning, within-source de-duplication, UCI↔DrugRev matching (prefers UCI full text), stable `review_id`s → `data/interim/reviews.parquet` (263,862 reviews) + build report.
+- ADR-0012: all DrugRev-only rows flagged `possibly_truncated` (row-level detection measured as unreliable).
 
 ### Removed
 - Legacy DistilBERT sentiment code, report and figures (preserved at tag `v0-minor-project`). The legacy confusion matrix was simulated, not measured, and is withdrawn.

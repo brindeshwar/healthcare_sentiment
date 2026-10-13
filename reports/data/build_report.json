@@ -1,0 +1,53 @@
+{
+  "rows_raw": {
+    "uci": 161297,
+    "drugrev": 392510
+  },
+  "rows_after_within_source_dedup": {
+    "uci": 112559,
+    "drugrev": 250077
+  },
+  "rating_conflicts_within_source": {
+    "uci": 6,
+    "drugrev": 26
+  },
+  "cross_source_matches": 93517,
+  "truncation_on_matched_pairs": {
+    "truncated_rate": 0.3482,
+    "heuristic_precision": 0.4642,
+    "heuristic_recall": 0.1754
+  },
+  "dropped_review_id_collisions": 475,
+  "dropped_short_reviews": 4782,
+  "rows_final": 263862,
+  "rows_final_by_source": {
+    "drugrev": 152106,
+    "both": 93222,
+    "uci": 18534
+  },
+  "possibly_truncated": 152106,
+  "with_duration": 143046,
+  "unique_drugs": 3613,
+  "date_range": [
+    "2008-02-24",
+    "2023-08-07"
+  ],
+  "rating_counts": {
+    "1": 53632,
+    "2": 13681,
+    "3": 11753,
+    "4": 8312,
+    "5": 13350,
+    "6": 9878,
+    "7": 13870,
+    "8": 26935,
+    "9": 37205,
+    "10": 75246
+  },
+  "meta": {
+    "config": "configs/data.yaml",
+    "git_sha": "6133bfb",
+    "built_utc": "2026-10-12T20:36:34+00:00",
+    "output": "data/interim/reviews.parquet"
+  }
+}

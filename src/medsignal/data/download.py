@@ -78,7 +78,9 @@ def download_source(name: str, spec: dict[str, Any], raw_dir: Path) -> dict[str,
         "sha256": digest,
         "retrieved_utc": datetime.now(UTC).isoformat(timespec="seconds"),
     }
-    (target_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    (target_dir / "manifest.json").write_text(
+        json.dumps(manifest, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
     return manifest
 
 
