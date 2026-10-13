@@ -4,16 +4,16 @@
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
 **Current phase:** Phase 1 (data & baseline)
-**Branch:** `feat/splits`
+**Branch:** `feat/eda`
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
 
-- Issue #5 (splits): done on `feat/splits`; PR pending. train 189,938 / val 23,743 / test 23,743 / drug_holdout 26,438 (197 of 1,592 drug groups); no leakage.
+- Issue #6 (EDA): done on `feat/eda`; PR pending. Report at `reports/eda/README.md`.
 
 ## Next (ordered)
 
-1. Phase 1: EDA (#6) → baselines (#7).
+1. Phase 1: baselines (#7).
 2. Phase 1: annotation guidelines (#8) + annotation tool + LLM pre-annotation (#9).
 3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
@@ -63,3 +63,10 @@
 - Merged Dependabot #17, #18 and PR #20 (closes #4); rebased #21 (resolved STATUS.md session-log conflict by keeping both entries).
 - #5: `medsignal.data.splits` (union-find drug groups, whole-group drug holdout capped at 1%-share groups, stratified 80/10/10 by sentiment bucket + source, leakage checks that abort the build). ADR-0013. 29 tests.
 - Next: #6 EDA report, #7 baselines.
+
+### 2026-10-13: Claude Code (Opus 5.5), session 6
+- Merged PR #22 (closes #5).
+- #6: `medsignal.data.eda` (5 figures, summary.json, generated README). Tokenizer `thomas-sounack/BioClinical-ModernBERT-base`: median 84 tokens, p99 231, 99.7% within 256 (confirms max_length). Added `utils.load_env` (HF cache resolved into `.cache/huggingface`).
+- EDA surfaced 67 mid-word-truncated UCI condition names → repaired (ADR-0014); first attempt over-matched ("Acne" → "Acnex"), fixed by restricting to UCI-only names. DrugRev-only reviews ~2x more one-star than UCI-era.
+- Pre-existing 6 GB Hugging Face cache on C: (`~/.cache/huggingface`, from before the rebuild) left for the owner to decide.
+- Next: #7 baselines.

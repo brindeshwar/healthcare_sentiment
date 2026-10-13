@@ -98,3 +98,10 @@ Template:
 - Decision: (1) Build drug groups with union-find over names that co-occur on a review (3,613 names → 1,592 groups). (2) Randomly hold out whole groups until ~10% of reviews (`drug_holdout`), excluding groups larger than 1% of reviews so one contraceptive cannot dominate it. (3) Split the rest 80/10/10 into train/val/test, stratified by (sentiment bucket, source). Seeded; leakage checks run on every build and abort on failure.
 - Alternatives: random split only (no unseen-drug test); time-based split (confounded by DrugRev covering only post-2017 additions); holding out by `drug` string (leaks via aliases).
 - Consequences: Results on `test` = in-distribution; on `drug_holdout` = unseen drugs. Both reported. Not comparable to papers using the official UCI test split.
+
+## ADR-0014: Repair mid-word-truncated condition names from the UCI scrape
+- Date: 2026-10-13 · Status: Accepted
+- Context: The EDA showed "Bipolar Disorde" and "Bipolar Disorder" as two top-15 conditions. The UCI scrape cut 67 condition names mid-word ("Cance", "Ulce", "Tum", "Pain/Feve"), splitting one condition into two and distorting per-condition statistics.
+- Decision: Map a name to its completed form only if it occurs in UCI but not DrugRev, stops mid-word (next character of a longer name is a letter), has exactly one completed-word candidate, and that completed name exists. All 67 mappings were reviewed by hand; the count and examples are in `build_report.json`.
+- Alternatives: no repair (split conditions); generic prefix matching over all names (tried first: wrongly mapped "Acne" → "Acnex" and "Asthma" → "Asthmanefrin", drug names that leak into DrugRev's condition field); a hand-written list (does not generalise to re-scrapes).
+- Consequences: Conditions are comparable across sources. DrugRev's condition field still contains some drug names; to be handled when conditions matter (Phase 4).

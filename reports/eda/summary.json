@@ -1,0 +1,172 @@
+{
+  "reviews": 263862,
+  "by_source": {
+    "drugrev": 152106,
+    "both": 93222,
+    "uci": 18534
+  },
+  "unique_drug_names": 3613,
+  "drug_groups": 1592,
+  "conditions_known": 261195,
+  "unique_conditions": 4509,
+  "top_conditions": {
+    "Birth Control": 32366,
+    "Depression": 12228,
+    "Anxiety": 10017,
+    "Acne": 7377,
+    "Pain": 6700,
+    "Insomnia": 6245,
+    "Diabetes, Type 2": 4438,
+    "High Blood Pressure": 4302,
+    "ADHD": 4142,
+    "Emergency Contraception": 3621,
+    "Vaginal Yeast Infection": 3586,
+    "Anxiety and Stress": 2983,
+    "Bipolar Disorder": 2926,
+    "Bipolar Disorde": 2870,
+    "Weight Loss": 2630
+  },
+  "date_range": [
+    "2008-02-24",
+    "2023-08-07"
+  ],
+  "reviews_per_year_by_source": {
+    "2008": {
+      "both": 2934,
+      "drugrev": 800,
+      "uci": 535
+    },
+    "2009": {
+      "both": 6591,
+      "drugrev": 1955,
+      "uci": 1239
+    },
+    "2010": {
+      "both": 4741,
+      "drugrev": 1273,
+      "uci": 841
+    },
+    "2011": {
+      "both": 6654,
+      "drugrev": 1706,
+      "uci": 1097
+    },
+    "2012": {
+      "both": 5631,
+      "drugrev": 1686,
+      "uci": 1050
+    },
+    "2013": {
+      "both": 6917,
+      "drugrev": 2291,
+      "uci": 1402
+    },
+    "2014": {
+      "both": 6909,
+      "drugrev": 2372,
+      "uci": 1415
+    },
+    "2015": {
+      "both": 15839,
+      "drugrev": 5393,
+      "uci": 3238
+    },
+    "2016": {
+      "both": 20508,
+      "drugrev": 7531,
+      "uci": 4291
+    },
+    "2017": {
+      "both": 16498,
+      "drugrev": 6957,
+      "uci": 3426
+    },
+    "2018": {
+      "drugrev": 22609
+    },
+    "2019": {
+      "drugrev": 30335
+    },
+    "2020": {
+      "drugrev": 19674
+    },
+    "2021": {
+      "drugrev": 23589
+    },
+    "2022": {
+      "drugrev": 14818
+    },
+    "2023": {
+      "drugrev": 9117
+    }
+  },
+  "rating_share_by_source": {
+    "both": {
+      "1": 0.1343,
+      "2": 0.0429,
+      "3": 0.0402,
+      "4": 0.0315,
+      "5": 0.0494,
+      "6": 0.039,
+      "7": 0.0591,
+      "8": 0.1183,
+      "9": 0.1709,
+      "10": 0.3144
+    },
+    "drugrev": {
+      "1": 0.2538,
+      "2": 0.0584,
+      "3": 0.0479,
+      "4": 0.032,
+      "5": 0.0511,
+      "6": 0.0361,
+      "7": 0.0478,
+      "8": 0.0906,
+      "9": 0.1193,
+      "10": 0.263
+    },
+    "uci": {
+      "1": 0.1348,
+      "2": 0.0426,
+      "3": 0.0391,
+      "4": 0.0278,
+      "5": 0.0523,
+      "6": 0.0405,
+      "7": 0.0588,
+      "8": 0.1146,
+      "9": 0.1693,
+      "10": 0.3204
+    }
+  },
+  "tokens": {
+    "tokenizer": "thomas-sounack/BioClinical-ModernBERT-base",
+    "median": 84,
+    "p95": 192,
+    "p99": 231,
+    "max": 2349,
+    "share_within_256": 0.997
+  },
+  "duration_counts": {
+    "Taken for less than 1 month": 54743,
+    "Taken for 1 to 6 months": 40231,
+    "Taken for 6 months to 1 year": 13552,
+    "Taken for 1 to 2 years": 11732,
+    "Taken for 2 to 5 years": 11427,
+    "Taken for 5 to 10 years": 5733,
+    "Taken for 10 years or more": 5628
+  },
+  "duration_known_share": 0.5421,
+  "possibly_truncated_share": 0.5765,
+  "split_counts": {
+    "train": 189938,
+    "val": 23743,
+    "test": 23743,
+    "drug_holdout": 26438
+  },
+  "max_length": 256,
+  "meta": {
+    "config": "configs/data.yaml",
+    "git_sha": "c28b2ac-dirty",
+    "built_utc": "2026-10-13T07:08:03+00:00"
+  }
+}

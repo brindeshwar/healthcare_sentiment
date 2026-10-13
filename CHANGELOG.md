@@ -16,6 +16,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) · Versioning: 
 - ADR-0011: merged UCI Drugs.com + DrugRev corpus (UCI #462 withdrawn).
 - `medsignal.data.build`: cleaning, within-source de-duplication, UCI↔DrugRev matching (prefers UCI full text), stable `review_id`s → `data/interim/reviews.parquet` (263,862 reviews) + build report.
 - ADR-0012: all DrugRev-only rows flagged `possibly_truncated` (row-level detection measured as unreliable).
+- `medsignal.data.eda`: generated data report (figures + summary.json + README) incl. token lengths with the student tokenizer (99.7% of reviews fit 256 tokens).
+- ADR-0014: repair of 67 mid-word-truncated UCI condition names.
+- `medsignal.utils.load_env`: loads `.env`, resolves relative cache paths inside the project.
 - `medsignal.data.splits`: brand/generic drug groups (union-find), drug-held-out split + stratified train/val/test, leakage checks → `data/processed/splits.parquet` + report (ADR-0013).
 
 ### Changed

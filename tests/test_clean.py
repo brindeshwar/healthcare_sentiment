@@ -8,6 +8,7 @@ from medsignal.data.clean import (
     clean_text,
     load_drugrev,
     load_uci,
+    truncated_name_map,
 )
 
 
@@ -75,3 +76,33 @@ def test_load_drugrev_drops_username(tmp_path: Path) -> None:
     assert row["condition"] == "Bipolar Disorder"
     assert row["duration"] is None
     assert row["date"] == pd.Timestamp("2012-01-04")
+
+
+def test_truncated_name_map_completes_only_mid_word_truncations() -> None:
+    names = {
+        "Bipolar Disorde",
+        "Bipolar Disorder",
+        "Breast Cance",
+        "Breast Cancer",
+        "Breast Cancer, Male",
+        "Hypercalcemia",
+        "Hypercalcemia of Malignancy",
+        "Anxiety",
+        "Anxiety and Stress",
+        "Ulce",
+        "Ulcer",
+        "Ulceration",
+    }
+    m = truncated_name_map(names, names | {"Acnex"})
+    assert m["Bipolar Disorde"] == "Bipolar Disorder"
+    assert m["Breast Cance"] == "Breast Cancer"
+    assert "Hypercalcemia" not in m
+    assert "Anxiety" not in m
+    assert "Ulce" not in m  # ambiguous: Ulcer vs Ulceration
+    assert "Acne" not in m  # 'Acnex' is a drug name; Acne ends a word
+
+
+def test_truncated_name_map_only_touches_candidates() -> None:
+    names = {"Acne", "Acnex", "Panic Disorde", "Panic Disorder"}
+    m = truncated_name_map({"Panic Disorde"}, names)
+    assert m == {"Panic Disorde": "Panic Disorder"}

@@ -3,6 +3,19 @@
     "uci": 161297,
     "drugrev": 392510
   },
+  "truncated_condition_names_fixed": 73,
+  "truncated_condition_examples": {
+    "Acne": "Acnex",
+    "Aggressive Behavi": "Aggressive Behavior",
+    "Aphthous Ulce": "Aphthous Ulcer",
+    "Asthma": "Asthmanefrin",
+    "Atrial Flutte": "Atrial Flutter",
+    "Auditory Processing Disorde": "Auditory Processing Disorder",
+    "Benign Essential Trem": "Benign Essential Tremor",
+    "Binge Eating Disorde": "Binge Eating Disorder",
+    "Bipolar Disorde": "Bipolar Disorder",
+    "Bleeding Disorde": "Bleeding Disorder"
+  },
   "rows_after_within_source_dedup": {
     "uci": 112559,
     "drugrev": 250077
@@ -46,8 +59,8 @@
   },
   "meta": {
     "config": "configs/data.yaml",
-    "git_sha": "6133bfb",
-    "built_utc": "2026-10-12T20:36:34+00:00",
+    "git_sha": "c28b2ac-dirty",
+    "built_utc": "2026-10-13T07:10:02+00:00",
     "output": "data/interim/reviews.parquet"
   }
 }
