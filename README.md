@@ -35,7 +35,7 @@ Design decisions and their reasoning: [`docs/DECISIONS.md`](docs/DECISIONS.md) Â
 
 ## Results
 
-TBD. Filled in as phases complete.
+TBD for the headline task (ADE extraction). Phase 1 sanity baselines and the measured effect of duplicate leakage: [`reports/baselines/README.md`](reports/baselines/README.md).
 
 ## Quick start
 

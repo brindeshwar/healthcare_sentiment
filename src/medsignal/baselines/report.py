@@ -43,7 +43,13 @@ def _cell(x: dict[str, float]) -> str:
     return f"{x['mean']:.3f} ± {x['std']:.3f}" if x["n_runs"] > 1 else f"{x['mean']:.3f}"
 
 
-def write_readme(agg: dict[str, Any], classical: dict[str, Any], path: Path, sha: str) -> None:
+def write_readme(
+    agg: dict[str, Any],
+    classical: dict[str, Any],
+    runs: list[dict[str, Any]],
+    path: Path,
+    sha: str,
+) -> None:
     names = {
         "majority": "Majority class",
         "tfidf_logreg": "TF-IDF + logistic regression",
@@ -69,6 +75,24 @@ def write_readme(agg: dict[str, Any], classical: dict[str, Any], path: Path, sha
             lines.append(
                 f"| {label} | {sp} | {_cell(r['macro_f1'])} | {_cell(r['accuracy'])} | {_cell(r['qwk'])} |"
             )
+    if "encoder" in agg:
+        enc_neu = mean_std([{"f": r["test"]["f1_per_class"]["neu"]} for r in runs], "f")
+        tfidf_neu = classical["tfidf_logreg"]["test"]["f1_per_class"]["neu"]
+        lines += [
+            "",
+            "**Reading this table.** The encoder is far better on negative and positive reviews, but its",
+            f"neutral-class F1 on `test` is {enc_neu['mean']:.3f} vs {tfidf_neu:.3f} for TF-IDF, which limits its",
+            "macro-F1 gain. Two causes: TF-IDF+LR uses `class_weight=balanced` while the encoder uses",
+            f"unweighted cross-entropy (neutral is {classical['label_share_train']['1']:.1%} of training data), and 5-6-star reviews are often",
+            "mixed in tone, so the star rating is a noisy label for text sentiment.",
+            "On unseen drugs (`drug_holdout`) macro-F1 drops by "
+            + ", ".join(
+                f"{100 * (agg[m]['test']['macro_f1']['mean'] - agg[m]['drug_holdout']['macro_f1']['mean']):.1f} "
+                f"points ({names[m]})"
+                for m in ("tfidf_logreg", "encoder")
+            )
+            + ".",
+        ]
     leak = classical["leakage_demo"]
     legacy, control = leak["legacy_with_duplicates"], leak["control_deduplicated"]
     lines += [
@@ -103,7 +127,7 @@ def main() -> int:
     (folder / "metrics.json").write_text(
         json.dumps(agg, indent=2) + "\n", encoding="utf-8", newline="\n"
     )
-    write_readme(agg, classical, folder / "README.md", sha)
+    write_readme(agg, classical, runs, folder / "README.md", sha)
     log.info("aggregated %s encoder runs", len(runs))
     return 0
 
