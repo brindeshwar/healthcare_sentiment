@@ -4,17 +4,18 @@
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
 **Current phase:** Phase 1 (data & baseline)
-**Branch:** `feat/baselines`
+**Branch:** `feat/annotation-guidelines`
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
 
-- Issue #7 (baselines): done on `feat/baselines`; PR pending. Report at `reports/baselines/README.md`.
+- Issue #8 (annotation guidelines): drafted on `feat/annotation-guidelines`; **owner must review** `docs/annotation_guidelines.md` before annotation starts.
 
 ## Next (ordered)
 
-1. Phase 1: annotation guidelines (#8) → annotation tool + LLM pre-annotation (#9) → owner gold set (#10).
-2. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
+1. Owner: review annotation guidelines (#8).
+2. Phase 1: annotation tool + LLM pre-annotation (#9) → owner gold set (#10).
+3. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
 3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
 ## Blockers / waiting on owner
@@ -78,3 +79,9 @@
 - Leakage demo with control: legacy setup 0.727 macro-F1 (48% of test texts in train) vs de-duplicated 0.631 → +9.6 points from leakage alone.
 - Seed 2026 trained ~3x slower than the others (73 vs 26-30 min), likely thermal throttling / GPU contention on the laptop; results unaffected.
 - Next: #8 annotation guidelines.
+
+### 2026-10-13: Claude Code (Opus 5.5), session 8
+- Merged PR #24 (closes #7); fixed CI mypy `unused-ignore` (GPU-only ignores on CPU CI).
+- #8: `docs/annotation_guidelines.md` (fields, include/exclude rules, span rules, severity cues, withdrawal/beneficial flags, discontinuation + 9 stop reasons, effectiveness, 7 worked examples, process: 100 dev / 200 test, self-agreement on 30). Examples are constructed sentences modelled on real reviews (review IDs given) because only 9/20 real excerpts exist verbatim in CC-BY DrugRev.
+- `medsignal.labeling.schema` (Pydantic, validators, `align_spans` with case-insensitive, word-boundary, reading-order matching); guideline examples are tests. 55 tests.
+- Next: owner review → #9 annotation tool + LLM pre-annotation.

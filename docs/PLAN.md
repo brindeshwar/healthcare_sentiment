@@ -52,7 +52,7 @@ drug labels, shipped as an evidence explorer with open models and an honest writ
 - [x] Splits: own train/val/test after cross-source de-duplication (official UCI test unavailable); drug-held-out split (ADR-0013)
 - [x] EDA report (`reports/eda/`): rating distribution, token lengths, conditions, duration, years, splits
 - [x] Sentiment baselines (sanity only): majority, TF-IDF + LR, one encoder; macro-F1, QWK, 3 seeds (ADR-0015; `reports/baselines/`)
-- [ ] **Annotation guidelines** (`docs/annotation_guidelines.md`): ADE span, severity, discontinued, reason taxonomy
+- [ ] **Annotation guidelines** (`docs/annotation_guidelines.md`): ADE span, severity, discontinued, reason taxonomy (drafted + schema in code, ADR-0016; **awaiting owner review**)
 - [ ] Annotation tool set up (Label Studio or Argilla, local); LLM pre-annotation of 300 sampled reviews
 - [ ] Owner annotates 300 reviews (gold set); 30 double-annotated after 1 week for self-agreement
 
