@@ -25,7 +25,7 @@ Ollama itself always writes a few small files to `C:` that cannot be relocated: 
 
 Silent re-install (what the agent ran; installer is ~1.5 GB, signed by Ollama Inc.):
 ```powershell
-.\OllamaSetup.exe /DIR="D:\healthcare_sentiment	ools\ollama" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART
+.\OllamaSetup.exe /DIR="D:\healthcare_sentiment\tools\ollama" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART
 ```
 
 Manual steps, for reference:
