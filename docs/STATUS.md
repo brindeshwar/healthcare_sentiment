@@ -9,13 +9,12 @@
 
 ## Now (in progress)
 
-- Issue #8 (annotation guidelines): drafted on `feat/annotation-guidelines`; **owner must review** `docs/annotation_guidelines.md` before annotation starts.
+- Issue #8 (annotation guidelines): owner approved 2026-10-13; PR #25 merging.
 
 ## Next (ordered)
 
-1. Owner: review annotation guidelines (#8).
-2. Phase 1: annotation tool + LLM pre-annotation (#9) → owner gold set (#10).
-3. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
+1. Phase 1: annotation tool + LLM pre-annotation (#9) → owner gold set (#10).
+2. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
 3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
 ## Blockers / waiting on owner
@@ -85,3 +84,4 @@
 - #8: `docs/annotation_guidelines.md` (fields, include/exclude rules, span rules, severity cues, withdrawal/beneficial flags, discontinuation + 9 stop reasons, effectiveness, 7 worked examples, process: 100 dev / 200 test, self-agreement on 30). Examples are constructed sentences modelled on real reviews (review IDs given) because only 9/20 real excerpts exist verbatim in CC-BY DrugRev.
 - `medsignal.labeling.schema` (Pydantic, validators, `align_spans` with case-insensitive, word-boundary, reading-order matching); guideline examples are tests. 55 tests.
 - Next: owner review → #9 annotation tool + LLM pre-annotation.
+- Owner approved the annotation guidelines (all five judgment calls as drafted); ADR-0016 accepted.

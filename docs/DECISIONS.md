@@ -114,7 +114,7 @@ Template:
 - Consequences: Numbers are not comparable with papers using the official UCI test split (unavailable, ADR-0011). TF-IDF is deterministic → single run; encoder → mean ± std over seeds.
 
 ## ADR-0016: Annotation schema v1.0 (ADEs with attributes, discontinuation, stop reasons, effectiveness)
-- Date: 2026-10-13 · Status: Proposed (pending owner review of `docs/annotation_guidelines.md`)
+- Date: 2026-10-13 · Status: Accepted (owner approved the guidelines 2026-10-13)
 - Context: The gold set, the LLM teacher and the evaluation must share one label definition, small enough for one person to annotate 300 reviews in 6-10 h, yet rich enough for FAERS comparison and the "why patients stop" analysis.
 - Decision: Per review: ADE spans (verbatim text; attributes severity mild/moderate/severe/not_stated, withdrawal, beneficial), discontinued (yes/planned/no/not_stated), multi-label stop reasons (adverse_event, lack_of_efficacy, cost_access, convenience, course_completed, pregnancy_related, clinician_decision, other, not_stated), effectiveness (effective/partial/not_effective/not_stated). Encoded once as Pydantic models (`labeling/schema.py`); spans are given as text and aligned to offsets (case-insensitive, word-boundary, reading order). Guideline examples are unit tests.
 - Alternatives: PsyTAR's full scheme (ADR/WD/SSI/DI/EF/INF plus symptom categories; too heavy for one annotator); CADEC's five entity types (Drug/Disease/Symptom/Finding need more time and are not needed for our questions); free-text reasons (not countable).
