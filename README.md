@@ -39,7 +39,7 @@ TBD. Filled in as phases complete.
 
 ## Quick start
 
-Requires [uv](https://docs.astral.sh/uv/) and Python 3.12. GPU stages need an NVIDIA GPU (developed on an 8 GB RTX 4060 Laptop) and [Ollama](https://ollama.com).
+Requires [uv](https://docs.astral.sh/uv/) and Python 3.12. GPU stages need an NVIDIA GPU (developed on an 8 GB RTX 4060 Laptop) and [Ollama](https://ollama.com). Accounts, keys and project-local install paths: [`docs/SETUP.md`](docs/SETUP.md).
 
 ```bash
 git clone https://github.com/brindeshwar/medsignal.git

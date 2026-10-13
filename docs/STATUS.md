@@ -16,11 +16,10 @@
 
 1. Phase 1: splits (#5) → EDA (#6) → baselines (#7).
 2. Phase 1: annotation guidelines (#8) + annotation tool + LLM pre-annotation (#9).
-3. Owner (#2): install Ollama; HF + Kaggle accounts; openFDA key; download WebMD CSV to `data/raw/webmd/webmd.csv`.
+3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
 ## Blockers / waiting on owner
 
-- Ollama not installed (needed from Phase 1 pre-annotation onward).
 - WebMD dataset requires Kaggle login (owner downloads).
 
 ## Known facts about the data (verified 2026-10-13)
@@ -30,7 +29,7 @@
 - Local `drugsComTrain_raw.csv`: 161,297 rows (official test file unobtainable).
 - 48,879 duplicate (review, rating) rows (~30%); 62% of reviews contain HTML entities (`&#039;`).
 - Rating distribution skewed: 10 stars = 32%, 1 star = 13%.
-- Legacy data still at `healthcare_sentiment/` (untracked); will be moved to `data/raw/` in Phase 1.
+- Legacy folders `healthcare_sentiment/`, `healthcare_bert_final/` (untracked, ~0.5 GB) no longer used; UCI file copied to `data/raw/drugscom_uci/`. Owner decides on deletion (SETUP.md §5).
 
 ## Session log
 
@@ -55,3 +54,8 @@
 - #4: `medsignal.data.clean` (source loaders → standard schema, drops DrugRev `UserName`), `medsignal.data.dedup` (within-source dedup on text+date with aliases; cross-source match on date+rating+40-char prefix, chosen because it gave 100% rating agreement vs 87% for prefix-only), `medsignal.data.build` (CLI + report). 24 tests.
 - Found DrugRev truncates at sentence boundaries → row-level detection unreliable (precision 0.46 / recall 0.18) → ADR-0012.
 - Next: #5 splits (stratified, drug-held-out), #6 EDA.
+
+### 2026-10-13: Claude Code (Opus 5.5), session 4
+- Owner asked to keep everything inside the project folder: uv `cache-dir = .cache/uv` (pyproject), `HF_HOME=.cache/huggingface` (.env), Ollama install `/DIR` → `tools/ollama`, `OLLAMA_MODELS` → `models/ollama`. Added `docs/SETUP.md` (owner checklist), created local `.env` from `.env.example`.
+- Next: owner works through SETUP.md; agent continues #5 splits after PR #20 merges.
+- Owner's manual install failed (0-byte installer download; no residue). Agent downloaded the signed installer, set user `OLLAMA_MODELS=D:\healthcare_sentiment\models\ollama`, installed Ollama 0.40.3 silently into `tools/ollama`. Only tiny unavoidable files on C: (`~/.ollama`, `%LOCALAPPDATA%/Ollama`).
