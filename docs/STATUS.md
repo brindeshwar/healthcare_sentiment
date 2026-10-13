@@ -4,17 +4,16 @@
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
 **Current phase:** Phase 1 (data & baseline)
-**Branch:** `feat/clean-merge-dedup`
+**Branch:** `feat/splits`
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
 
-- Issue #4 (cleaning + merge + dedup): done on `feat/clean-merge-dedup`; PR pending. 263,862 unique reviews (uci 18,534 / both 93,222 / drugrev 152,106).
-- Dependabot PRs #16-#18: owner approved merging when green; rebases requested (branch protection requires up-to-date).
+- Issue #5 (splits): done on `feat/splits`; PR pending. train 189,938 / val 23,743 / test 23,743 / drug_holdout 26,438 (197 of 1,592 drug groups); no leakage.
 
 ## Next (ordered)
 
-1. Phase 1: splits (#5) → EDA (#6) → baselines (#7).
+1. Phase 1: EDA (#6) → baselines (#7).
 2. Phase 1: annotation guidelines (#8) + annotation tool + LLM pre-annotation (#9).
 3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
@@ -59,3 +58,8 @@
 - Owner asked to keep everything inside the project folder: uv `cache-dir = .cache/uv` (pyproject), `HF_HOME=.cache/huggingface` (.env), Ollama install `/DIR` → `tools/ollama`, `OLLAMA_MODELS` → `models/ollama`. Added `docs/SETUP.md` (owner checklist), created local `.env` from `.env.example`.
 - Next: owner works through SETUP.md; agent continues #5 splits after PR #20 merges.
 - Owner's manual install failed (0-byte installer download; no residue). Agent downloaded the signed installer, set user `OLLAMA_MODELS=D:\healthcare_sentiment\models\ollama`, installed Ollama 0.40.3 silently into `tools/ollama`. Only tiny unavoidable files on C: (`~/.ollama`, `%LOCALAPPDATA%/Ollama`).
+
+### 2026-10-13: Claude Code (Opus 5.5), session 5
+- Merged Dependabot #17, #18 and PR #20 (closes #4); rebased #21 (resolved STATUS.md session-log conflict by keeping both entries).
+- #5: `medsignal.data.splits` (union-find drug groups, whole-group drug holdout capped at 1%-share groups, stratified 80/10/10 by sentiment bucket + source, leakage checks that abort the build). ADR-0013. 29 tests.
+- Next: #6 EDA report, #7 baselines.

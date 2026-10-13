@@ -49,7 +49,7 @@ drug labels, shipped as an evidence explorer with open models and an honest writ
 - [x] Merge UCI + DrugRev (prefer UCI full text; `source`, `possibly_truncated`, duration fields)
 - [x] Cleaning: HTML-entity decoding, whitespace, junk `condition` values (`</span>` artefacts), empty reviews
 - [x] **De-duplication** (normalised text + date; cross-source date + rating + prefix) before any split; counts in `reports/data/build_report.json`
-- [ ] Splits: own train/val/test after cross-source de-duplication (official UCI test unavailable); drug-held-out split
+- [x] Splits: own train/val/test after cross-source de-duplication (official UCI test unavailable); drug-held-out split (ADR-0013)
 - [ ] EDA report (`reports/eda/`): rating distribution, lengths, conditions, drugs, duplicates
 - [ ] Sentiment baselines (sanity only): majority, TF-IDF + LR, one encoder; macro-F1, QWK, 3 seeds
 - [ ] **Annotation guidelines** (`docs/annotation_guidelines.md`): ADE span, severity, discontinued, reason taxonomy

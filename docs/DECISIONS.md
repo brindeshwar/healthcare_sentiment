@@ -91,3 +91,10 @@ Template:
 - Decision: `possibly_truncated = True` for all DrugRev-only rows; `False` for `uci`/`both` (UCI full text). Gold set and teacher-evaluation samples use only full-text rows. Report extraction metrics by source.
 - Alternatives: punctuation heuristic (misses 82% of truncations, false sense of safety); dropping DrugRev-only rows (loses 2018-2023 data and newer drugs).
 - Consequences: ~152K reviews carry the flag; signal analyses must treat DrugRev-only mention rates as lower bounds.
+
+## ADR-0013: Splits: brand/generic drug groups held out whole; rest stratified 80/10/10
+- Date: 2026-10-13 · Status: Accepted
+- Context: The official UCI test file is unavailable (ADR-0011), so we make our own splits. The same review is often listed under brand and generic names (Zoloft / Sertraline), so a naive "hold out drug X" split leaks X in under another name. We also want to test generalisation to unseen drugs.
+- Decision: (1) Build drug groups with union-find over names that co-occur on a review (3,613 names → 1,592 groups). (2) Randomly hold out whole groups until ~10% of reviews (`drug_holdout`), excluding groups larger than 1% of reviews so one contraceptive cannot dominate it. (3) Split the rest 80/10/10 into train/val/test, stratified by (sentiment bucket, source). Seeded; leakage checks run on every build and abort on failure.
+- Alternatives: random split only (no unseen-drug test); time-based split (confounded by DrugRev covering only post-2017 additions); holding out by `drug` string (leaks via aliases).
+- Consequences: Results on `test` = in-distribution; on `drug_holdout` = unseen drugs. Both reported. Not comparable to papers using the official UCI test split.

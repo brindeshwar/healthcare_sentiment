@@ -36,6 +36,9 @@ cleaning:
   decode_html: true
 
 splits:
+  # After de-duplication. drug_holdout first (whole brand/generic drug groups), then the rest
+  # is stratified by (sentiment bucket, source) into train/val/test. See ADR-0013.
   val_fraction: 0.1
   test_fraction: 0.1
   drug_holdout_fraction: 0.1
+  max_holdout_group_share: 0.01   # groups above 1% of reviews (e.g. top contraceptives) are never held out
