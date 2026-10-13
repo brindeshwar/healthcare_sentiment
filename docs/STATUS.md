@@ -9,11 +9,13 @@
 
 ## Now (in progress)
 
-- Issue #9 (annotation tool + pre-annotation): code done on `feat/annotation-tool`; gold sample drawn; pulling `qwen3.5:9b-q4_K_M` for dev pre-annotation.
+- Issue #9 done on `feat/annotation-tool` (PR pending): 100/100 dev reviews pre-annotated, task files in `data/interim/labelstudio/` (dev with predictions, test without), all predictions SDK-validated.
+- **Owner (#10): annotate the gold set** following `docs/SETUP.md` §5.
 
 ## Next (ordered)
 
-1. Phase 1: annotation tool + LLM pre-annotation (#9) → owner gold set (#10).
+1. Owner: gold set (#10), dev first (pre-filled), then test (blind).
+   Meanwhile the agent can start Phase 2 groundwork that does not need gold labels (teacher benchmark harness, candidate models).
 2. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
 3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
@@ -92,3 +94,4 @@
 - Label Studio 1.23.2 installed in isolated venv `tools/label-studio`; interface `configs/labelstudio.xml` generated from schema and validated with the SDK. Owner steps in `docs/SETUP.md` §5.
 - Ollama: tray app's server times out at startup; pipeline runs `ollama serve` itself with `OLLAMA_MODELS=models/ollama` (CUDA 13.4 detected). Tag is `qwen3.5:9b-q4_K_M` (not `9b-q4`).
 - Next: pre-annotate 100 dev reviews, export tasks, hand over to owner (#10).
+- Pre-annotation (qwen3.5:9b-q4_K_M, temp 0): 100/100 dev reviews; median 2.9 s/review after model load (~52 s first call); 94 first-try valid. Failure mode: the model stitches non-adjacent words into one span ("gained... 53 pounds") and repeats it on retry → added `drop_unaligned_on_failure` (pre-annotation only; 2 spans dropped and recorded). Severity skews to "moderate" (132/238 spans): watch in Phase 2 prompt work.

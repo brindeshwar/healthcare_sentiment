@@ -67,6 +67,7 @@ def main(argv: list[str] | None = None) -> int:
         num_ctx=int(pcfg["num_ctx"]),
         max_retries=int(pcfg["max_retries"]),
         seed=int(cfg["seed"]),
+        drop_unaligned_on_failure=bool(pcfg["drop_unaligned_on_failure"]),
     )
     failures = 0
     with httpx.Client() as client, out.open("a", encoding="utf-8", newline="\n") as fh:

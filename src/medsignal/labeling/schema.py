@@ -151,6 +151,21 @@ def align_spans(annotation: ReviewAnnotation, text: str) -> ReviewAnnotation:
     return annotation.model_copy(update={"ades": aligned})
 
 
+def align_spans_lenient(
+    annotation: ReviewAnnotation, text: str
+) -> tuple[ReviewAnnotation, list[str]]:
+    """Like ``align_spans`` but drops spans that are not in the text; returns the dropped spans."""
+    kept: list[ADEMention] = []
+    dropped: list[str] = []
+    for ade in annotation.ades:
+        trial = annotation.model_copy(update={"ades": [*kept, ade]})
+        try:
+            kept = align_spans(trial, text).ades
+        except AlignmentError:
+            dropped.append(ade.text)
+    return annotation.model_copy(update={"ades": kept}), dropped
+
+
 def _find_unused(haystack: str, needle: str, used: list[tuple[int, int]]) -> int:
     """Earliest occurrence that does not overlap a used span and sits on word boundaries."""
     pos = haystack.find(needle)

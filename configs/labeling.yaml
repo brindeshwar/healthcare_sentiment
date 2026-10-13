@@ -20,6 +20,8 @@ preannotate:
   temperature: 0.0
   num_ctx: 4096
   max_retries: 2
+  # Pre-annotation only: keep the rest of an answer whose span is not verbatim (human reviews it).
+  drop_unaligned_on_failure: true
   out: data/annotations/preannotations_dev.jsonl
 
 labelstudio:

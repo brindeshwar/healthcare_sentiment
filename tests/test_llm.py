@@ -57,3 +57,17 @@ def test_annotate_gives_up_after_retries() -> None:
         OllamaAnnotator(model="m", max_retries=1).annotate(
             _client(iter([bad, bad]), []), "r1", "X", None, TEXT
         )
+
+
+def test_drop_unaligned_on_failure_keeps_other_labels() -> None:
+    stitched = {
+        "ades": [{"text": "rash"}, {"text": "gave... a week"}],
+        "discontinued": "yes",
+        "stop_reasons": ["adverse_event"],
+    }
+    ann, meta = OllamaAnnotator(model="m", max_retries=1, drop_unaligned_on_failure=True).annotate(
+        _client(iter([stitched, stitched]), []), "r1", "X", None, TEXT
+    )
+    assert [a.text for a in ann.ades] == ["rash"]
+    assert meta["dropped_spans"] == ["gave... a week"]
+    assert ann.discontinued == Discontinued.YES

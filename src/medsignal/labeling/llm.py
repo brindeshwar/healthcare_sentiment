@@ -23,6 +23,7 @@ from medsignal.labeling.schema import (
     LLMAnnotation,
     ReviewAnnotation,
     align_spans,
+    align_spans_lenient,
 )
 
 log = logging.getLogger(__name__)
@@ -82,6 +83,9 @@ class OllamaAnnotator:
         default_factory=lambda: os.environ.get("OLLAMA_HOST", "http://localhost:11434")
     )
     timeout_s: float = 300.0
+    # After the last retry, keep a schema-valid answer and drop only spans that do not occur in the
+    # review (recorded in provenance). Off for teacher evaluation, where such outputs count as failures.
+    drop_unaligned_on_failure: bool = False
 
     def _chat(self, client: httpx.Client, messages: list[dict[str, str]]) -> str:
         payload: dict[str, Any] = {
@@ -106,10 +110,12 @@ class OllamaAnnotator:
         """Return the aligned annotation and provenance (attempts, errors)."""
         messages = build_messages(drug, condition, text)
         errors: list[str] = []
+        last_valid: ReviewAnnotation | None = None
         for attempt in range(1, self.max_retries + 2):
             raw = self._chat(client, messages)
             try:
                 ann = LLMAnnotation.model_validate_json(raw).to_review(review_id)
+                last_valid = ann
                 aligned = align_spans(ann, text)
                 meta = {"attempts": attempt, "errors": errors}
                 return aligned, meta
@@ -126,6 +132,13 @@ class OllamaAnnotator:
                         "exactly from the review. Return corrected JSON.",
                     },
                 ]
+        if self.drop_unaligned_on_failure and last_valid is not None:
+            kept, dropped = align_spans_lenient(last_valid, text)
+            return kept, {
+                "attempts": self.max_retries + 1,
+                "errors": errors,
+                "dropped_spans": dropped,
+            }
         raise RuntimeError(f"review {review_id}: no valid annotation after retries: {errors}")
 
 
