@@ -123,7 +123,7 @@ def run_seed(
         data_collator=DataCollatorWithPadding(tok),
         compute_metrics=compute_metrics,
     )
-    last = get_last_checkpoint(str(out_dir)) if out_dir.exists() else None  # type: ignore[no-untyped-call]
+    last = get_last_checkpoint(str(out_dir)) if out_dir.exists() else None  # type: ignore[no-untyped-call,unused-ignore]
     t0 = time.perf_counter()
     trainer.train(resume_from_checkpoint=last)
     train_s = time.perf_counter() - t0
@@ -135,7 +135,7 @@ def run_seed(
     }
     for sp in EVAL_SPLITS:
         t1 = time.perf_counter()
-        pred = trainer.predict(data[sp])  # type: ignore[arg-type]  # duck-typed dataset
+        pred = trainer.predict(data[sp])  # type: ignore[arg-type,unused-ignore]  # duck-typed dataset
         result[sp] = classification_metrics(
             np.asarray(pred.label_ids), np.argmax(np.asarray(pred.predictions), axis=-1)
         )
