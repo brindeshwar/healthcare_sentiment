@@ -60,7 +60,7 @@
   "meta": {
     "config": "configs/data.yaml",
     "seed": 42,
-    "git_sha": "c28b2ac-dirty",
-    "built_utc": "2026-10-13T07:10:05+00:00"
+    "git_sha": "303c731",
+    "built_utc": "2026-10-13T07:13:26+00:00"
   }
 }
