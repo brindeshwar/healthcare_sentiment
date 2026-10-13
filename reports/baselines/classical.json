@@ -1,0 +1,227 @@
+{
+  "task": "3-class sentiment from star rating (neg 1-4 / neu 5-6 / pos 7-10)",
+  "label_share_train": {
+    "2": 0.5803,
+    "0": 0.3317,
+    "1": 0.088
+  },
+  "majority": {
+    "drug_holdout": {
+      "n": 26438,
+      "macro_f1": 0.2462,
+      "accuracy": 0.5856,
+      "qwk": 0.0,
+      "f1_per_class": {
+        "neg": 0.0,
+        "neu": 0.0,
+        "pos": 0.7386
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          8634
+        ],
+        [
+          0,
+          0,
+          2323
+        ],
+        [
+          0,
+          0,
+          15481
+        ]
+      ]
+    },
+    "test": {
+      "n": 23743,
+      "macro_f1": 0.2448,
+      "accuracy": 0.5803,
+      "qwk": 0.0,
+      "f1_per_class": {
+        "neg": 0.0,
+        "neu": 0.0,
+        "pos": 0.7344
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          7874
+        ],
+        [
+          0,
+          0,
+          2091
+        ],
+        [
+          0,
+          0,
+          13778
+        ]
+      ]
+    },
+    "val": {
+      "n": 23743,
+      "macro_f1": 0.2448,
+      "accuracy": 0.5803,
+      "qwk": 0.0,
+      "f1_per_class": {
+        "neg": 0.0,
+        "neu": 0.0,
+        "pos": 0.7344
+      },
+      "confusion_matrix": [
+        [
+          0,
+          0,
+          7874
+        ],
+        [
+          0,
+          0,
+          2091
+        ],
+        [
+          0,
+          0,
+          13778
+        ]
+      ]
+    }
+  },
+  "tfidf_logreg": {
+    "chosen_C": 2.0,
+    "val_search": {
+      "0.25": 0.625,
+      "0.5": 0.6295,
+      "1.0": 0.6347,
+      "2.0": 0.637,
+      "4.0": 0.6332
+    },
+    "vocab_size": 200000,
+    "val": {
+      "n": 23743,
+      "macro_f1": 0.637,
+      "accuracy": 0.7525,
+      "qwk": 0.6769,
+      "f1_per_class": {
+        "neg": 0.7536,
+        "neu": 0.3206,
+        "pos": 0.8367
+      },
+      "confusion_matrix": [
+        [
+          5964,
+          962,
+          948
+        ],
+        [
+          596,
+          834,
+          661
+        ],
+        [
+          1394,
+          1316,
+          11068
+        ]
+      ]
+    },
+    "test": {
+      "n": 23743,
+      "macro_f1": 0.6343,
+      "accuracy": 0.7533,
+      "qwk": 0.6814,
+      "f1_per_class": {
+        "neg": 0.7522,
+        "neu": 0.3101,
+        "pos": 0.8405
+      },
+      "confusion_matrix": [
+        [
+          6009,
+          949,
+          916
+        ],
+        [
+          704,
+          798,
+          589
+        ],
+        [
+          1391,
+          1308,
+          11079
+        ]
+      ]
+    },
+    "drug_holdout": {
+      "n": 26438,
+      "macro_f1": 0.5944,
+      "accuracy": 0.7248,
+      "qwk": 0.6259,
+      "f1_per_class": {
+        "neg": 0.7185,
+        "neu": 0.248,
+        "pos": 0.8166
+      },
+      "confusion_matrix": [
+        [
+          6418,
+          966,
+          1250
+        ],
+        [
+          888,
+          676,
+          759
+        ],
+        [
+          1926,
+          1486,
+          12069
+        ]
+      ]
+    }
+  },
+  "leakage_demo": {
+    "description": "raw UCI train file, random 80/20 split, no de-duplication (legacy setup)",
+    "test_reviews_whose_text_is_in_train": 0.4819,
+    "test": {
+      "n": 32260,
+      "macro_f1": 0.7272,
+      "accuracy": 0.8222,
+      "qwk": 0.7512,
+      "f1_per_class": {
+        "neg": 0.7896,
+        "neu": 0.4988,
+        "pos": 0.8932
+      },
+      "confusion_matrix": [
+        [
+          6537,
+          828,
+          650
+        ],
+        [
+          561,
+          1812,
+          498
+        ],
+        [
+          1445,
+          1755,
+          18174
+        ]
+      ]
+    }
+  },
+  "meta": {
+    "config": "configs/baselines.yaml",
+    "git_sha": "0e6b3cc-dirty",
+    "built_utc": "2026-10-13T07:19:48+00:00",
+    "runtime_s": 192.1
+  }
+}

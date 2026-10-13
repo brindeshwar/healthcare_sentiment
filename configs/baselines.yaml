@@ -1,0 +1,30 @@
+# Phase 1 sentiment baselines (sanity only; ADR-0010). Task: 3-class sentiment from star rating
+# (neg 1-4 / neu 5-6 / pos 7-10). Model selection on `val`; `test` and `drug_holdout` reported once.
+data_config: configs/data.yaml
+
+tfidf:
+  ngram_range: [1, 2]
+  min_df: 5
+  max_features: 200000
+  sublinear_tf: true
+  C_grid: [0.25, 0.5, 1.0, 2.0, 4.0]   # chosen on val macro-F1
+  class_weight: balanced               # neutral is ~9% of reviews
+
+# Reproduces the legacy project's evaluation (random split of the raw UCI file, no de-duplication)
+# to measure how much duplicate leakage inflates scores.
+leakage_demo:
+  test_fraction: 0.2
+  seed: 42
+
+encoder:
+  model: thomas-sounack/BioClinical-ModernBERT-base
+  max_length: 256
+  seeds: [13, 42, 2026]
+  epochs: 1            # sanity baseline; ~25 min/epoch at 127 reviews/s on the RTX 4060 Laptop
+  lr: 3.0e-5
+  batch_size: 32
+  grad_accum: 1
+  warmup_ratio: 0.06
+  weight_decay: 0.01
+  eval_every_steps: 1500
+  output_dir: models/baselines/encoder   # git-ignored
