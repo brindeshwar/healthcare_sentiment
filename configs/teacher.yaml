@@ -1,0 +1,19 @@
+# Phase 2: LLM teacher benchmark (ADR-0018). Model/prompt selection on dev only; test scored once.
+seed: 7
+external_config: configs/external.yaml
+
+corpus: cadec
+split: dev
+
+candidates:
+  - qwen3.5:9b-q4_K_M
+  - gemma4:e4b-it-q4_K_M
+  - qwen3.5:4b-q4_K_M
+
+llm:
+  temperature: 0.0
+  num_ctx: 4096
+  max_retries: 2
+
+predictions_dir: data/processed/teacher   # git-ignored (contains spans of licensed text)
+report_dir: reports/teacher
