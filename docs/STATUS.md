@@ -4,7 +4,7 @@
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
 **Current phase:** Phase 1 (data & baseline)
-**Branch:** `feat/external-gold`
+**Branch:** `feat/teacher-benchmark`
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
@@ -101,3 +101,9 @@
 - PsyTAR: AskaPatient is bot-protected (not bypassed), HF copy is a loader only, publisher CDN 404, so owner downloads in a browser. MedHelp DDE: repo has no licence and only scrapers, so discontinuation is not validated against human labels.
 - Lesson: generating Python or Markdown through shell heredocs corrupted backslash escapes three times; write patch scripts with the file tool instead.
 - Next: Phase 2 teacher benchmark on CADEC dev.
+
+### 2026-10-15: Claude Code (Opus 5.5), session 11 (paused by owner)
+- Merged PR #27 (closes #10). Phase 2 started on `feat/teacher-benchmark` (benchmark harness, prompt versions, bootstrap CIs committed).
+- CADEC dev, prompt v1 (relaxed F1 [95% CI]): qwen3.5:9b 0.768 [0.735, 0.796], gemma4:e4b 0.761 [0.728, 0.789], qwen3.5:4b 0.755 [0.723, 0.784]; CIs overlap, gemma ~2.8x faster (0.92 s/doc). Error analysis: 410 missed, 423 boundary-only (CADEC keeps intensity/location words), 61 false positives, 3.5% failures from paraphrased spans.
+- Prompt v2 (keep reviewer's words, label every mention): gemma4:e4b relaxed F1 0.792, strict 0.540 (report in `reports/teacher/cadec_dev/`). qwen3.5:9b v2 run was stopped part-way; it resumes automatically.
+- **Resume:** start Ollama (`docs/SETUP.md` §1), then `uv run python -m medsignal.labeling.benchmark --model qwen3.5:9b-q4_K_M --prompt v2`. Then compare v1/v2 with CIs, and ask the owner whether to adopt v2 span convention (intensity words inside spans) as guideline v1.1 (ADR-0019, not yet written).
