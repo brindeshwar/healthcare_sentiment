@@ -5,7 +5,8 @@ from medsignal.labeling.benchmark import prompt_version, safe_name, score
 
 def test_prompt_version_is_stable_hash() -> None:
     assert prompt_version() == prompt_version()
-    assert len(prompt_version()) == 10
+    assert prompt_version("v1").startswith("v1-")
+    assert prompt_version("v1") != prompt_version("v2")
 
 
 def test_safe_name() -> None:
@@ -34,3 +35,19 @@ def test_score_counts_failures_as_empty_predictions() -> None:
     assert m["relaxed_by_drug"]["LIPITOR"]["f1"] == 1.0
     assert m["relaxed_by_drug"]["diclofenac family"]["recall"] == 0.0
     assert m["seconds_median"] == 5.5
+
+
+def test_score_reports_bootstrap_ci() -> None:
+    docs = [GoldDoc(f"LIPITOR.{i}", "LIPITOR", "pain", [Span.contiguous(0, 4)]) for i in range(20)]
+    preds = {
+        d.doc_id: {
+            "status": "ok",
+            "attempts": 1,
+            "seconds": 1.0,
+            "ades": [{"start": 0, "end": 4}] if i % 2 else [],
+        }
+        for i, d in enumerate(docs)
+    }
+    m = score(docs, preds)
+    assert m["relaxed"]["f1_lo"] <= m["relaxed"]["f1"] <= m["relaxed"]["f1_hi"]
+    assert m["dropped_spans"] == 0

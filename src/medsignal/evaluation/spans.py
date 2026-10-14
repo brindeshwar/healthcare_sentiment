@@ -15,6 +15,8 @@ from __future__ import annotations
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 
+import numpy as np
+
 
 @dataclass(frozen=True)
 class Span:
@@ -68,3 +70,25 @@ def span_prf(
         "n_gold": n_gold,
         "n_pred": n_pred,
     }
+
+
+def bootstrap_f1_ci(
+    docs: Sequence[tuple[Sequence[Span], Sequence[Span]]],
+    relaxed: bool = False,
+    n_boot: int = 1000,
+    seed: int = 0,
+    alpha: float = 0.05,
+) -> dict[str, float]:
+    """Percentile bootstrap CI for micro F1, resampling documents with replacement."""
+    per_doc = [(_match(g, p, relaxed), len(g), len(p)) for g, p in docs]
+    arr = np.array(per_doc, dtype=float).reshape(-1, 3)
+    rng = np.random.default_rng(seed)
+    f1s = []
+    for _ in range(n_boot):
+        s = arr[rng.integers(0, len(arr), len(arr))].sum(axis=0)
+        tp, n_gold, n_pred = s
+        p = tp / n_pred if n_pred else 0.0
+        r = tp / n_gold if n_gold else 0.0
+        f1s.append(2 * p * r / (p + r) if p + r else 0.0)
+    lo, hi = np.percentile(f1s, [100 * alpha / 2, 100 * (1 - alpha / 2)])
+    return {"f1_lo": round(float(lo), 4), "f1_hi": round(float(hi), 4), "n_boot": n_boot}

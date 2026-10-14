@@ -14,6 +14,8 @@ llm:
   temperature: 0.0
   num_ctx: 4096
   max_retries: 2
+  prompt: v1                       # v1 | v2 (ADR-0019); override with --prompt
+  drop_unaligned_on_failure: false # true = drop only non-verbatim spans instead of failing the doc
 
 predictions_dir: data/processed/teacher   # git-ignored (contains spans of licensed text)
 report_dir: reports/teacher
