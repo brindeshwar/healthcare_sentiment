@@ -9,10 +9,11 @@
 | **Drugs.com UCI** (2008-2017) | UCI #462, Gräßer et al. 2018 (**withdrawn from UCI**, see below) | 161,297 train rows (local copy; test file not available) | rating 1-10, condition, usefulCount, date | main corpus (full-length text) | research use, cite authors, do not redistribute |
 | **Druglib.com** | [UCI #461](https://archive.ics.uci.edu/dataset/461/drug+review+dataset+druglib+com) | 4,143 (official train/test) | separate benefits / side-effects / comments text; effectiveness + side-effect ratings | aspect-level check set | research only, no redistribution, cite authors |
 | WebMD reviews | [Kaggle](https://www.kaggle.com/datasets/rohanharode07/webmd-drug-reviews-dataset) (manual, login) | ~360K | effectiveness, ease of use, satisfaction (1-5), age, sex | cross-platform eval | listed CC0 on OpenML; verify on Kaggle |
-| PsyTAR | [Zolnoori et al. 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6495095/) | 891 reviews | expert ADR / WD / SSI / effectiveness | external check (optional) | CC BY 4.0 |
 | FAERS | [openFDA drug/event](https://open.fda.gov/apis/drug/event/) | API | MedDRA PT reactions | comparison | public domain (US gov) |
 | Drug labels | [openFDA drug/label](https://open.fda.gov/apis/drug/label/) | API | `adverse_reactions` text | "on label?" check | public domain |
-| Gold set | owner-annotated | 300 (+100 WebMD optional) | ADE spans, severity, discontinued, reason | evaluation | ours |
+| **CADEC v2** | [CSIRO DAP](https://data.csiro.au/collection/csiro:17190) | 1,250 AskaPatient posts | 6,318 expert ADR spans (1,066 discontinuous), MedDRA codes | external gold: ADE spans, normalisation (ADR-0018) | CSIRO Data Licence: non-commercial, attribution, no redistribution |
+| **PsyTAR** | [Zolnoori et al. 2019](https://pmc.ncbi.nlm.nih.gov/articles/PMC6495095/) | 891 reviews | ADR / WD / SSI / DI entities, severity qualifiers, EF / INF sentences | external gold: ADEs, withdrawal, effectiveness (ADR-0018) | CC BY 4.0 (manual browser download) |
+| Drugs.com gold sample | owner (parked, ADR-0018) | 300 IDs + 100 LLM pre-annotations | schema v1.0 | optional in-domain spot check | ours |
 
 Checksums are pinned in `configs/data.yaml`; each `data/raw/<source>/manifest.json` records URL, size, sha256, retrieval time.
 

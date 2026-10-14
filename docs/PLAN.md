@@ -54,14 +54,14 @@ drug labels, shipped as an evidence explorer with open models and an honest writ
 - [x] Sentiment baselines (sanity only): majority, TF-IDF + LR, one encoder; macro-F1, QWK, 3 seeds (ADR-0015; `reports/baselines/`)
 - [x] **Annotation guidelines** (`docs/annotation_guidelines.md`): ADE span, severity, discontinued, reason taxonomy (schema in code, ADR-0016; owner approved)
 - [x] Annotation tool set up (Label Studio, local, ADR-0017); gold sample drawn (100 dev / 200 test); LLM pre-annotation of the 100 dev reviews (test annotated blind)
-- [ ] Owner annotates 300 reviews (gold set); 30 double-annotated after 1 week for self-agreement
+- [x] ~~Owner annotates 300 reviews~~ replaced by external expert gold (ADR-0018): CADEC downloaded + split; PsyTAR pending owner's one-click download
 
-**Acceptance:** `python -m medsignal.data.build` reproduces processed data; baseline table in `reports/`; gold set committed.
+**Acceptance:** `python -m medsignal.data.build` reproduces processed data; baseline table in `reports/`; external gold splits committed (ADR-0018).
 
 ## Phase 2: LLM teacher  (~1.5 weeks; GPU 10-14 h; owner 2 h)
 
 - [ ] Output JSON schema (Pydantic): ADE mentions (span, text, severity), discontinued (bool), reason category, effectiveness
-- [ ] Prompt v1 + few-shot examples drawn from a **dev** part of the gold set only
+- [ ] Prompt v1 + few-shot examples tuned on **CADEC/PsyTAR dev** only (ADR-0018)
 - [ ] Benchmark 2-3 local LLMs (e.g. Qwen3.5-9B, Gemma 4, verify current options) via Ollama structured outputs
 - [ ] Measure teacher vs gold: span F1 (strict + relaxed), discontinuation F1, reason macro-F1, invalid-JSON rate, s/review
 - [ ] Optional: self-consistency (k samples, majority vote) if it improves dev F1 enough for the cost

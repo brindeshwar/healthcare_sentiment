@@ -39,7 +39,7 @@ Template:
 - Consequences: Student inherits teacher errors → teacher must be measured against a human gold set.
 
 ## ADR-0004: Human gold set of 300 reviews, annotated by the owner
-- Date: 2026-10-13 · Status: Accepted
+- Date: 2026-10-13 · Status: Superseded by ADR-0018
 - Context: LLM labels on noisy social text are unreliable (5-shot F1 ~49-66 on SMM4H/CADEC in 2025 benchmarks). Credible work validates on human labels.
 - Decision: Owner annotates 300 Drugs.com reviews (LLM pre-annotation, human correction), split dev/test. Optional 100 WebMD reviews for cross-platform eval.
 - Consequences: ~6-10 h owner time; small test set → report confidence intervals.
@@ -121,7 +121,7 @@ Template:
 - Consequences: Withdrawal effects are ADEs with a flag rather than a separate entity; welcome effects (e.g. amenorrhoea on contraceptives) are kept with `beneficial=true` so FAERS-style counts include them. Reason taxonomy is close to the 2026 Estonian EHR study, which supports comparison.
 
 ## ADR-0017: Gold-set protocol: sample, tool, and blind test annotation
-- Date: 2026-10-13 · Status: Accepted (owner chose blind test annotation)
+- Date: 2026-10-13 · Status: Superseded by ADR-0018 (sample, pre-annotations and Label Studio setup kept, parked)
 - Context: The gold set evaluates the LLM teacher (Phase 2) and the encoder student (Phase 3). LLM pre-annotation saves time but anchors the annotator toward the LLM's answers, which would inflate the teacher's test score.
 - Decision:
   - Sample: 100 **dev** reviews from the `val` split and 200 **test** reviews from the `test` split (never from `train`, which the student trains on); full-text only; sentiment buckets oversampled to 40/20/40 neg/neu/pos (ADEs are rarer in positive reviews); at most 2 per drug group; drawn once with a fixed seed and committed as IDs only (`data/annotations/gold_sample.csv`).
@@ -129,3 +129,13 @@ Template:
   - Tool: Label Studio 1.23 (Apache-2.0), run locally from an isolated venv in `tools/label-studio`, data in `.cache/label-studio`. Interface generated from the schema enums and validated with the Label Studio SDK.
 - Alternatives: all 300 pre-filled (~2-3 h faster, biased test); pre-filling test with a non-LLM model such as GLiNER-BioMed (less bias, more setup); Argilla (needs a search backend); a custom Streamlit tool (no native span selection).
 - Consequences: Owner time ~8-11 h. Sample metrics reflect the 40/20/40 mix, not the population (stated in reports). Dev may be used freely for prompt design; test is touched once per final model.
+
+## ADR-0018: Evaluate on published expert-annotated corpora instead of an owner-annotated gold set
+- Date: 2026-10-15 · Status: Accepted (owner: no time for manual annotation)
+- Context: ADR-0004/0017 required ~8-11 h of owner annotation. The owner cannot provide this time. Letting an LLM (or the agent) label the gold set would make the evaluation circular and would misrepresent "human gold" (AGENTS.md §7.5).
+- Decision: Use independent, expert-annotated public corpora as gold, each split once into dev (tuning) and test (reported once):
+  - **CADEC v2** (CSIRO; 1,250 AskaPatient posts; 6,318 expert ADR spans, 1,066 discontinuous; 5,947 with MedDRA codes): ADE span extraction (strict + relaxed F1) and, in Phase 4, MedDRA normalisation. Split 25/75 dev/test stratified by drug (313/937 posts, 1,484/4,834 ADEs; seed 11, `data/annotations/external/cadec_split.csv`).
+  - **PsyTAR** (891 AskaPatient reviews of 4 psychiatric drugs; CC BY 4.0): ADEs, withdrawal symptoms, severity qualifiers, effectiveness/ineffectiveness sentences. Owner downloads the xlsx once in a browser (the source is bot-protected; no scripted download).
+- Not covered by any obtainable expert corpus: discontinuation and stop reasons (the MedHelp DDE study releases only scraper scripts, no licence; scraping MedHelp is not acceptable), the `beneficial` flag. These are reported as **not validated against human labels**; only reliability measures (agreement between two different local LLMs) are reported for them.
+- Alternatives: owner gold set (no time); smaller owner gold set of 50-60 reviews (still manual); LLM-labelled "gold" (circular, rejected); scraping MedHelp for the DDE labels (terms of use, unlicensed code, rejected).
+- Consequences: Evaluation is **out-of-domain** (AskaPatient, not Drugs.com): this is reported as external validation, a gap highlighted by the 2025 systematic review. Corpora use their own annotation conventions (e.g. CADEC span boundaries, "Symptom" vs "ADR"), so scores reflect agreement with those conventions; dev splits are used to adapt prompts, test splits are used once. CADEC is 80% Lipitor: results are also reported per drug. CADEC licence is non-commercial, attribution, no redistribution: raw files stay in `data/raw/` (git-ignored); only IDs/splits are committed. The 300-review Drugs.com sample, LLM pre-annotations and Label Studio setup are kept for an optional later in-domain spot check.
