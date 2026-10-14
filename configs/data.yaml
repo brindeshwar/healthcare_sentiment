@@ -26,6 +26,19 @@ sources:
     kind: manual
     files: [drugsComTrain_raw.csv]
     note: "UCI #462 was withdrawn (403 / 'not found', checked 2026-10-13). Use a copy obtained while it was public; not redistributed."
+  cadec:
+    # External expert gold for ADE spans + MedDRA normalisation (ADR-0018).
+    # CSIRO Data Licence: non-commercial, attribution, no redistribution.
+    kind: url
+    url: https://data.csiro.au/dap/ws/v2/collections/17190/data/48639771
+    filename: CADEC.v2.zip
+    sha256: 4045b926a0a5735f00f785f7ad935e5a73731d6ab607d11d88880a334be18c4a
+    extract: true
+  psytar:
+    # External expert gold for ADEs, withdrawal, effectiveness (ADR-0018). CC BY 4.0.
+    kind: manual
+    files: [PsyTAR_dataset.xlsx]
+    note: "AskaPatient is bot-protected (no scripted download): open https://www.askapatient.com/research/pharmacovigilance/corpus-ades-psychiatric-medications.asp in a browser and save the xlsx here"
   webmd:
     kind: manual
     files: [webmd.csv]

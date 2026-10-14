@@ -4,20 +4,19 @@
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
 **Current phase:** Phase 1 (data & baseline)
-**Branch:** `feat/annotation-tool`
+**Branch:** `feat/external-gold`
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
 
-- Issue #9 done on `feat/annotation-tool` (PR pending): 100/100 dev reviews pre-annotated, task files in `data/interim/labelstudio/` (dev with predictions, test without), all predictions SDK-validated.
-- **Owner (#10): annotate the gold set** following `docs/SETUP.md` §5.
+- ADR-0018: owner annotation replaced by expert corpora. CADEC v2 downloaded, loaded, split (dev 313 / test 937 posts). PsyTAR waiting for owner's one-minute browser download (`docs/SETUP.md` §5). PR pending on `feat/external-gold`.
 
 ## Next (ordered)
 
-1. Owner: gold set (#10), dev first (pre-filled), then test (blind).
-   Meanwhile the agent can start Phase 2 groundwork that does not need gold labels (teacher benchmark harness, candidate models).
-2. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
-3. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
+1. Phase 2: teacher benchmark harness on CADEC dev (strict/relaxed span F1), candidate local LLMs.
+2. Owner (whenever convenient): download PsyTAR xlsx (`docs/SETUP.md` §5).
+3. Optional: encoder with class weighting (neutral F1 is the weak spot); not required for Phase 1.
+4. Owner (#2), later: HF token, openFDA key, WebMD CSV (see `docs/SETUP.md`). Ollama done.
 
 ## Blockers / waiting on owner
 
@@ -95,3 +94,10 @@
 - Ollama: tray app's server times out at startup; pipeline runs `ollama serve` itself with `OLLAMA_MODELS=models/ollama` (CUDA 13.4 detected). Tag is `qwen3.5:9b-q4_K_M` (not `9b-q4`).
 - Next: pre-annotate 100 dev reviews, export tasks, hand over to owner (#10).
 - Pre-annotation (qwen3.5:9b-q4_K_M, temp 0): 100/100 dev reviews; median 2.9 s/review after model load (~52 s first call); 94 first-try valid. Failure mode: the model stitches non-adjacent words into one span ("gained... 53 pounds") and repeats it on retry → added `drop_unaligned_on_failure` (pre-annotation only; 2 spans dropped and recorded). Severity skews to "moderate" (132/238 spans): watch in Phase 2 prompt work.
+
+### 2026-10-15: Claude Code (Opus 5.5), session 10
+- Merged PR #26 (closes #9). Owner set up Label Studio but has no time to annotate, so ADR-0018: evaluate on expert corpora. Agent declined to label the gold set itself (circular, misrepresents human gold).
+- CADEC: v1 (collection 10948) has annotations but no texts; v2 (collection 17190, `CADEC.v2.zip`) has all 1,250 texts. Offsets verified (9,107/9,111 exact); 6,318 ADRs, 1,066 discontinuous; MedDRA lines include `+`-joined codes, `a/b` alternatives and `CONCEPT_LESS`; 5,947 ADRs with codes (687 unique).
+- PsyTAR: AskaPatient is bot-protected (not bypassed), HF copy is a loader only, publisher CDN 404, so owner downloads in a browser. MedHelp DDE: repo has no licence and only scrapers, so discontinuation is not validated against human labels.
+- Lesson: generating Python or Markdown through shell heredocs corrupted backslash escapes three times; write patch scripts with the file tool instead.
+- Next: Phase 2 teacher benchmark on CADEC dev.

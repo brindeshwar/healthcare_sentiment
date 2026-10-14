@@ -1,0 +1,10 @@
+# External expert gold sets (ADR-0018). Splits are drawn once and committed (IDs only).
+seed: 11
+
+cadec:
+  root: data/raw/cadec/cadec          # CADEC v2: text/, original/, meddra/
+  dev_fraction: 0.25                  # dev: prompt/threshold tuning; test: reported once
+  split_out: data/annotations/external/cadec_split.csv
+
+psytar:
+  file: data/raw/psytar/PsyTAR_dataset.xlsx   # manual download (bot-protected source)

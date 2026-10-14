@@ -73,7 +73,16 @@ Start-Process .\tools\ollama\ollama.exe -ArgumentList serve -WindowStyle Hidden
    ```
    It should log `webmd: manual files present`.
 
-## 5. Annotating the gold set (issue #10)
+## 5. PsyTAR download (one minute)
+
+The PsyTAR source is bot-protected, so scripts cannot fetch it. In your browser open
+<https://www.askapatient.com/research/pharmacovigilance/corpus-ades-psychiatric-medications.asp>,
+download the dataset (xlsx) and save it as `D:\healthcare_sentiment\data\raw\psytar\PsyTAR_dataset.xlsx`.
+Check with `uv run python -m medsignal.data.download --only psytar`.
+
+## 5b. (Parked) Annotating a Drugs.com gold set
+
+> Not required: replaced by expert corpora (ADR-0018). Kept for an optional in-domain spot check.
 
 The agent prepares everything (gold sample, LLM pre-annotations for dev, task files, interface). You annotate.
 
