@@ -3,8 +3,8 @@
 > **Hand-off file.** Every agent/person reads this first and updates it last (see AGENTS.md §2-3).
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
-**Current phase:** Phase 2 done (PR pending) → Phase 3 (encoder student)
-**Branch:** `feat/teacher-benchmark`
+**Current phase:** Phase 3 (encoder student) in progress; Phase 2 PR #28 green, awaiting owner merge
+**Branch:** `feat/student-encoder` (stacked on `feat/teacher-benchmark`)
 **Last updated:** 2026-10-13
 
 ## Now (in progress)
@@ -115,3 +115,9 @@
 - Next: when silver labelling finishes, summarise label statistics, open PR for Phase 2, then Phase 3 (encoder student).
 - Silver labelling complete after one crash at 4,014 (unhandled Ollama HTTP 500; fixed with retries/backoff and `OllamaUnavailableError`, resumed): 10,000 reviews, 9,956 ok, 44 failed, 98.8% first try, 62 dropped spans, 18,402 ADEs; 2,613 stopped/planned (adverse_event 2,125). Neg reviews 78% ADE / 47% stopped vs pos 48% / 7%. 1.64 GPU-hours.
 - Phase 2 PLAN boxes ticked. Next: Phase 3 encoder student on silver labels (BioClinical ModernBERT token classification + review-level heads), evaluate on CADEC test vs teacher and GLiNER-BioMed.
+
+### 2026-10-16: Claude Code (Opus 5.5), session 13
+- Phase 2 PR #28 opened (CI green; owner to say merge).
+- Phase 3: `extraction.bio` (99.76% exact silver span round-trip with the ModernBERT tokenizer; 9 spans beyond 256 tokens), `extraction.train` (3 seeds, ~6.5 min each). CADEC test relaxed F1: student 0.795 ± 0.003 (P 0.899, R 0.713) at ~62 posts/s vs teacher 0.806 [0.791, 0.821] at ~1.3/s; GLiNER-BioMed large zero-shot 0.766 [0.752, 0.780] (labels adverse drug reaction + side effect + symptom @ 0.4, chosen on dev). ADR-0021.
+- GLiNER needs transformers<5.17 -> isolated venv `tools/gliner` + standalone `scripts/gliner_predict.py`.
+- Next: review-level heads (discontinued, stop reasons, effectiveness); run student over all 263,862 reviews -> mentions parquet; HF Hub publish (needs owner's HF token).

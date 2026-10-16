@@ -1,0 +1,126 @@
+{
+  "teacher": {
+    "dev": {
+      "relaxed_f1": 0.792,
+      "relaxed_ci": [
+        0.7655,
+        0.8168
+      ],
+      "relaxed_p": 0.9292,
+      "relaxed_r": 0.69,
+      "strict_f1": 0.5398,
+      "docs_per_second": 1.23
+    },
+    "test": {
+      "relaxed_f1": 0.8058,
+      "relaxed_ci": [
+        0.7909,
+        0.8206
+      ],
+      "relaxed_p": 0.9477,
+      "relaxed_r": 0.7009,
+      "strict_f1": 0.5777,
+      "docs_per_second": 1.28
+    }
+  },
+  "student": {
+    "dev": {
+      "relaxed_f1": {
+        "mean": 0.7976,
+        "std": 0.0024,
+        "n_runs": 3
+      },
+      "relaxed_p": {
+        "mean": 0.8926,
+        "std": 0.0042,
+        "n_runs": 3
+      },
+      "relaxed_r": {
+        "mean": 0.7208,
+        "std": 0.002,
+        "n_runs": 3
+      },
+      "strict_f1": {
+        "mean": 0.5108,
+        "std": 0.0053,
+        "n_runs": 3
+      },
+      "docs_per_second": {
+        "mean": 63.4333,
+        "std": 1.2662,
+        "n_runs": 3
+      }
+    },
+    "test": {
+      "relaxed_f1": {
+        "mean": 0.7951,
+        "std": 0.0032,
+        "n_runs": 3
+      },
+      "relaxed_p": {
+        "mean": 0.8987,
+        "std": 0.0032,
+        "n_runs": 3
+      },
+      "relaxed_r": {
+        "mean": 0.7129,
+        "std": 0.0071,
+        "n_runs": 3
+      },
+      "strict_f1": {
+        "mean": 0.5552,
+        "std": 0.0042,
+        "n_runs": 3
+      },
+      "docs_per_second": {
+        "mean": 62.3,
+        "std": 4.4193,
+        "n_runs": 3
+      }
+    },
+    "seeds": [
+      13,
+      2026,
+      42
+    ]
+  },
+  "gliner": {
+    "dev": {
+      "relaxed_f1": 0.7465,
+      "relaxed_ci": [
+        0.7192,
+        0.7727
+      ],
+      "relaxed_p": 0.7391,
+      "relaxed_r": 0.754,
+      "strict_f1": 0.533
+    },
+    "test": {
+      "relaxed_f1": 0.7664,
+      "relaxed_ci": [
+        0.7523,
+        0.7803
+      ],
+      "relaxed_p": 0.7724,
+      "relaxed_r": 0.7604,
+      "strict_f1": 0.566
+    },
+    "chosen_on_dev": {
+      "labels": [
+        "adverse drug reaction",
+        "side effect",
+        "symptom"
+      ],
+      "threshold": 0.4,
+      "dev_relaxed_f1": 0.7465
+    }
+  },
+  "meta": {
+    "teacher": {
+      "model": "gemma4:e4b-it-q4_K_M",
+      "prompt": "v2"
+    },
+    "student_model": "thomas-sounack/BioClinical-ModernBERT-base",
+    "git_sha": "4c45d81"
+  }
+}
