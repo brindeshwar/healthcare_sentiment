@@ -23,3 +23,9 @@ eval:
 
 output_dir: models/student   # git-ignored
 report_dir: reports/student
+
+inference:                    # full-corpus run (ADR-0022); seeds chosen by rule from reports
+  max_length: 256
+  batch_size: 128
+  chunk_size: 10000           # one parquet part per chunk (resumable)
+  out_dir: data/processed/student

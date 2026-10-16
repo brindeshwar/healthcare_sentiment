@@ -41,7 +41,13 @@ def load_silver(cfg: dict[str, Any]) -> pd.DataFrame:
         if line
     ]
     rows = [
-        {"review_id": r["review_id"], "spans": [(a["start"], a["end"]) for a in r["ades"]]}
+        {
+            "review_id": r["review_id"],
+            "spans": [(a["start"], a["end"]) for a in r["ades"]],
+            "discontinued": r["discontinued"],
+            "effectiveness": r["effectiveness"],
+            "stop_reasons": r["stop_reasons"],
+        }
         for r in recs
         if r["status"] == "ok"
     ]
