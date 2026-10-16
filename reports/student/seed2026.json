@@ -1,0 +1,105 @@
+{
+  "seed": 2026,
+  "train_reviews": 8952,
+  "silver_val_reviews": 1004,
+  "train_seconds": 397.1,
+  "silver_val": {
+    "eval_token_f1": 0.7752,
+    "eval_token_p": 0.7963,
+    "eval_token_r": 0.7552
+  },
+  "best_checkpoint": "checkpoint-1680",
+  "cadec_dev": {
+    "docs": 313,
+    "strict": {
+      "precision": 0.5747,
+      "recall": 0.4616,
+      "f1": 0.512,
+      "tp": 685,
+      "n_gold": 1484,
+      "n_pred": 1192,
+      "f1_lo": 0.4772,
+      "f1_hi": 0.55,
+      "n_boot": 1000
+    },
+    "relaxed": {
+      "precision": 0.8968,
+      "recall": 0.7204,
+      "f1": 0.799,
+      "tp": 1069,
+      "n_gold": 1484,
+      "n_pred": 1192,
+      "f1_lo": 0.7761,
+      "f1_hi": 0.8218,
+      "n_boot": 1000
+    },
+    "relaxed_by_drug": {
+      "LIPITOR": {
+        "precision": 0.9,
+        "recall": 0.7089,
+        "f1": 0.7931,
+        "tp": 918,
+        "n_gold": 1295,
+        "n_pred": 1020
+      },
+      "diclofenac family": {
+        "precision": 0.8779,
+        "recall": 0.7989,
+        "f1": 0.8366,
+        "tp": 151,
+        "n_gold": 189,
+        "n_pred": 172
+      }
+    },
+    "docs_per_second": 62.0
+  },
+  "cadec_test": {
+    "docs": 937,
+    "strict": {
+      "precision": 0.6322,
+      "recall": 0.4957,
+      "f1": 0.5557,
+      "tp": 2396,
+      "n_gold": 4834,
+      "n_pred": 3790,
+      "f1_lo": 0.5358,
+      "f1_hi": 0.576,
+      "n_boot": 1000
+    },
+    "relaxed": {
+      "precision": 0.9018,
+      "recall": 0.7071,
+      "f1": 0.7927,
+      "tp": 3418,
+      "n_gold": 4834,
+      "n_pred": 3790,
+      "f1_lo": 0.7794,
+      "f1_hi": 0.8049,
+      "n_boot": 1000
+    },
+    "relaxed_by_drug": {
+      "LIPITOR": {
+        "precision": 0.9035,
+        "recall": 0.6971,
+        "f1": 0.787,
+        "tp": 2883,
+        "n_gold": 4136,
+        "n_pred": 3191
+      },
+      "diclofenac family": {
+        "precision": 0.8932,
+        "recall": 0.7665,
+        "f1": 0.825,
+        "tp": 535,
+        "n_gold": 698,
+        "n_pred": 599
+      }
+    },
+    "docs_per_second": 57.5
+  },
+  "meta": {
+    "model": "thomas-sounack/BioClinical-ModernBERT-base",
+    "git_sha": "2d577f2",
+    "built_utc": "2026-10-16T15:16:10+00:00"
+  }
+}

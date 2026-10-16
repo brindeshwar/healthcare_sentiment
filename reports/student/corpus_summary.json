@@ -1,0 +1,56 @@
+{
+  "reviews": 263862,
+  "mentions": 523161,
+  "reviews_with_ade": 169209,
+  "span_model_seed": 13,
+  "review_model_seed": 2026,
+  "discontinued": {
+    "not_stated": 185276,
+    "yes": 49554,
+    "no": 21429,
+    "planned": 7603
+  },
+  "effectiveness": {
+    "effective": 102291,
+    "not_stated": 87987,
+    "partial": 50404,
+    "not_effective": 23180
+  },
+  "stop_reasons": {
+    "adverse_event": 50104,
+    "other": 2974,
+    "lack_of_efficacy": 2633,
+    "cost_access": 1004,
+    "course_completed": 936,
+    "clinician_decision": 62,
+    "convenience": 3
+  },
+  "top_mentions": {
+    "nausea": 9408,
+    "headaches": 5224,
+    "diarrhea": 3796,
+    "weight gain": 3645,
+    "nauseous": 3487,
+    "anxiety": 3458,
+    "dizziness": 3325,
+    "mood swings": 3229,
+    "pain": 3075,
+    "headache": 3041,
+    "depression": 3002,
+    "fatigue": 2865,
+    "insomnia": 2811,
+    "dry mouth": 2763,
+    "dizzy": 2668,
+    "tired": 2646,
+    "spotting": 2546,
+    "cramps": 2446,
+    "depressed": 2123,
+    "vomiting": 2104,
+    "itching": 2039,
+    "constipation": 2030,
+    "burning": 1822,
+    "cramping": 1781,
+    "bloating": 1702
+  },
+  "git_sha": "468513b"
+}

@@ -71,11 +71,12 @@ drug labels, shipped as an evidence explorer with open models and an honest writ
 
 ## Phase 3: Encoder student & extraction at scale  (~1.5 weeks; GPU 4-6 h; owner 2 h)
 
-- [ ] Convert silver labels to BIO tags; train BioClinical ModernBERT token classifier + discontinuation/reason heads
-- [ ] Baselines: GLiNER-BioMed zero-shot; teacher itself
-- [ ] Evaluate all on gold test (3 seeds); speed (reviews/s) and cost comparison
+- [x] Convert silver labels to BIO tags; train BioClinical ModernBERT token classifier (ADR-0021)
+- [x] Discontinuation / reason / effectiveness heads (one multi-label classifier, ADR-0022)
+- [x] Baselines: GLiNER-BioMed zero-shot; teacher itself
+- [x] Evaluate all on CADEC test (student 3 seeds); speed (`reports/student/README.md`)
 - [ ] Cross-platform: evaluate on WebMD sample (owner annotates 100 WebMD reviews, or use rating-derived proxy where valid)
-- [ ] Run student over all de-duplicated reviews; store mentions table (parquet)
+- [x] Run student over all de-duplicated reviews; store mentions table (parquet): 523,161 mentions in 263,862 reviews
 - [ ] Publish model to HF Hub with model card
 
 **Acceptance:** results table (teacher vs student vs GLiNER) with mean ± std; full-corpus mentions table.

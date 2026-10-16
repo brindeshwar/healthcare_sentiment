@@ -154,3 +154,22 @@ Template:
 - Context: The encoder student (Phase 3) learns from teacher labels. ~10K reviews fit the time budget (~1 s/review with the chosen teacher).
 - Decision: 10,000 reviews from the **train** split only (val/test/drug_holdout stay unseen), stratified 40/20/40 neg/neu/pos (ADEs and discontinuation concentrate in neg/neu), at most 60 per drug group, any source (DrugRev-only truncated texts allowed: labels are consistent with the text the student sees). IDs drawn once (seed 23) and committed (`data/annotations/silver_sample.csv`); labels with provenance (model, prompt version, schema version, git SHA) in `data/processed/silver/silver.jsonl`. Non-verbatim spans are dropped and recorded rather than failing the review.
 - Consequences: The student sees a sentiment mix unlike the population; Phase 3 reports metrics on the population-distributed splits.
+
+## ADR-0021: Encoder student design and the zero-shot baseline
+- Date: 2026-10-16 · Status: Accepted
+- Context: Phase 3 must show that a small encoder trained only on teacher labels can replace the LLM for extraction at scale, and that it beats an off-the-shelf zero-shot model.
+- Decision:
+  - Student: BioClinical ModernBERT-base, token classification (O / B-ADE / I-ADE), labels from the 9,956 silver reviews converted with tokenizer offsets (99.76% exact span round-trip). 10% of silver held out **by drug group** selects the checkpoint (token F1); 3 epochs, lr 5e-5, batch 16, max_length 256 (eval 1024); 3 seeds. Evaluated on CADEC dev and test with the teacher's span metrics.
+  - Baseline: GLiNER-BioMed large (Apache-2.0), zero-shot. It needs transformers<5.17, so it runs in an isolated venv (`tools/gliner`) via a standalone script that saves all spans >= 0.1; label set and threshold chosen on CADEC dev, applied once to test.
+- Results (CADEC test, relaxed F1): teacher 0.806 [0.791, 0.821]; **student 0.795 ± 0.003** at ~62 posts/s (~50x the teacher); GLiNER-BioMed 0.766 [0.752, 0.780] (recall 0.760, precision 0.772). The student matches its teacher within the CI and exceeds the zero-shot baseline; on dev the student (0.798) slightly exceeds its teacher (0.792), consistent with Vedula et al. 2025.
+- Alternatives: fine-tuning a <=2B LLM (ADR-0005: slower, no accuracy evidence); GLiNER as the student (lower F1, label-prompt sensitive); training on CADEC directly (would leak the test corpus and is non-commercial data).
+- Consequences: Review-level outputs (discontinuation, reasons, effectiveness) are not yet in the student; they will be added as sequence-classification heads or kept from the teacher where the teacher has run. GLiNER throughput was not measured (different environment).
+
+## ADR-0022: Review-level student and full-corpus inference
+- Date: 2026-10-17 · Status: Accepted
+- Context: Phase 4 needs side-effect mentions and stop reasons for every review; the LLM teacher is too slow for 264K reviews (~1 review/s) and the span student has no review-level outputs.
+- Decision:
+  - One BioClinical ModernBERT sequence classifier with 17 sigmoid outputs (4 discontinued + 4 effectiveness + 9 stop reasons, multi-label BCE) trained on the silver labels; decoding takes the argmax per single-choice group and reasons >= 0.5 only when stopped/planned (at least one). No expert gold exists for these fields (ADR-0018), so the reported metric is agreement with the teacher on held-out drug groups, next to a majority baseline: stopped-or-planned F1 0.816 ± 0.033, effectiveness macro-F1 0.765 ± 0.003, stop-reason micro-F1 0.741 ± 0.030 (3 seeds; `reports/student/reviews_summary.json`).
+  - Full-corpus run: models chosen by rule (span seed with best CADEC dev F1 = 13; review seed with best held-out discontinued macro-F1 = 2026), chunked resumable inference with chunk-ID verification; smoke runs isolated. Outputs `data/processed/student/mentions.parquet` (523,161 mentions) and `review_labels.parquet` (263,862 reviews); summary in `reports/student/corpus_summary.json`.
+- Alternatives: three separate classifiers (3x inference cost); a custom multi-task model sharing one encoder with the span tagger (one pass, but more custom code and no measured benefit yet); running the teacher on everything (~70 GPU-hours).
+- Consequences: Generic phrases such as "horrible side effects" appear in 0.19% of mentions (973); they are filtered in Phase 4 because they map to no MedDRA term. Review-level labels are teacher-agreement-validated only.
