@@ -14,7 +14,9 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import statistics
 import time
+from collections import Counter
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -126,10 +128,65 @@ def label(cfg: dict[str, Any], limit: int | None) -> int:
     return failures
 
 
+def summarize(records: list[dict[str, Any]], sample: pd.DataFrame) -> dict[str, Any]:
+    """Label statistics for the silver set (counts only; no review text)."""
+    ok = [r for r in records if r["status"] == "ok"]
+    n_ok = max(len(ok), 1)
+    ades = [a for r in ok for a in r["ades"]]
+    bucket = dict(zip(sample["review_id"], sample["bucket"], strict=True))
+    by_bucket: dict[str, dict[str, float]] = {}
+    for b in ("neg", "neu", "pos"):
+        rs = [r for r in ok if bucket.get(r["review_id"]) == b]
+        by_bucket[b] = {
+            "reviews": len(rs),
+            "share_with_ade": round(sum(bool(r["ades"]) for r in rs) / max(len(rs), 1), 4),
+            "share_stopped_or_planned": round(
+                sum(r["discontinued"] in ("yes", "planned") for r in rs) / max(len(rs), 1), 4
+            ),
+        }
+    secs = [r["provenance"]["seconds"] for r in records]
+    return {
+        "reviews": len(records),
+        "labelled_ok": len(ok),
+        "failed": len(records) - len(ok),
+        "first_try_rate": round(sum(r["provenance"].get("attempts") == 1 for r in ok) / n_ok, 4),
+        "dropped_spans": sum(len(r["provenance"].get("dropped_spans", [])) for r in ok),
+        "reviews_with_ade": sum(bool(r["ades"]) for r in ok),
+        "ades": len(ades),
+        "ades_per_review_mean": round(len(ades) / n_ok, 3),
+        "severity": dict(Counter(a["severity"] for a in ades).most_common()),
+        "withdrawal_ades": sum(a["withdrawal"] for a in ades),
+        "beneficial_ades": sum(a["beneficial"] for a in ades),
+        "discontinued": dict(Counter(r["discontinued"] for r in ok).most_common()),
+        "stop_reasons": dict(Counter(x for r in ok for x in r["stop_reasons"]).most_common()),
+        "effectiveness": dict(Counter(r["effectiveness"] for r in ok).most_common()),
+        "by_sentiment_bucket": by_bucket,
+        "prompt_versions": dict(Counter(r["provenance"]["prompt_version"] for r in records)),
+        "annotators": dict(Counter(r["provenance"]["annotator"] for r in records)),
+        "seconds_median": round(statistics.median(secs), 2),
+        "hours_total": round(sum(secs) / 3600, 2),
+    }
+
+
+def write_summary(cfg: dict[str, Any]) -> Path:
+    records = [
+        json.loads(line)
+        for line in (PROJECT_ROOT / cfg["out"]).read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+    sample = pd.read_csv(PROJECT_ROOT / cfg["sample"]["out"])
+    s = summarize(records, sample)
+    s["meta"] = {"git_sha": git_sha(), "built_utc": datetime.now(UTC).isoformat(timespec="seconds")}
+    out = PROJECT_ROOT / "reports" / "silver" / "summary.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(s, indent=2) + "\n", encoding="utf-8", newline="\n")
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = parser.add_subparsers(dest="cmd", required=True)
-    for name in ("sample", "label"):
+    for name in ("sample", "label", "summary"):
         p = sub.add_parser(name)
         p.add_argument("--config", default="configs/silver.yaml")
         if name == "label":
@@ -151,6 +208,9 @@ def main(argv: list[str] | None = None) -> int:
         out.parent.mkdir(parents=True, exist_ok=True)
         sample.to_csv(out, index=False, lineterminator="\n")
         log.info("silver sample: %s", sample.groupby(["bucket", "source"]).size().to_dict())
+        return 0
+    if args.cmd == "summary":
+        log.info("wrote %s", write_summary(cfg))
         return 0
     label(cfg, args.limit)  # per-review failures are recorded in the output, not fatal
     return 0

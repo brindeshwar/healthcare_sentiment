@@ -47,3 +47,37 @@ def test_sample_silver_train_only_quotas_and_cap() -> None:
     assert s["bucket"].value_counts().to_dict() == {"neg": 40, "pos": 40, "neu": 20}
     assert s["drug_group"].value_counts().max() <= 5
     pd.testing.assert_frame_equal(s, sample_silver(reviews, splits, CFG))
+
+
+def test_summarize_counts() -> None:
+    from medsignal.labeling.silver import summarize
+
+    prov = {"attempts": 1, "seconds": 1.0, "prompt_version": "v2-x", "annotator": "llm:m"}
+    records = [
+        {
+            "review_id": "a",
+            "status": "ok",
+            "ades": [{"severity": "severe", "withdrawal": False, "beneficial": False}],
+            "discontinued": "yes",
+            "stop_reasons": ["adverse_event"],
+            "effectiveness": "not_effective",
+            "provenance": prov,
+        },
+        {
+            "review_id": "b",
+            "status": "ok",
+            "ades": [],
+            "discontinued": "not_stated",
+            "stop_reasons": [],
+            "effectiveness": "effective",
+            "provenance": prov,
+        },
+        {"review_id": "c", "status": "failed", "provenance": {**prov, "attempts": 3}},
+    ]
+    sample = pd.DataFrame({"review_id": ["a", "b", "c"], "bucket": ["neg", "pos", "neu"]})
+    s = summarize(records, sample)
+    assert s["labelled_ok"] == 2 and s["failed"] == 1
+    assert s["stop_reasons"] == {"adverse_event": 1}
+    assert s["by_sentiment_bucket"]["neg"]["share_with_ade"] == 1.0
+    assert s["by_sentiment_bucket"]["pos"]["share_stopped_or_planned"] == 0.0
+    assert s["severity"] == {"severe": 1}
