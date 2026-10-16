@@ -180,12 +180,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--model", help="run only this candidate")
     parser.add_argument("--prompt", help="prompt version (default: llm.prompt in config)")
     parser.add_argument("--limit", type=int, help="annotate at most N new docs per model")
+    parser.add_argument(
+        "--split", help="corpus split (default: split in config); test = report once"
+    )
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     logging.getLogger("httpx").setLevel(logging.WARNING)
     load_env()
 
     cfg = load_config(args.config)
+    if args.split:
+        cfg["split"] = args.split
     prompt = args.prompt or cfg["llm"]["prompt"]
     docs = load_split(cfg)
     models = [args.model] if args.model else list(cfg["candidates"])
