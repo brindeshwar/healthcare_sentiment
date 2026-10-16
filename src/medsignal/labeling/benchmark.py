@@ -27,7 +27,7 @@ import httpx
 import pandas as pd
 
 from medsignal.evaluation.external import GoldDoc, load_cadec
-from medsignal.evaluation.spans import Span, bootstrap_f1_ci, span_prf
+from medsignal.evaluation.spans import Span, bootstrap_f1_ci, paired_bootstrap_diff, span_prf
 from medsignal.labeling.llm import PROMPTS, OllamaAnnotator
 from medsignal.utils import PROJECT_ROOT, git_sha, load_config, load_env
 
@@ -222,10 +222,67 @@ def main(argv: list[str] | None = None) -> int:
             result["metrics"]["strict"]["f1"],
         )
 
-    results = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(report_dir.glob("*.json"))]
+    results = [
+        json.loads(p.read_text(encoding="utf-8")) for p in sorted(report_dir.glob("*__*.json"))
+    ]
     write_readme(results, report_dir / "README.md", cfg["corpus"], cfg["split"])
     return 0
 
 
+def compare_runs(cfg: dict[str, Any]) -> dict[str, Any]:
+    """Paired bootstrap F1 differences for the run pairs listed in ``cfg['comparisons']``."""
+    docs = load_split(cfg)
+    stem = f"{cfg['corpus']}_{cfg['split']}"
+
+    def pairs(run: str) -> list[tuple[list[Span], list[Span]]]:
+        model, prompt = run.rsplit("@", 1)
+        path = PROJECT_ROOT / cfg["predictions_dir"] / safe_name(model) / f"{stem}_{prompt}.jsonl"
+        preds = _done(path)
+        return [
+            (d.ades, [Span.contiguous(a["start"], a["end"]) for a in preds[d.doc_id]["ades"]])
+            for d in docs
+        ]
+
+    out: dict[str, Any] = {"corpus": cfg["corpus"], "split": cfg["split"], "comparisons": []}
+    for a, b in cfg["comparisons"]:
+        pa, pb = pairs(a), pairs(b)
+        out["comparisons"].append(
+            {
+                "a": a,
+                "b": b,
+                "relaxed": paired_bootstrap_diff(pa, pb, relaxed=True, seed=int(cfg["seed"])),
+                "strict": paired_bootstrap_diff(pa, pb, seed=int(cfg["seed"])),
+            }
+        )
+    out["git_sha"] = git_sha()
+    return out
+
+
+def compare_main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description="Paired comparisons of benchmark runs")
+    parser.add_argument("--config", default="configs/teacher.yaml")
+    args = parser.parse_args(argv)
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    cfg = load_config(args.config)
+    result = compare_runs(cfg)
+    path = PROJECT_ROOT / cfg["report_dir"] / f"{cfg['corpus']}_{cfg['split']}" / "comparisons.json"
+    path.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8", newline="\n")
+    for c in result["comparisons"]:
+        r = c["relaxed"]
+        log.info(
+            "%s vs %s: relaxed dF1 %+.4f [%+.4f, %+.4f]",
+            c["b"],
+            c["a"],
+            r["diff"],
+            r["diff_lo"],
+            r["diff_hi"],
+        )
+    return 0
+
+
 if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) > 1 and sys.argv[1] == "compare":
+        raise SystemExit(compare_main(sys.argv[2:]))
     raise SystemExit(main())

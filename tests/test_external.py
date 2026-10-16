@@ -67,5 +67,19 @@ def test_span_prf_one_to_one() -> None:
     assert span_prf([(gold, pred)], relaxed=True)["tp"] == 1
 
 
+def test_paired_bootstrap_diff_detects_better_system() -> None:
+    from medsignal.evaluation.spans import paired_bootstrap_diff
+
+    gold = [Span.contiguous(0, 4), Span.contiguous(5, 9)]
+    weak = [(gold, [Span.contiguous(0, 4)]) for _ in range(30)]
+    strong = [(gold, [Span.contiguous(0, 4), Span.contiguous(5, 9)]) for _ in range(30)]
+    out = paired_bootstrap_diff(weak, strong, relaxed=True)
+    assert out["diff"] > 0
+    assert out["diff_lo"] > 0
+    assert out["p_b_not_better"] == 0.0
+    same = paired_bootstrap_diff(weak, weak)
+    assert same["diff"] == 0.0
+
+
 def test_span_prf_empty() -> None:
     assert span_prf([([], [])])["f1"] == 0.0

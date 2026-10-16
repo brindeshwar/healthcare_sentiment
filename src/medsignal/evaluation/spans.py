@@ -92,3 +92,46 @@ def bootstrap_f1_ci(
         f1s.append(2 * p * r / (p + r) if p + r else 0.0)
     lo, hi = np.percentile(f1s, [100 * alpha / 2, 100 * (1 - alpha / 2)])
     return {"f1_lo": round(float(lo), 4), "f1_hi": round(float(hi), 4), "n_boot": n_boot}
+
+
+def _counts(docs: Sequence[tuple[Sequence[Span], Sequence[Span]]], relaxed: bool) -> np.ndarray:
+    return np.array(
+        [(_match(g, p, relaxed), len(g), len(p)) for g, p in docs], dtype=float
+    ).reshape(-1, 3)
+
+
+def _f1_from(sums: np.ndarray) -> float:
+    tp, n_gold, n_pred = sums
+    p = tp / n_pred if n_pred else 0.0
+    r = tp / n_gold if n_gold else 0.0
+    return float(2 * p * r / (p + r)) if p + r else 0.0
+
+
+def paired_bootstrap_diff(
+    docs_a: Sequence[tuple[Sequence[Span], Sequence[Span]]],
+    docs_b: Sequence[tuple[Sequence[Span], Sequence[Span]]],
+    relaxed: bool = False,
+    n_boot: int = 2000,
+    seed: int = 0,
+    alpha: float = 0.05,
+) -> dict[str, float]:
+    """F1(B) - F1(A) on the same documents, with a paired percentile bootstrap CI.
+
+    ``p_b_not_better`` is the bootstrap share of resamples where B does not beat A.
+    """
+    a, b = _counts(docs_a, relaxed), _counts(docs_b, relaxed)
+    if len(a) != len(b):
+        raise ValueError("paired comparison needs the same documents in the same order")
+    rng = np.random.default_rng(seed)
+    diffs = []
+    for _ in range(n_boot):
+        idx = rng.integers(0, len(a), len(a))
+        diffs.append(_f1_from(b[idx].sum(axis=0)) - _f1_from(a[idx].sum(axis=0)))
+    lo, hi = np.percentile(diffs, [100 * alpha / 2, 100 * (1 - alpha / 2)])
+    return {
+        "diff": round(_f1_from(b.sum(axis=0)) - _f1_from(a.sum(axis=0)), 4),
+        "diff_lo": round(float(lo), 4),
+        "diff_hi": round(float(hi), 4),
+        "p_b_not_better": round(float(np.mean(np.array(diffs) <= 0)), 4),
+        "n_boot": n_boot,
+    }
