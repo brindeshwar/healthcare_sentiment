@@ -1,0 +1,25 @@
+# Phase 3: encoder student trained on teacher silver labels (ADR-0021).
+silver_config: configs/silver.yaml
+teacher_config: configs/teacher.yaml   # CADEC split + external config for evaluation
+data_config: configs/data.yaml
+
+model: thomas-sounack/BioClinical-ModernBERT-base
+seeds: [13, 42, 2026]
+silver_val_fraction: 0.1     # held out from silver by drug group, for checkpoint selection
+
+train:
+  max_length: 256            # covers ~99.7% of Drugs.com reviews (reports/eda)
+  epochs: 3
+  lr: 5.0e-5
+  batch_size: 16
+  grad_accum: 1
+  warmup_ratio: 0.1
+  weight_decay: 0.01
+
+eval:
+  max_length: 1024           # CADEC posts can be long; ModernBERT supports 8K
+  batch_size: 32
+  splits: [dev, test]        # dev for comparison during development; test reported once (final)
+
+output_dir: models/student   # git-ignored
+report_dir: reports/student
