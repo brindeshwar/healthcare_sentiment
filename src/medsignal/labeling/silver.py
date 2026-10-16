@@ -25,7 +25,7 @@ import pandas as pd
 
 from medsignal.data.splits import sentiment_bucket
 from medsignal.labeling.benchmark import prompt_version
-from medsignal.labeling.llm import OllamaAnnotator
+from medsignal.labeling.llm import AnnotationFailedError, OllamaAnnotator
 from medsignal.labeling.sample_gold import draw
 from medsignal.labeling.schema import SCHEMA_VERSION
 from medsignal.utils import PROJECT_ROOT, git_sha, load_config, load_env
@@ -109,7 +109,7 @@ def label(cfg: dict[str, Any], limit: int | None) -> int:
                     "attempts": meta["attempts"],
                     "dropped_spans": meta.get("dropped_spans", []),
                 }
-            except RuntimeError as exc:
+            except AnnotationFailedError as exc:
                 failures += 1
                 rec = {"review_id": row.review_id, "status": "failed", "error": str(exc)[:300]}
                 prov = {}

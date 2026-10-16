@@ -10,6 +10,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import time
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -101,6 +102,14 @@ def build_messages(
     return messages
 
 
+class OllamaUnavailableError(RuntimeError):
+    """The Ollama server kept failing (not a problem with the model's answer): stop the job."""
+
+
+class AnnotationFailedError(RuntimeError):
+    """The model's answer never validated for this review: record and continue."""
+
+
 @dataclass
 class OllamaAnnotator:
     model: str
@@ -116,8 +125,23 @@ class OllamaAnnotator:
     # review (recorded in provenance as dropped_spans). Default off: the whole review then fails.
     drop_unaligned_on_failure: bool = False
     prompt: str = "v1"  # key of PROMPTS
+    # Server/network errors (HTTP 5xx, connection drops) are retried with these waits; if they
+    # persist, OllamaUnavailableError is raised so long jobs stop cleanly instead of mislabelling reviews.
+    server_backoff_s: tuple[float, ...] = (2.0, 8.0, 30.0)
 
     def _chat(self, client: httpx.Client, messages: list[dict[str, str]]) -> str:
+        for wait in (*self.server_backoff_s, None):
+            try:
+                return self._chat_once(client, messages)
+            except (httpx.TransportError, httpx.HTTPStatusError) as exc:
+                transient = isinstance(exc, httpx.TransportError) or exc.response.status_code >= 500
+                if not transient or wait is None:
+                    raise OllamaUnavailableError(f"Ollama request failed: {exc}") from exc
+                log.warning("Ollama error (%s); retrying in %.0f s", exc, wait)
+                time.sleep(wait)
+        raise AssertionError("unreachable")
+
+    def _chat_once(self, client: httpx.Client, messages: list[dict[str, str]]) -> str:
         payload: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
@@ -169,7 +193,9 @@ class OllamaAnnotator:
                 "errors": errors,
                 "dropped_spans": dropped,
             }
-        raise RuntimeError(f"review {review_id}: no valid annotation after retries: {errors}")
+        raise AnnotationFailedError(
+            f"review {review_id}: no valid annotation after retries: {errors}"
+        )
 
 
 def provenance(model: str) -> dict[str, str]:

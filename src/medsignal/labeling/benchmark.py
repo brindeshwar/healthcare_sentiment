@@ -28,7 +28,7 @@ import pandas as pd
 
 from medsignal.evaluation.external import GoldDoc, load_cadec
 from medsignal.evaluation.spans import Span, bootstrap_f1_ci, paired_bootstrap_diff, span_prf
-from medsignal.labeling.llm import PROMPTS, OllamaAnnotator
+from medsignal.labeling.llm import PROMPTS, AnnotationFailedError, OllamaAnnotator
 from medsignal.utils import PROJECT_ROOT, git_sha, load_config, load_env
 
 log = logging.getLogger(__name__)
@@ -102,7 +102,7 @@ def predict(
                     discontinued=ann.discontinued.value,
                     effectiveness=ann.effectiveness.value,
                 )
-            except RuntimeError as exc:
+            except AnnotationFailedError as exc:
                 rec.update(status="failed", error=str(exc)[:300], ades=[])
             rec["seconds"] = round(time.perf_counter() - t0, 2)
             fh.write(json.dumps(rec) + "\n")
