@@ -3,7 +3,7 @@
 > **Hand-off file.** Every agent/person reads this first and updates it last (see AGENTS.md §2-3).
 > Keep "Now" short and current; append to the Session log, never rewrite history.
 
-**Current phase:** Phase 1 (data & baseline)
+**Current phase:** Phase 2 done (PR pending) → Phase 3 (encoder student)
 **Branch:** `feat/teacher-benchmark`
 **Last updated:** 2026-10-13
 
@@ -113,3 +113,5 @@
 - **CADEC test (scored once):** relaxed P/R/F1 0.948 / 0.701 / 0.806 [0.791, 0.821]; strict F1 0.578 [0.556, 0.599]; failures 1.5%; Lipitor 0.797, diclofenac family 0.855 (`reports/teacher/cadec_test/`).
 - Silver sample drawn (10,000 train reviews, 880 drug groups, ADR-0020); silver labelling running in background (`logs/silver_label.log`, resumable: `uv run python -m medsignal.labeling.silver label`).
 - Next: when silver labelling finishes, summarise label statistics, open PR for Phase 2, then Phase 3 (encoder student).
+- Silver labelling complete after one crash at 4,014 (unhandled Ollama HTTP 500; fixed with retries/backoff and `OllamaUnavailableError`, resumed): 10,000 reviews, 9,956 ok, 44 failed, 98.8% first try, 62 dropped spans, 18,402 ADEs; 2,613 stopped/planned (adverse_event 2,125). Neg reviews 78% ADE / 47% stopped vs pos 48% / 7%. 1.64 GPU-hours.
+- Phase 2 PLAN boxes ticked. Next: Phase 3 encoder student on silver labels (BioClinical ModernBERT token classification + review-level heads), evaluate on CADEC test vs teacher and GLiNER-BioMed.

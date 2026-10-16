@@ -35,7 +35,9 @@ Design decisions and their reasoning: [`docs/DECISIONS.md`](docs/DECISIONS.md) Â
 
 ## Results
 
-TBD for the headline task (ADE extraction). Phase 1 sanity baselines and the measured effect of duplicate leakage: [`reports/baselines/README.md`](reports/baselines/README.md).
+**LLM teacher (Phase 2), ADE spans on the CADEC expert test set** (937 posts, scored once): relaxed F1 **0.806** [95% CI 0.791, 0.821], precision 0.948, recall 0.701; strict F1 0.578. Local `gemma4:e4b` via Ollama, no fine-tuning; out-of-domain (AskaPatient) evaluation. Details: [`reports/teacher/`](reports/teacher/cadec_test/README.md). Silver labels: [`reports/silver/summary.json`](reports/silver/summary.json).
+
+Phase 1 sanity baselines and the measured effect of duplicate leakage: [`reports/baselines/README.md`](reports/baselines/README.md). Student model (Phase 3): TBD.
 
 ## Quick start
 
