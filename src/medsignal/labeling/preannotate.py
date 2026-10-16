@@ -20,7 +20,7 @@ from pathlib import Path
 import httpx
 import pandas as pd
 
-from medsignal.labeling.llm import OllamaAnnotator, provenance
+from medsignal.labeling.llm import AnnotationFailedError, OllamaAnnotator, provenance
 from medsignal.utils import PROJECT_ROOT, load_config, load_env
 
 log = logging.getLogger(__name__)
@@ -81,7 +81,7 @@ def main(argv: list[str] | None = None) -> int:
                     row.condition if isinstance(row.condition, str) else None,
                     row.text,
                 )
-            except RuntimeError as exc:
+            except AnnotationFailedError as exc:
                 failures += 1
                 log.warning("%s", exc)
                 continue

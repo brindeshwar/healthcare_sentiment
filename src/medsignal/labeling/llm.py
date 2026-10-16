@@ -10,13 +10,14 @@ from __future__ import annotations
 import json
 import logging
 import os
+import time
 from dataclasses import dataclass, field
 from typing import Any
 
 import httpx
 from pydantic import ValidationError
 
-from medsignal.labeling.examples import GUIDELINE_EXAMPLES
+from medsignal.labeling.examples import GUIDELINE_EXAMPLES, GUIDELINE_EXAMPLES_V2
 from medsignal.labeling.schema import (
     SCHEMA_VERSION,
     AlignmentError,
@@ -57,19 +58,56 @@ effectiveness for the treated condition, judged on the final state: effective, p
 benefit, mixed, or wore off), not_effective (no benefit or condition worse), not_stated."""
 
 
+# v2 (dev-tuned on CADEC, ADR-0019): keep the reviewer's own words in spans (intensity + location),
+# never paraphrase, and label every mention (repeats, list items, short generic words). Recall was
+# the weak point of v1 (relaxed recall ~0.65 at precision ~0.93).
+_SPANS_V1 = """Spans: copy the shortest exact text from the review that names the effect, including body location
+("pain in my legs", "couldn't sleep", "gained 40 lbs"). Put separable intensity words in severity,
+not in the span ("extreme fatigue" -> text "fatigue", severity "severe"). One item per effect, in
+reading order; label repeated mentions separately."""
+
+_SPANS_V2 = """Spans: copy the words of the review that describe the effect EXACTLY as written, including
+intensity words and body location ("extreme fatigue", "pain in my legs", "couldn't sleep",
+"gained 40 lbs"). Never rephrase, reorder or shorten inside a span: if the review says "pain in my
+shoulder", the span is "pain in my shoulder", not "shoulder pain". Still set severity from those
+words. Label EVERY mention, in reading order: each item of a list separately, a repeated effect
+again each time it is mentioned, and short words such as "pain", "pains", "aching", "weak" when
+they describe an effect of the drug. When it is unclear whether a described problem came from the
+drug, include it if the reviewer links it to taking the drug."""
+
+assert _SPANS_V1 in SYSTEM_PROMPT
+SYSTEM_PROMPT_V2 = SYSTEM_PROMPT.replace(_SPANS_V1, _SPANS_V2)
+
+PROMPTS: dict[str, tuple[str, list[tuple[str, dict[str, Any]]]]] = {
+    "v1": (SYSTEM_PROMPT, GUIDELINE_EXAMPLES),
+    "v2": (SYSTEM_PROMPT_V2, GUIDELINE_EXAMPLES_V2),
+}
+
+
 def _user(drug: str, condition: str | None, text: str) -> str:
     return f"Reviewed drug: {drug}\nCondition: {condition or 'not given'}\nReview:\n{text}"
 
 
-def build_messages(drug: str, condition: str | None, text: str) -> list[dict[str, str]]:
+def build_messages(
+    drug: str, condition: str | None, text: str, prompt: str = "v1"
+) -> list[dict[str, str]]:
     """System prompt, guideline examples as demonstrations, then the review."""
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-    for example_text, labels in GUIDELINE_EXAMPLES:
+    system, examples = PROMPTS[prompt]
+    messages = [{"role": "system", "content": system}]
+    for example_text, labels in examples:
         demo = LLMAnnotation(**labels)
         messages.append({"role": "user", "content": _user("(see review)", None, example_text)})
         messages.append({"role": "assistant", "content": demo.model_dump_json()})
     messages.append({"role": "user", "content": _user(drug, condition, text)})
     return messages
+
+
+class OllamaUnavailableError(RuntimeError):
+    """The Ollama server kept failing (not a problem with the model's answer): stop the job."""
+
+
+class AnnotationFailedError(RuntimeError):
+    """The model's answer never validated for this review: record and continue."""
 
 
 @dataclass
@@ -84,10 +122,26 @@ class OllamaAnnotator:
     )
     timeout_s: float = 300.0
     # After the last retry, keep a schema-valid answer and drop only spans that do not occur in the
-    # review (recorded in provenance). Off for teacher evaluation, where such outputs count as failures.
+    # review (recorded in provenance as dropped_spans). Default off: the whole review then fails.
     drop_unaligned_on_failure: bool = False
+    prompt: str = "v1"  # key of PROMPTS
+    # Server/network errors (HTTP 5xx, connection drops) are retried with these waits; if they
+    # persist, OllamaUnavailableError is raised so long jobs stop cleanly instead of mislabelling reviews.
+    server_backoff_s: tuple[float, ...] = (2.0, 8.0, 30.0)
 
     def _chat(self, client: httpx.Client, messages: list[dict[str, str]]) -> str:
+        for wait in (*self.server_backoff_s, None):
+            try:
+                return self._chat_once(client, messages)
+            except (httpx.TransportError, httpx.HTTPStatusError) as exc:
+                transient = isinstance(exc, httpx.TransportError) or exc.response.status_code >= 500
+                if not transient or wait is None:
+                    raise OllamaUnavailableError(f"Ollama request failed: {exc}") from exc
+                log.warning("Ollama error (%s); retrying in %.0f s", exc, wait)
+                time.sleep(wait)
+        raise AssertionError("unreachable")
+
+    def _chat_once(self, client: httpx.Client, messages: list[dict[str, str]]) -> str:
         payload: dict[str, Any] = {
             "model": self.model,
             "messages": messages,
@@ -108,7 +162,7 @@ class OllamaAnnotator:
         self, client: httpx.Client, review_id: str, drug: str, condition: str | None, text: str
     ) -> tuple[ReviewAnnotation, dict[str, Any]]:
         """Return the aligned annotation and provenance (attempts, errors)."""
-        messages = build_messages(drug, condition, text)
+        messages = build_messages(drug, condition, text, self.prompt)
         errors: list[str] = []
         last_valid: ReviewAnnotation | None = None
         for attempt in range(1, self.max_retries + 2):
@@ -139,7 +193,9 @@ class OllamaAnnotator:
                 "errors": errors,
                 "dropped_spans": dropped,
             }
-        raise RuntimeError(f"review {review_id}: no valid annotation after retries: {errors}")
+        raise AnnotationFailedError(
+            f"review {review_id}: no valid annotation after retries: {errors}"
+        )
 
 
 def provenance(model: str) -> dict[str, str]:

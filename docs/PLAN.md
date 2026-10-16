@@ -60,12 +60,12 @@ drug labels, shipped as an evidence explorer with open models and an honest writ
 
 ## Phase 2: LLM teacher  (~1.5 weeks; GPU 10-14 h; owner 2 h)
 
-- [ ] Output JSON schema (Pydantic): ADE mentions (span, text, severity), discontinued (bool), reason category, effectiveness
-- [ ] Prompt v1 + few-shot examples tuned on **CADEC/PsyTAR dev** only (ADR-0018)
-- [ ] Benchmark 2-3 local LLMs (e.g. Qwen3.5-9B, Gemma 4, verify current options) via Ollama structured outputs
-- [ ] Measure teacher vs gold: span F1 (strict + relaxed), discontinuation F1, reason macro-F1, invalid-JSON rate, s/review
+- [x] Output JSON schema (Pydantic): ADE mentions (span, text, severity), discontinued (bool), reason category, effectiveness (schema v1.1)
+- [x] Prompt v1 + few-shot examples tuned on **CADEC dev** only (ADR-0018); v2 adopted (ADR-0019)
+- [x] Benchmark 3 local LLMs (qwen3.5:9b, gemma4:e4b, qwen3.5:4b) via Ollama structured outputs; teacher = gemma4:e4b + v2
+- [x] Measure teacher vs gold: span F1 (strict + relaxed, bootstrap CIs, paired tests), failure rate, s/review. Discontinuation/reasons: no obtainable expert gold (ADR-0018)
 - [ ] Optional: self-consistency (k samples, majority vote) if it improves dev F1 enough for the cost
-- [ ] Label ~10K stratified reviews (resumable job), store with prompt + model version
+- [x] Label 10K stratified reviews (resumable job), stored with prompt + model + schema version (`reports/silver/summary.json`)
 
 **Acceptance:** teacher metrics table on gold test; 10K silver labels with provenance.
 

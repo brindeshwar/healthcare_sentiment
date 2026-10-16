@@ -71,3 +71,40 @@ def test_drop_unaligned_on_failure_keeps_other_labels() -> None:
     assert [a.text for a in ann.ades] == ["rash"]
     assert meta["dropped_spans"] == ["gave... a week"]
     assert ann.discontinued == Discontinued.YES
+
+
+def _flaky_client(statuses: list[int], body: dict[str, object]) -> httpx.Client:
+    calls = iter(statuses)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        status = next(calls)
+        if status != 200:
+            return httpx.Response(status, json={"error": "boom"})
+        return httpx.Response(200, json={"message": {"content": json.dumps(body)}})
+
+    return httpx.Client(transport=httpx.MockTransport(handler))
+
+
+def test_server_errors_are_retried() -> None:
+    good = {"ades": [{"text": "rash"}], "discontinued": "yes", "stop_reasons": ["adverse_event"]}
+    annotator = OllamaAnnotator(model="m", server_backoff_s=(0.0, 0.0))
+    ann, meta = annotator.annotate(_flaky_client([500, 500, 200], good), "r1", "X", None, TEXT)
+    assert meta["attempts"] == 1
+    assert ann.ades[0].text == "rash"
+
+
+def test_persistent_server_error_raises_unavailable() -> None:
+    from medsignal.labeling.llm import AnnotationFailedError, OllamaUnavailableError
+
+    annotator = OllamaAnnotator(model="m", server_backoff_s=(0.0,))
+    with pytest.raises(OllamaUnavailableError) as info:
+        annotator.annotate(_flaky_client([500, 500], {}), "r1", "X", None, TEXT)
+    assert not isinstance(info.value, AnnotationFailedError)
+
+
+def test_client_errors_are_not_retried() -> None:
+    from medsignal.labeling.llm import OllamaUnavailableError
+
+    annotator = OllamaAnnotator(model="m", server_backoff_s=(0.0, 0.0))
+    with pytest.raises(OllamaUnavailableError):
+        annotator.annotate(_flaky_client([404], {}), "r1", "X", None, TEXT)

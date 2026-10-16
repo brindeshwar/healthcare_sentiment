@@ -1,0 +1,70 @@
+{
+  "reviews": 10000,
+  "labelled_ok": 9956,
+  "failed": 44,
+  "first_try_rate": 0.9878,
+  "dropped_spans": 62,
+  "reviews_with_ade": 6485,
+  "ades": 18402,
+  "ades_per_review_mean": 1.848,
+  "severity": {
+    "moderate": 10102,
+    "severe": 3153,
+    "mild": 2779,
+    "not_stated": 2368
+  },
+  "withdrawal_ades": 522,
+  "beneficial_ades": 571,
+  "discontinued": {
+    "not_stated": 6625,
+    "yes": 2274,
+    "no": 718,
+    "planned": 339
+  },
+  "stop_reasons": {
+    "adverse_event": 2125,
+    "lack_of_efficacy": 192,
+    "other": 134,
+    "cost_access": 87,
+    "course_completed": 57,
+    "clinician_decision": 38,
+    "convenience": 8,
+    "not_stated": 5,
+    "pregnancy_related": 2
+  },
+  "effectiveness": {
+    "not_stated": 3435,
+    "effective": 3252,
+    "partial": 1967,
+    "not_effective": 1302
+  },
+  "by_sentiment_bucket": {
+    "neg": {
+      "reviews": 3989,
+      "share_with_ade": 0.7759,
+      "share_stopped_or_planned": 0.4685
+    },
+    "neu": {
+      "reviews": 1988,
+      "share_with_ade": 0.7369,
+      "share_stopped_or_planned": 0.2354
+    },
+    "pos": {
+      "reviews": 3979,
+      "share_with_ade": 0.4838,
+      "share_stopped_or_planned": 0.0694
+    }
+  },
+  "prompt_versions": {
+    "v2-daa2bce8": 10000
+  },
+  "annotators": {
+    "llm:gemma4:e4b-it-q4_K_M": 10000
+  },
+  "seconds_median": 0.48,
+  "hours_total": 1.64,
+  "meta": {
+    "git_sha": "7177af2",
+    "built_utc": "2026-10-16T13:39:57+00:00"
+  }
+}

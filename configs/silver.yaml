@@ -1,0 +1,20 @@
+# Phase 2: silver labels from the chosen LLM teacher for student training (ADR-0020).
+data_config: configs/data.yaml
+teacher_config: configs/teacher.yaml   # model + prompt under `teacher:`
+seed: 23
+
+sample:
+  size: 10000
+  source_split: train            # the student trains on train; val/test/drug_holdout stay unseen
+  sentiment_weights: {neg: 0.4, neu: 0.2, pos: 0.4}   # ADEs/discontinuation concentrate in neg/neu
+  max_per_drug_group: 60          # ~5K drug groups available; caps contraceptives etc.
+  min_chars: 40
+  out: data/annotations/silver_sample.csv   # IDs only, committed
+
+llm:
+  temperature: 0.0
+  num_ctx: 4096
+  max_retries: 2
+  drop_unaligned_on_failure: true   # keep the rest of an answer; dropped spans recorded
+
+out: data/processed/silver/silver.jsonl   # git-ignored; labels + provenance per review

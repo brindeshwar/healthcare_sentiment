@@ -1,0 +1,61 @@
+{
+  "corpus": "cadec",
+  "split": "dev",
+  "comparisons": [
+    {
+      "a": "gemma4:e4b-it-q4_K_M@v1",
+      "b": "gemma4:e4b-it-q4_K_M@v2",
+      "relaxed": {
+        "diff": 0.0312,
+        "diff_lo": 0.0147,
+        "diff_hi": 0.0501,
+        "p_b_not_better": 0.0,
+        "n_boot": 2000
+      },
+      "strict": {
+        "diff": 0.0148,
+        "diff_lo": -0.0112,
+        "diff_hi": 0.0426,
+        "p_b_not_better": 0.1425,
+        "n_boot": 2000
+      }
+    },
+    {
+      "a": "qwen3.5:9b-q4_K_M@v1",
+      "b": "qwen3.5:9b-q4_K_M@v2",
+      "relaxed": {
+        "diff": 0.0329,
+        "diff_lo": 0.0146,
+        "diff_hi": 0.0519,
+        "p_b_not_better": 0.0,
+        "n_boot": 2000
+      },
+      "strict": {
+        "diff": 0.0342,
+        "diff_lo": 0.007,
+        "diff_hi": 0.0639,
+        "p_b_not_better": 0.0085,
+        "n_boot": 2000
+      }
+    },
+    {
+      "a": "gemma4:e4b-it-q4_K_M@v2",
+      "b": "qwen3.5:9b-q4_K_M@v2",
+      "relaxed": {
+        "diff": 0.0085,
+        "diff_lo": -0.0076,
+        "diff_hi": 0.0248,
+        "p_b_not_better": 0.166,
+        "n_boot": 2000
+      },
+      "strict": {
+        "diff": 0.009,
+        "diff_lo": -0.0084,
+        "diff_hi": 0.0277,
+        "p_b_not_better": 0.1585,
+        "n_boot": 2000
+      }
+    }
+  ],
+  "git_sha": "32a27fc-dirty"
+}

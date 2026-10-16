@@ -1,4 +1,6 @@
-# Annotation Guidelines (schema v1.0)
+# Annotation Guidelines (schema v1.1)
+
+> **v1.1 (2026-10-16, ADR-0019, owner approved):** spans keep the reviewer's intensity words; never rephrase; label every mention. Measured on CADEC dev: +0.031 relaxed F1 [95% CI +0.015, +0.050].
 
 > For the human gold set (Phase 1, issue #10) **and** the LLM teacher prompt (Phase 2). The machine form of these
 > rules is `src/medsignal/labeling/schema.py`; if this document and the code disagree, fix one of them in the same PR.
@@ -43,7 +45,9 @@ and add a short `notes` entry; uncertain items are reviewed later.
 
 ### 1.3 Span rules
 - Copy the **shortest text that still names the effect**, verbatim, including its body location if given: `pain in my legs`, `couldn't sleep`, `gained 40 lbs`, `long QT interval`.
-- Leave severity words **out** of the span when they are separable and put them in `severity`: "extreme fatigue" → span `fatigue`, severity `severe`. Keep them if they are inseparable from the effect ("felt drunk").
+- Keep the reviewer's intensity words **in** the span and also set `severity`: "extreme fatigue" → span `extreme fatigue`, severity `severe` (v1.1; v1.0 left them out).
+- Never rephrase, reorder or shorten: "pain in my shoulder" stays `pain in my shoulder`, not "shoulder pain".
+- Label short generic words too ("pain", "aching", "weak") when they describe an effect of the drug, and every item of a list separately.
 - One span per effect. "headache, nausea and dizziness" → three spans.
 - The same effect mentioned twice → label each mention (the aligner keeps them in reading order).
 - Do not include the drug name, time expressions, or "side effects of".
@@ -110,18 +114,18 @@ Judge the **final** state described. "Worked great for months, then stopped work
 ## 4. Worked examples
 
 **A.** "Within two weeks on Paxil I had constant migraines, extreme fatigue and constipation. My doctor moved me to Zoloft and I feel much better." [7b3686734924f223]
-- ADEs: `migraines` (moderate: reason for stopping) · `fatigue` (severe: "extreme") · `constipation` (moderate)
+- ADEs: `constant migraines` (moderate: reason for stopping) · `extreme fatigue` (severe: "extreme") · `constipation` (moderate)
 - discontinued `yes` · reasons `adverse_event` (implied by the sequence) · effectiveness `not_stated`
 
 **B.** "Worked great for four years with no side effects. Had to stop because it got too expensive." [3eb6da83d459e443]
 - ADEs: none · discontinued `yes` · reasons `cost_access` · effectiveness `effective`
 
 **C.** "Ended up in hospital with a severely long QT interval. Get an ECG before starting. The withdrawal was horrific too." [d4cc6ba02fa9d6bf]
-- ADEs: `long QT interval` (severe) · `withdrawal` (severe, withdrawal=true)
+- ADEs: `severely long QT interval` (severe) · `withdrawal` (severe, withdrawal=true)
 - discontinued `yes` (withdrawal implies stopping) · reasons `adverse_event` · effectiveness `not_stated`
 
 **D.** "No period at all after month three, which is great because my cramps were awful. But I've become very depressed and gained a lot of weight. After this pack I'm going off it." [b13f36f207483301]
-- ADEs: `No period` (not_stated, beneficial=true) · `depressed` (moderate: reason for stopping; "very" alone is not a severe cue) · `gained a lot of weight` (moderate)
+- ADEs: `No period` (not_stated, beneficial=true) · `very depressed` (moderate: reason for stopping; "very" alone is not a severe cue) · `gained a lot of weight` (moderate)
 - discontinued `planned` · reasons `adverse_event` · effectiveness `effective`
 
 **E.** "It seemed to make my shoulder spasm worse, and on the second try I also got a rash. Not for me." [8cf1ac4480eaaf13]
@@ -129,7 +133,7 @@ Judge the **final** state described. "Worked great for months, then stopped work
 - discontinued `yes` · reasons `lack_of_efficacy`, `adverse_event` · effectiveness `not_effective`
 
 **F.** "Insertion felt like a bad cramp. A few hours later, minor cramping and very little spotting." [45dee5fe98699031]
-- ADEs: `cramp` (moderate: "bad") · `cramping` (mild) · `spotting` (mild)
+- ADEs: `bad cramp` (moderate: "bad") · `minor cramping` (mild) · `very little spotting` (mild)
 - discontinued `not_stated` · effectiveness `not_stated`
 
 **G.** "On it for 5 days, no side effects yet, feeling better than in months." [d561cfca2d218ddd]

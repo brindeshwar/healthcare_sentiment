@@ -1,0 +1,57 @@
+{
+  "model": "gemma4:e4b-it-q4_K_M",
+  "corpus": "cadec",
+  "split": "dev",
+  "prompt_version": "v2-daa2bce8",
+  "drop_unaligned_on_failure": false,
+  "git_sha": "296b905",
+  "built_utc": "2026-10-14T21:48:56+00:00",
+  "metrics": {
+    "docs": 313,
+    "strict": {
+      "precision": 0.6334,
+      "recall": 0.4704,
+      "f1": 0.5398,
+      "tp": 698,
+      "n_gold": 1484,
+      "n_pred": 1102,
+      "f1_lo": 0.503,
+      "f1_hi": 0.5836,
+      "n_boot": 1000
+    },
+    "relaxed": {
+      "precision": 0.9292,
+      "recall": 0.69,
+      "f1": 0.792,
+      "tp": 1024,
+      "n_gold": 1484,
+      "n_pred": 1102,
+      "f1_lo": 0.7655,
+      "f1_hi": 0.8168,
+      "n_boot": 1000
+    },
+    "relaxed_by_drug": {
+      "LIPITOR": {
+        "precision": 0.9322,
+        "recall": 0.6795,
+        "f1": 0.7861,
+        "tp": 880,
+        "n_gold": 1295,
+        "n_pred": 944
+      },
+      "diclofenac family": {
+        "precision": 0.9114,
+        "recall": 0.7619,
+        "f1": 0.83,
+        "tp": 144,
+        "n_gold": 189,
+        "n_pred": 158
+      }
+    },
+    "failure_rate": 0.016,
+    "first_try_rate": 0.9744,
+    "dropped_spans": 0,
+    "seconds_median": 0.81,
+    "seconds_total": 294.0
+  }
+}

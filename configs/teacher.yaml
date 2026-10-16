@@ -1,0 +1,33 @@
+# Phase 2: LLM teacher benchmark (ADR-0018). Model/prompt selection on dev only; test scored once.
+seed: 7
+external_config: configs/external.yaml
+
+corpus: cadec
+split: dev
+
+candidates:
+  - qwen3.5:9b-q4_K_M
+  - gemma4:e4b-it-q4_K_M
+  - qwen3.5:4b-q4_K_M
+
+llm:
+  temperature: 0.0
+  num_ctx: 4096
+  max_retries: 2
+  prompt: v1                       # v1 | v2 (ADR-0019); override with --prompt
+  drop_unaligned_on_failure: false # true = drop only non-verbatim spans instead of failing the doc
+
+# Paired bootstrap comparisons on the same documents ("model@prompt"; B vs A).
+# Run: uv run python -m medsignal.labeling.benchmark compare
+comparisons:
+  - ["gemma4:e4b-it-q4_K_M@v1", "gemma4:e4b-it-q4_K_M@v2"]
+  - ["qwen3.5:9b-q4_K_M@v1", "qwen3.5:9b-q4_K_M@v2"]
+  - ["gemma4:e4b-it-q4_K_M@v2", "qwen3.5:9b-q4_K_M@v2"]
+
+# Chosen teacher (ADR-0019): statistically tied with qwen3.5:9b on v2, ~3.5x faster.
+teacher:
+  model: gemma4:e4b-it-q4_K_M
+  prompt: v2
+
+predictions_dir: data/processed/teacher   # git-ignored (contains spans of licensed text)
+report_dir: reports/teacher

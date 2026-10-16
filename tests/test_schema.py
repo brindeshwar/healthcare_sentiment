@@ -82,3 +82,12 @@ def test_guideline_examples_validate_and_align(text: str, labels: dict[str, obje
     aligned = align_spans(ann, text)
     starts = [m.start for m in aligned.ades]
     assert starts == sorted(starts)  # spans listed in reading order
+
+
+def test_v2_examples_validate_and_align() -> None:
+    from medsignal.labeling.examples import GUIDELINE_EXAMPLES_V2
+
+    for text, labels in GUIDELINE_EXAMPLES_V2:
+        ann = ReviewAnnotation(review_id="example", **labels)  # type: ignore[arg-type]
+        starts = [m.start for m in align_spans(ann, text).ades]
+        assert starts == sorted(starts)
