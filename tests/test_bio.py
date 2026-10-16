@@ -79,3 +79,17 @@ def test_token_f1_ignores_padding() -> None:
     m = token_f1(SimpleNamespace(label_ids=labels, predictions=logits))
     assert m["token_p"] == 1.0
     assert m["token_r"] == 0.5
+
+
+def test_gliner_select_spans_threshold_labels_and_overlap() -> None:
+    from medsignal.extraction.gliner_score import select_spans
+
+    spans = [
+        {"start": 0, "end": 8, "label": "side effect", "score": 0.9},
+        {"start": 0, "end": 8, "label": "adverse drug reaction", "score": 0.7},  # same mention
+        {"start": 4, "end": 12, "label": "side effect", "score": 0.6},  # overlaps the best one
+        {"start": 20, "end": 25, "label": "symptom", "score": 0.95},  # label not allowed
+        {"start": 30, "end": 34, "label": "side effect", "score": 0.2},  # below threshold
+    ]
+    assert select_spans(spans, ("side effect", "adverse drug reaction"), 0.5) == [(0, 8)]
+    assert select_spans(spans, ("symptom",), 0.5) == [(20, 25)]
