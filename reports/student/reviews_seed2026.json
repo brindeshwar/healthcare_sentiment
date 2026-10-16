@@ -1,0 +1,37 @@
+{
+  "seed": 2026,
+  "train_reviews": 8952,
+  "train_seconds": 185.6,
+  "agreement_with_teacher": {
+    "reviews": 1004,
+    "discontinued": {
+      "accuracy": 0.8257,
+      "macro_f1": 0.6944
+    },
+    "effectiveness": {
+      "accuracy": 0.7898,
+      "macro_f1": 0.7641
+    },
+    "stopped_or_planned_f1": 0.8288,
+    "stop_reasons_micro_f1": 0.7747
+  },
+  "majority_baseline": {
+    "reviews": 1004,
+    "discontinued": {
+      "accuracy": 0.6175,
+      "macro_f1": 0.1909
+    },
+    "effectiveness": {
+      "accuracy": 0.3367,
+      "macro_f1": 0.1259
+    },
+    "stopped_or_planned_f1": 0.0,
+    "stop_reasons_micro_f1": 0.0
+  },
+  "reviews_per_second": 194.7,
+  "meta": {
+    "model": "thomas-sounack/BioClinical-ModernBERT-base",
+    "git_sha": "5e2937f",
+    "built_utc": "2026-10-16T16:05:41+00:00"
+  }
+}

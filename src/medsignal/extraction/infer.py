@@ -93,15 +93,21 @@ def main(argv: list[str] | None = None) -> int:
     if args.limit:
         reviews = reviews.head(args.limit)
     out_dir = PROJECT_ROOT / inf["out_dir"]
-    parts = out_dir / "parts"
+    # Smoke runs (--limit) write to their own folder so they can never be mistaken for finished
+    # chunks of the full run.
+    parts = out_dir / ("parts" if not args.limit else f"parts_smoke{args.limit}")
     parts.mkdir(parents=True, exist_ok=True)
     chunk = int(inf["chunk_size"])
     t0 = time.perf_counter()
     for start in range(0, len(reviews), chunk):
         part = parts / f"part-{start // chunk:04d}"
-        if (part.with_suffix(".reviews.parquet")).exists():
-            continue
         df = reviews.iloc[start : start + chunk]
+        done_path = part.with_suffix(".reviews.parquet")
+        if done_path.exists():
+            done_ids = pd.read_parquet(done_path, columns=["review_id"])["review_id"]
+            if done_ids.tolist() != df["review_id"].tolist():
+                raise RuntimeError(f"{done_path} does not match chunk {start}; delete it and rerun")
+            continue
         texts = df["text"].tolist()
         spans, _ = predict_spans(
             span_model, tok, texts, int(inf["max_length"]), int(inf["batch_size"])
@@ -134,8 +140,9 @@ def main(argv: list[str] | None = None) -> int:
     meta_cols = reviews.drop(columns=["text"])
     mentions = mentions.merge(meta_cols, on="review_id", how="left")
     labels = labels.merge(meta_cols, on="review_id", how="left")
-    mentions.to_parquet(out_dir / "mentions.parquet", index=False)
-    labels.to_parquet(out_dir / "review_labels.parquet", index=False)
+    suffix = f"_smoke{args.limit}" if args.limit else ""
+    mentions.to_parquet(out_dir / f"mentions{suffix}.parquet", index=False)
+    labels.to_parquet(out_dir / f"review_labels{suffix}.parquet", index=False)
     summary = {
         "reviews": len(labels),
         "mentions": len(mentions),

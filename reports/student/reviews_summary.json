@@ -1,0 +1,22 @@
+{
+  "discontinued": {
+    "mean": 0.6751,
+    "std": 0.0231,
+    "n_runs": 3
+  },
+  "effectiveness": {
+    "mean": 0.7653,
+    "std": 0.0032,
+    "n_runs": 3
+  },
+  "stop_reasons_micro_f1": {
+    "mean": 0.7411,
+    "std": 0.0297,
+    "n_runs": 3
+  },
+  "stopped_or_planned_f1": {
+    "mean": 0.8157,
+    "std": 0.033,
+    "n_runs": 3
+  }
+}
